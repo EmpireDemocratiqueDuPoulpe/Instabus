@@ -10,4 +10,9 @@
         android:name="com.eddp.busapp.Home"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/userPics"
+        android:name="com.eddp.busapp.UserPics"
+        android:label="fragment_user_pics"
+        tools:layout="@layout/fragment_user_pics" />
 </navigation>
