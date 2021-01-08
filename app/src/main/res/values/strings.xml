@@ -14,4 +14,14 @@
     <string name="bottom_nav_bar_home">Home</string>
     <string name="bottom_nav_bar_stations">Stations</string>
     <string name="bottom_nav_bar_settings">Settings</string>
+
+    <!-- Camera -->
+    <string name="cam_permission_refused_title">Camera permission refused</string>
+    <string name="cam_permission_refused">The app cannot use the camera if you refuse the permission. You can change it in Settings > App > %1$s</string>
+    <string name="cam_start_error">Could not start the camera</string>
+    <string name="cam_start_preview_error">Could not start the camera preview</string>
+    <string name="cam_file_not_found_error">Could not create the photo file</string>
+    <string name="cam_file_access_denied_error">Could not access the photo file</string>
+    <string name="cam_image_capture_error">Could not take photo</string>
+    <string name="cam_unknown_error">Unknown error. Unable to take photo</string>
 </resources>
