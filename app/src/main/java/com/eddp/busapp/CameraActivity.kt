@@ -7,8 +7,8 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -20,7 +20,7 @@ class CameraActivity : AppCompatActivity() {
 
     private var _camera: CameraHandler? = null
     private var _cameraPreviewAPI16: FrameLayout? = null
-    private lateinit var _cameraButton: Button
+    private lateinit var _cameraButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
