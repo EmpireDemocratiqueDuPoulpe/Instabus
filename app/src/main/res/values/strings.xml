@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Bus App</string>
 
+    <!-- Main activity -->
+    <string name="get_stations_error">Could not get bus stations. Try again later.</string>
+
     <!-- Post -->
     <string name="post_title_placeholder">Post title</string>
     <string name="post_creation_date_placeholder">01/01/1970</string>
