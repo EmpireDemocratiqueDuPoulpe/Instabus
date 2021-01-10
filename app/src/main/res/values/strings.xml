@@ -13,6 +13,11 @@
     <string name="post_likes_count_placeholder">0</string>
     <string name="post_view_station_btn">View station</string>
 
+    <!-- Station -->
+    <string name="station_name_placeholder">Station name</string>
+    <string name="station_street_name_placeholder">Address</string>
+    <string name="station_city_placeholder">City</string>
+
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_home">Home</string>
     <string name="bottom_nav_bar_stations">Stations</string>
@@ -34,6 +39,4 @@
     <string name="add_pic_title">Add picture</string>
     <string name="add_pic_edit_text_placeholder">Picture title</string>
     <string name="add_pic_btn">Add</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
