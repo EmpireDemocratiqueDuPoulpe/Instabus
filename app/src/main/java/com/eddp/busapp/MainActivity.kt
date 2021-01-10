@@ -18,14 +18,17 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class MainActivity : AppCompatActivity() {
     private var _stations: List<Station>? = null
 
+    // Getters
+    fun getStations() : List<Station>? = this._stations
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getStations()
+        getStationsFromAPI()
     }
 
-    private fun getStations() {
+    private fun getStationsFromAPI() {
         val moshi = Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
                 .build()
