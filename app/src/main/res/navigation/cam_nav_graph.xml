@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cam_nav_graph"
+    app:startDestination="@id/takePicture2">
+
+    <fragment
+        android:id="@+id/takePicture2"
+        android:name="com.eddp.busapp.TakePicture"
+        android:label="TakePicture" >
+        <action
+            android:id="@+id/action_takePicture2_to_addPicture2"
+            app:destination="@id/addPicture2" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPicture2"
+        android:name="com.eddp.busapp.AddPicture"
+        android:label="fragment_add_picture"
+        tools:layout="@layout/fragment_add_picture" />
+</navigation>

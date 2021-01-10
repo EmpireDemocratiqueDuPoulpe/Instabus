@@ -18,10 +18,6 @@ import com.eddp.busapp.camera.CameraHandler
 class CameraActivity : AppCompatActivity() {
     private lateinit var _requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
-    private var _camera: CameraHandler? = null
-    private var _cameraPreviewAPI16: FrameLayout? = null
-    private lateinit var _cameraButton: ImageButton
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
@@ -49,32 +45,6 @@ class CameraActivity : AppCompatActivity() {
             }
 
         askCameraPermission()
-
-        // Start camera
-        _cameraPreviewAPI16 = if (!CameraHandler.canUseCameraX())
-            findViewById(R.id.cam_preview) else null
-
-        this._cameraButton = findViewById(R.id.cam_capture_button)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        this._camera = CameraHandler.getInstance(this)
-
-        if (allPermissionGranted()) {
-            this._camera?.startCamera()
-
-            if (!CameraHandler.canUseCameraX()) {
-                this._camera?.setPreviewContainer(this._cameraPreviewAPI16 as ViewGroup)
-            }
-
-            this._cameraButton.setOnClickListener { this._camera?.takePhoto() }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        this._camera?.destroy()
     }
 
     // Permission
@@ -93,7 +63,7 @@ class CameraActivity : AppCompatActivity() {
         _requestPermissionLauncher.launch(missingPermissions.toTypedArray())
     }
 
-    private fun allPermissionGranted() : Boolean = REQUIRED_PERMISSIONS.all {
+    fun allPermissionGranted() : Boolean = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
