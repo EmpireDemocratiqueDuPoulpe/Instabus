@@ -1,11 +1,15 @@
 package com.eddp.busapp
 
+import android.Manifest
+import android.content.Intent
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.eddp.busapp.data.Station
 import com.eddp.busapp.interfaces.NeedStations
 
@@ -16,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class StationsMap : Fragment(), NeedStations {
+    private lateinit var _requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -30,6 +35,35 @@ class StationsMap : Fragment(), NeedStations {
         val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Ask permission
+        this._requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                for (p in permissions.entries) {
+                    if (!p.value) {
+                        MainActivity.getMissingPermissionDialog(
+                            this@StationsMap.requireContext(),
+                            getString(R.string.map_permission_refused_title),
+                            String.format(
+                                getString(R.string.map_permission_refused),
+                                getString(R.string.app_name)),
+                            getString(R.string.perms_refused_positive_btn)) { _, _ -> }.show()
+                    }
+                }
+            }
+
+        val missingPermissions = MainActivity.getMissingPermissions(
+            requireContext(),
+            REQUIRED_PERMISSIONS
+        )
+
+        if (missingPermissions != null) {
+            this._requestPermissionLauncher.launch(missingPermissions.toTypedArray())
+        }
     }
 
     override fun onCreateView(
@@ -47,5 +81,11 @@ class StationsMap : Fragment(), NeedStations {
     }
 
     override fun getStations(stations: List<Station>) {
+    }
+
+    companion object {
+        val REQUIRED_PERMISSIONS: List<String> = listOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        )
     }
 }

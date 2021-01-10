@@ -23,52 +23,34 @@ class CameraActivity : AppCompatActivity() {
         setContentView(R.layout.activity_camera)
 
         // Ask for permissions
-        _requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
-                for (p in permission.entries) {
+        this._requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                for (p in permissions.entries) {
                     if (!p.value) {
-                        val alertDialog = AlertDialog.Builder(this)
-                        alertDialog.setTitle(getString(R.string.cam_permission_refused_title))
-                        alertDialog.setMessage(String.format(
-                            getString(R.string.cam_permission_refused),
-                            getString(R.string.app_name))
-                        )
+                        MainActivity.getMissingPermissionDialog(
+                            this@CameraActivity,
+                            getString(R.string.cam_permission_refused_title),
+                            String.format(
+                                getString(R.string.cam_permission_refused),
+                                getString(R.string.app_name)),
+                            getString(R.string.perms_refused_positive_btn)) { _, _ ->
 
-                        alertDialog.setPositiveButton("Ok") { _, _ ->
-                            val intent = Intent(this@CameraActivity, MainActivity::class.java)
-                            startActivity(intent)
-                        }
-
-                        alertDialog.show()
+                                val intent = Intent(this@CameraActivity, MainActivity::class.java)
+                                startActivity(intent)
+                        }.show()
                     }
                 }
             }
 
-        askCameraPermission()
-    }
+        val missingPermissions = MainActivity.getMissingPermissions(this, REQUIRED_PERMISSIONS)
 
-    // Permission
-    private fun askCameraPermission() {
-        val missingPermissions: MutableList<String> = ArrayList()
-
-        for (permission in REQUIRED_PERMISSIONS) {
-            when {
-                ContextCompat.checkSelfPermission(this, permission)
-                        != PackageManager.PERMISSION_GRANTED -> {
-                    missingPermissions.add(permission)
-                }
-            }
+        if (missingPermissions != null) {
+            this._requestPermissionLauncher.launch(missingPermissions.toTypedArray())
         }
-
-        _requestPermissionLauncher.launch(missingPermissions.toTypedArray())
-    }
-
-    fun allPermissionGranted() : Boolean = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
     companion object {
-        private val REQUIRED_PERMISSIONS: List<String> = listOf(
+        val REQUIRED_PERMISSIONS: List<String> = listOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
         )

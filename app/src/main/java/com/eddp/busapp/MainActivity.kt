@@ -1,9 +1,14 @@
 package com.eddp.busapp
 
+import android.content.Context
+import android.content.DialogInterface
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.eddp.busapp.data.Post
 import com.eddp.busapp.data.Station
@@ -97,6 +102,48 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable {
     override fun notifyGet() {
         for (observer in this._observers) {
             observer?.onDataGet()
+        }
+    }
+
+    companion object {
+        // Permissions
+        fun allPermissionGranted(context: Context, requiredPermissions: List<String>) : Boolean {
+            return requiredPermissions.all {
+                ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+            }
+        }
+
+        fun getMissingPermissions(
+            context: Context,
+            requiredPermissions: List<String>
+        ) : MutableList<String>? {
+            val missingPermissions: MutableList<String> = ArrayList()
+
+            for (permission in requiredPermissions) {
+                when {
+                    ContextCompat.checkSelfPermission(context, permission)
+                            != PackageManager.PERMISSION_GRANTED -> {
+                        missingPermissions.add(permission)
+                    }
+                }
+            }
+
+            return if (missingPermissions.size > 0)
+                missingPermissions else null
+        }
+
+        fun getMissingPermissionDialog(
+            context: Context,
+            title: String,
+            message: String,
+            positiveButtonText: String,
+            onPositiveButtonClick: DialogInterface.OnClickListener) : AlertDialog.Builder {
+
+            return AlertDialog
+                .Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveButtonText, onPositiveButtonClick)
         }
     }
 }

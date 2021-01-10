@@ -11,6 +11,8 @@ import android.widget.ImageButton
 import com.eddp.busapp.camera.CameraHandler
 
 class TakePicture : Fragment() {
+    private var _context: Context? = null
+
     private var _camera: CameraHandler? = null
     private var _cameraPreviewAPI16: FrameLayout? = null
     private lateinit var _cameraButton: ImageButton
@@ -19,7 +21,6 @@ class TakePicture : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val v: View = inflater.inflate(R.layout.fragment_take_picture, container, false)
 
         // Get camera component
@@ -33,16 +34,20 @@ class TakePicture : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        this._camera = CameraHandler.getInstance(activity as Context)
+        this._context = activity as Context
 
-        if ((activity as CameraActivity).allPermissionGranted()) {
-            this._camera?.startCamera()
+        if (this._context != null) {
+            this._camera = CameraHandler.getInstance(this._context!!)
 
-            if (!CameraHandler.canUseCameraX()) {
-                this._camera?.setPreviewContainer(this._cameraPreviewAPI16 as ViewGroup)
+            if (MainActivity.allPermissionGranted(this._context!!, CameraActivity.REQUIRED_PERMISSIONS)) {
+                this._camera?.startCamera()
+
+                if (!CameraHandler.canUseCameraX()) {
+                    this._camera?.setPreviewContainer(this._cameraPreviewAPI16 as ViewGroup)
+                }
+
+                this._cameraButton.setOnClickListener { this._camera?.takePhoto() }
             }
-
-            this._cameraButton.setOnClickListener { this._camera?.takePhoto() }
         }
     }
 
