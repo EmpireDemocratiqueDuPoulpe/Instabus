@@ -21,7 +21,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainActivity : AppCompatActivity(), AsyncDataObservable {
     private var _observers: MutableList<AsyncDataObserver?> = ArrayList()
-    private var _fragments: List<Fragment> = listOf(Home(), StationsList(), UserPics())
+    private var _fragments: List<Fragment> = listOf(Home(), StationsViewPager(), UserPics())
 
     private var _posts: List<Post>? = null
     private var _stations: List<Station>? = null

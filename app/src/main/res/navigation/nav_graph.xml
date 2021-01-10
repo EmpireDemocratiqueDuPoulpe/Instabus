@@ -27,5 +27,26 @@
         <action
             android:id="@+id/action_stationsList_to_userPics"
             app:destination="@id/userPics" />
+        <action
+            android:id="@+id/action_stationsList_to_stationMap"
+            app:destination="@id/stationMap" />
+    </fragment>
+    <fragment
+        android:id="@+id/stationMap"
+        android:name="com.eddp.busapp.StationsMap"
+        android:label="fragment_station_map"
+        tools:layout="@layout/fragment_stations_map" >
+        <action
+            android:id="@+id/action_stationMap_to_stationsList"
+            app:destination="@id/stationsList" />
+    </fragment>
+    <fragment
+        android:id="@+id/stationsViewPager"
+        android:name="com.eddp.busapp.StationsViewPager"
+        android:label="fragment_stations_view_pager"
+        tools:layout="@layout/fragment_stations_view_pager" >
+        <action
+            android:id="@+id/action_stationsViewPager_to_home2"
+            app:destination="@id/home2" />
     </fragment>
 </navigation>
