@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.eddp.busapp.data.Post
 import com.eddp.busapp.data.Station
 import com.eddp.busapp.data.StationAPI
 import com.eddp.busapp.data.StationResponse
+import com.eddp.busapp.interfaces.AsyncDataObservable
+import com.eddp.busapp.interfaces.AsyncDataObserver
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
@@ -16,7 +19,10 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AsyncDataObservable {
+    private var _observers: MutableList<AsyncDataObserver?> = ArrayList()
+    private var _fragments: List<Fragment> = listOf(Home(), StationsList(), UserPics())
+
     private var _posts: List<Post>? = null
     private var _stations: List<Station>? = null
 
@@ -58,9 +64,10 @@ class MainActivity : AppCompatActivity() {
                             "Error ${statusCode}: " + this@MainActivity.getString(R.string.get_stations_error),
                             Toast.LENGTH_SHORT
                     ).show()
+                } else {
+                    this@MainActivity._stations = resp?.data?.stations
+                    notifyGet()
                 }
-
-                this@MainActivity._stations = resp?.data?.stations
             }
 
             override fun onFailure(call: Call<StationResponse>?, err: Throwable) {
@@ -72,5 +79,24 @@ class MainActivity : AppCompatActivity() {
                 Log.e("ERROR", err.message, err)
             }
         })
+    }
+
+    // Observable
+    override fun registerReceiver(dataObserver: AsyncDataObserver) {
+        if (!this._observers.contains(dataObserver)) {
+            this._observers.add(dataObserver)
+        }
+    }
+
+    override fun unregisterReceiver(dataObserver: AsyncDataObserver) {
+        if (!this._observers.contains(dataObserver)) {
+            this._observers.remove(dataObserver)
+        }
+    }
+
+    override fun notifyGet() {
+        for (observer in this._observers) {
+            observer?.onDataGet()
+        }
     }
 }
