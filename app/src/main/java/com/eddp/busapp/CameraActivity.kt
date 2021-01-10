@@ -27,7 +27,6 @@ class CameraActivity : AppCompatActivity() {
         setContentView(R.layout.activity_camera)
 
         // Ask for permissions
-        val activity: Context = this
         _requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
                 for (p in permission.entries) {
@@ -40,7 +39,7 @@ class CameraActivity : AppCompatActivity() {
                         )
 
                         alertDialog.setPositiveButton("Ok") { _, _ ->
-                            val intent = Intent(activity, MainActivity::class.java)
+                            val intent = Intent(this@CameraActivity, MainActivity::class.java)
                             startActivity(intent)
                         }
 
