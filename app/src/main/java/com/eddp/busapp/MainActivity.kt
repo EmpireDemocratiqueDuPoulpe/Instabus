@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.eddp.busapp.data.Post
 import com.eddp.busapp.data.Station
 import com.eddp.busapp.data.StationAPI
 import com.eddp.busapp.data.StationResponse
@@ -16,9 +17,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainActivity : AppCompatActivity() {
+    private var _posts: List<Post>? = null
     private var _stations: List<Station>? = null
 
     // Getters
+    fun getPosts() : List<Post>? = this._posts
     fun getStations() : List<Station>? = this._stations
 
     override fun onCreate(savedInstanceState: Bundle?) {

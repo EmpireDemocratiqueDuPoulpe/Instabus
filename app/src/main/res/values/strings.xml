@@ -29,4 +29,11 @@
     <string name="cam_file_access_denied_error">Could not access the photo file</string>
     <string name="cam_image_capture_error">Could not take photo</string>
     <string name="cam_unknown_error">Unknown error. Unable to take photo</string>
+
+    <!-- Camera add picture -->
+    <string name="add_pic_title">Add picture</string>
+    <string name="add_pic_edit_text_placeholder">Picture title</string>
+    <string name="add_pic_btn">Add</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -46,6 +46,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     // TODO: Remove unused librairies
     def camerax_version = "1.0.0-rc01"
 
