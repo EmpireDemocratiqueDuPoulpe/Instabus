@@ -19,7 +19,7 @@ class StationsViewPager : Fragment(), AsyncDataObserver {
     private lateinit var _activity: MainActivity
 
     private lateinit var _viewPager2: ViewPager2
-    private lateinit var _viewPagerAdapter: ViewPagerAdapter
+    private lateinit var _viewPagerAdapter: StationsViewPagerAdapter
     private lateinit var _tabsLayout: TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +38,9 @@ class StationsViewPager : Fragment(), AsyncDataObserver {
 
         // View Pager
         this._viewPager2 = v.findViewById(R.id.stations_view_pager)
-        this._viewPagerAdapter = ViewPagerAdapter(activity as AppCompatActivity)
+        this._viewPagerAdapter = StationsViewPagerAdapter(activity as AppCompatActivity)
         this._viewPager2.adapter = this._viewPagerAdapter
+        this._viewPager2.isUserInputEnabled = false
 
         // Tabs
         this._tabsLayout = v.findViewById(R.id.stations_tabs)
@@ -63,7 +64,7 @@ class StationsViewPager : Fragment(), AsyncDataObserver {
     }
 }
 
-class ViewPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+class StationsViewPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     private val _stationsFragments: List<Fragment> = listOf(StationsMap(), StationsList())
     private val _stationsFragmentsNames: List<String> = listOf(
         activity.getString(R.string.tabs_stations_map),
