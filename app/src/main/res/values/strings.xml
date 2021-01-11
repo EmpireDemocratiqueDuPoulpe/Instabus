@@ -44,4 +44,10 @@
     <string name="add_pic_title">Add picture</string>
     <string name="add_pic_edit_text_placeholder">Picture title</string>
     <string name="add_pic_btn">Add</string>
+
+    <!-- Preference Titles -->
+    <string name="interface_header">Interface</string>
+
+    <!-- Interface Preferences -->
+    <string name="dark_theme_title">Dark theme</string>
 </resources>

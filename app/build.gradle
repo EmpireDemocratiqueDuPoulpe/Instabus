@@ -74,6 +74,9 @@ dependencies {
     // Google Maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
+    // Settings
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+
     // Camera
     implementation "androidx.camera:camera-camera2:$camerax_version"
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
