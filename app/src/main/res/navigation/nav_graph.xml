@@ -13,6 +13,12 @@
         <action
             android:id="@+id/action_home2_to_userPics"
             app:destination="@id/userPics" />
+        <action
+            android:id="@+id/action_home2_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_home2_to_stationsViewPager"
+            app:destination="@id/stationsViewPager" />
     </fragment>
     <fragment
         android:id="@+id/userPics"
@@ -48,5 +54,19 @@
         <action
             android:id="@+id/action_stationsViewPager_to_home2"
             app:destination="@id/home2" />
+        <action
+            android:id="@+id/action_stationsViewPager_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.eddp.busapp.Settings"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_home2"
+            app:destination="@id/home2" />
+        <action
+            android:id="@+id/action_settingsFragment_to_stationsViewPager"
+            app:destination="@id/stationsViewPager" />
     </fragment>
 </navigation>
