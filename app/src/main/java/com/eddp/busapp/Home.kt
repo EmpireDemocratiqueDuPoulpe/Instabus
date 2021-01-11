@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.data.Post
-import com.eddp.busapp.recycler_view.PostAdapter
+import com.eddp.busapp.views.recycler_view.PostAdapter
 
 class Home : Fragment() {
     private var _postRecyclerView: RecyclerView? = null

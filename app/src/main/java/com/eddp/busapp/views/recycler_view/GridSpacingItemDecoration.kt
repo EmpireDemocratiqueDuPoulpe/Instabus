@@ -1,4 +1,4 @@
-package com.eddp.busapp.recycler_view
+package com.eddp.busapp.views.recycler_view
 
 import android.graphics.Rect
 import android.view.View

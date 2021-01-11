@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.data.UserPic
-import com.eddp.busapp.recycler_view.GridSpacingItemDecoration
-import com.eddp.busapp.recycler_view.UserPicAdapter
+import com.eddp.busapp.views.recycler_view.GridSpacingItemDecoration
+import com.eddp.busapp.views.recycler_view.UserPicAdapter
 
 class UserPics : Fragment() {
     private var _userPicRecyclerView: RecyclerView? = null
