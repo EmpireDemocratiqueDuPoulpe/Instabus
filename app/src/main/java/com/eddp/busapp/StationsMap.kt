@@ -20,9 +20,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class StationsMap : Fragment(), NeedStations {
-
     private lateinit var _activity: MainActivity
+
     private lateinit var _requestPermissionLauncher: ActivityResultLauncher<Array<String>>
+
+    private var _stations: List<Station> = listOf()
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -41,6 +43,8 @@ class StationsMap : Fragment(), NeedStations {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        this._activity = activity as MainActivity
         // Ask permission
         this._requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -67,11 +71,10 @@ class StationsMap : Fragment(), NeedStations {
         }
 
         // Get data if it's already fetched
-        this._activity = activity as MainActivity
         val stations: List<Station>? = this._activity.getStations()
 
         if (stations != null) {
-            // Todo: Assign data here
+            this._stations = stations
         }
     }
 
