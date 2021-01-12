@@ -14,7 +14,6 @@ import com.eddp.busapp.interfaces.NeedStations
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-
 class StationsViewPager : Fragment(), AsyncDataObserver {
     private lateinit var _activity: MainActivity
 
@@ -33,7 +32,7 @@ class StationsViewPager : Fragment(), AsyncDataObserver {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val v: View = inflater.inflate(R.layout.fragment_stations_view_pager, container, false)
 
         // View Pager
@@ -58,7 +57,7 @@ class StationsViewPager : Fragment(), AsyncDataObserver {
 
         if (stations != null) {
             for (frag in this._viewPagerAdapter.getAll()) {
-                (frag as NeedStations).getStations(stations)
+                (frag as NeedStations).setStations(stations)
             }
         }
     }
