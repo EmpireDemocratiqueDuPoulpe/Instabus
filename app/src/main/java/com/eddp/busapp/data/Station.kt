@@ -4,7 +4,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface StationAPI {
-    @GET("/bus/nearstation/latlon/41.3985182/2.1917991/1.json")
+    @GET("/bus/nearstation/latlon/41.404377/2.175471/1.json")
     fun stationsList(): Call<StationResponse>
 }
 

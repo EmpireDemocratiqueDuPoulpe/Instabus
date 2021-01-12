@@ -125,20 +125,21 @@ class StationsMap : Fragment(), NeedStations {
         if(_googleMap == null) return
         val markerIcon: BitmapDescriptor = getMarkerIconFromDrawable(
             this._activity.resources.getDrawable(R.drawable.ic_bus_marker)
-        );
+        )
         for (station in this._stations){
             if(station.latitude == null || station.longitude == null) continue
             _googleMap!!.addMarker(
                 MarkerOptions()
                     .position(LatLng(station.latitude!!.toDouble(), station.longitude!!.toDouble()))
                     .title("Station n°" + station.id)
+                    .snippet("Buses: " + station.buses + "\n" + "Distance: " + station.distance)
                     .icon(markerIcon)
             )
         }
     }
 
     private fun getMarkerIconFromDrawable(drawable: Drawable): BitmapDescriptor {
-        val canvas = Canvas();
+        val canvas = Canvas()
         val bitmap = Bitmap.createBitmap(
             drawable.intrinsicWidth,
             drawable.intrinsicHeight,
