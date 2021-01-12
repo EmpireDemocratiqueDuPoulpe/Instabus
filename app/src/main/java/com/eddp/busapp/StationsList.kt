@@ -18,6 +18,12 @@ class StationsList : Fragment(), NeedStations {
     private var _stationsRecyclerView: RecyclerView? = null
     private var _stationsAdapter: StationAdapter? = null
 
+    // Setters
+    override fun setStations(stations: List<Station>) {
+        this._stationsAdapter?.setData(stations)
+    }
+
+    // Views
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,9 +58,5 @@ class StationsList : Fragment(), NeedStations {
         }
 
         return v
-    }
-
-    override fun getStations(stations: List<Station>) {
-        this._stationsAdapter?.setData(stations)
     }
 }

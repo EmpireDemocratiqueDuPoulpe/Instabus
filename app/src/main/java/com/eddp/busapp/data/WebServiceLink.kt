@@ -54,8 +54,6 @@ class WebServiceLink private constructor(receiver: WebServiceReceiver) {
 
             return instance
         }
-
-
     }
 }
 
