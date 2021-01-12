@@ -3,9 +3,13 @@
 
     <PreferenceCategory app:title="@string/interface_header">
 
-        <SwitchPreferenceCompat
-            app:key="dark_theme"
-            android:title="@string/dark_theme_title"/>
+        <DropDownPreference
+            app:key="theme"
+            android:title="@string/theme_title"
+            app:defaultValue="light"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
 

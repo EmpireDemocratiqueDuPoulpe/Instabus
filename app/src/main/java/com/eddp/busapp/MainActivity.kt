@@ -10,9 +10,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.eddp.busapp.data.*
@@ -47,7 +49,9 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     fun getPosts() : List<Post>? = this._posts
     fun getStations() : List<Station>? = this._stations
 
+    // Views
     override fun onCreate(savedInstanceState: Bundle?) {
+        initTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -67,6 +71,17 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         getStationsFromAPI()
     }
 
+    private fun initTheme() {
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+        when (sharedPrefs.getString("theme", "light")) {
+            "light" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
+            "dark" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
+            "else" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) }
+        }
+    }
+
+    // Navigation
     override fun onBackPressed() {
         if (this._viewPager.currentItem == 0) {
             super.onBackPressed()
