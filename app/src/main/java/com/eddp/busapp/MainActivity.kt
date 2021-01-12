@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         getStationsFromAPI()
     }
 
+    // Todo: Update theme
     private fun initTheme() {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
 
