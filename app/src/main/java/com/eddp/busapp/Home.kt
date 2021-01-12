@@ -8,17 +8,26 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.data.Post
+import com.eddp.busapp.data.Station
+import com.eddp.busapp.interfaces.AsyncDataObserver
 import com.eddp.busapp.views.recycler_view.PostAdapter
 import com.eddp.busapp.views.recycler_view.StationAdapter
 
-class Home : Fragment() {
+class Home : Fragment(), AsyncDataObserver {
+    private lateinit var _activity: MainActivity
+
     private var _postRecyclerView: RecyclerView? = null
     private lateinit var _postAdapter: PostAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        this._postAdapter = PostAdapter(requireContext())
+        // Add observer
+        this._activity = activity as MainActivity
+        this._activity.registerReceiver(this)
+
+        // Adapter
+        this._postAdapter = PostAdapter(this._activity)
     }
 
     override fun onCreateView(
@@ -32,38 +41,18 @@ class Home : Fragment() {
 
         if (this._postRecyclerView != null) {
             this._postRecyclerView!!.layoutManager = LinearLayoutManager(context)
-
-            this._postAdapter.setData(
-                arrayListOf(
-                    Post(
-                        1,
-                        "Some user",
-                        "Post title",
-                        "1/1/1970",
-                        "path/to/img",
-                        5
-                    ),
-                    Post(
-                        2,
-                        "Another user",
-                        "Post title 2",
-                        "1/1/1970",
-                        "path/to/img",
-                        2
-                    ),
-                    Post(
-                        3,
-                        "Some user",
-                        "Shit post",
-                        "1/1/1970",
-                        "path/to/img",
-                        999
-                    ),
-                )
-            )
             this._postRecyclerView!!.adapter = this._postAdapter
         }
 
         return v
+    }
+
+    // Observer
+    override fun onDataGet() {
+        val posts: List<Post>? = this._activity.getPosts()
+
+        if (posts != null) {
+            this._postAdapter.setData(posts as MutableList<Post>)
+        }
     }
 }

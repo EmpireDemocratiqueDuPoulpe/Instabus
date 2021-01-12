@@ -15,12 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.eddp.busapp.data.Post
-import com.eddp.busapp.data.Station
-import com.eddp.busapp.data.StationAPI
-import com.eddp.busapp.data.StationResponse
+import com.eddp.busapp.data.*
 import com.eddp.busapp.interfaces.AsyncDataObservable
 import com.eddp.busapp.interfaces.AsyncDataObserver
+import com.eddp.busapp.interfaces.WebServiceReceiver
 import com.eddp.busapp.views.ZoomOutPageTransformer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.moshi.Moshi
@@ -31,12 +29,14 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class MainActivity : AppCompatActivity(), AsyncDataObservable {
+class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceiver {
     private val _observers: MutableList<AsyncDataObserver?> = ArrayList()
 
     private lateinit var _viewPager: ViewPager2
     private lateinit var _viewPagerAdapter: MainViewPagerAdapter
     private lateinit var _bottomNavBar: BottomNavBar
+
+    private var _webServiceLink: WebServiceLink? = null
 
     private var _posts: List<Post>? = null
     private var _stations: List<Station>? = null
@@ -61,6 +61,9 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable {
         this._viewPager.setPageTransformer(ZoomOutPageTransformer())
 
         // Get data
+        this._webServiceLink = WebServiceLink.getInstance(this)
+        this._webServiceLink?.getPosts()
+
         getStationsFromAPI()
     }
 
@@ -134,6 +137,12 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable {
         for (observer in this._observers) {
             observer?.onDataGet()
         }
+    }
+
+    // Web Service
+    override fun setPosts(posts: List<Post>?) {
+        this._posts = posts
+        notifyGet()
     }
 
     companion object {
