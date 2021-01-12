@@ -1,7 +1,6 @@
 package com.eddp.busapp
 
 import android.Manifest
-import android.content.Intent
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -14,14 +13,15 @@ import com.eddp.busapp.data.Station
 import com.eddp.busapp.interfaces.NeedStations
 
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class StationsMap : Fragment(), NeedStations {
-    private lateinit var _activity: MainActivity
 
+    private lateinit var _activity: MainActivity
     private lateinit var _requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -41,7 +41,6 @@ class StationsMap : Fragment(), NeedStations {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // Ask permission
         this._requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
