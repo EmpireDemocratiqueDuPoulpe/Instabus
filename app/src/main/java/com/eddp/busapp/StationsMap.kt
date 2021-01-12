@@ -63,6 +63,8 @@ class StationsMap : Fragment(), NeedStations {
 
         // Init Google Maps
         this._mapReady = MapReady(
+            // Context
+            this._activity,
             // Map style
             _activity.resources.getString(R.string.map_style),
             // Custom marker

@@ -1,27 +1,36 @@
 package com.eddp.busapp.views
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
+import com.eddp.busapp.R
 import com.eddp.busapp.data.Station
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
+import java.lang.Exception
 
-class MapReady(style: String?, marker: Drawable?) : OnMapReadyCallback {
+class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReadyCallback {
+    private val _context = context
+
     private var _map: GoogleMap? = null
     private var _isMapReady: Boolean = false
     private var _style: String? = style
-    private var _maker: BitmapDescriptor = getMarkerIconFromDrawable(marker)
+    private var _makerDrawable: Drawable? = marker
+    private lateinit var _maker: BitmapDescriptor
 
     private var _stations: List<Station> = listOf()
-    private var _markers: MutableList<Marker?> = ArrayList()
+    private var _markers: HashMap<Marker, Station> = HashMap()
 
-    constructor(style: String) : this(style, null)
-    constructor(marker: Drawable?) : this(null, marker)
+    constructor(context: Context, style: String) : this(context, style, null)
+    constructor(context: Context, marker: Drawable?) : this(context, null, marker)
 
     // Getters
     private fun getMarkerIconFromDrawable(drawable: Drawable?) : BitmapDescriptor {
@@ -43,6 +52,13 @@ class MapReady(style: String?, marker: Drawable?) : OnMapReadyCallback {
     }
 
     fun isMapReady() : Boolean = this._isMapReady
+    fun getStationByMarker(marker: Marker) : Station? {
+        return try {
+            this._markers[marker]
+        } catch (err: Exception) {
+            null
+        }
+    }
 
     // Setters
     fun setStations(stations: List<Station>) {
@@ -60,6 +76,7 @@ class MapReady(style: String?, marker: Drawable?) : OnMapReadyCallback {
         // Move the map onto Barcelona
         val barcelona = LatLng(41.404377, 2.175471)
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(barcelona, 16f))
+        map?.setInfoWindowAdapter(StationInfoWindow(this._context, this))
 
         // Update map style
         if (this._style != null) {
@@ -71,6 +88,8 @@ class MapReady(style: String?, marker: Drawable?) : OnMapReadyCallback {
                 Log.e("Map", err.message, err)
             }
         }
+
+        this._maker = getMarkerIconFromDrawable(this._makerDrawable)
 
         // Add markers
         createStationsMarkers()
@@ -89,16 +108,44 @@ class MapReady(style: String?, marker: Drawable?) : OnMapReadyCallback {
                 .snippet("Buses: " + station.buses + "\n" + "Distance: " + station.distance)
             )
 
-            this._markers.add(marker)
+            if (marker != null) {
+                this._markers[marker] = station
+            }
         }
     }
 
     private fun redrawStationMarkers() {
-        for (marker in this._markers) {
-            marker?.remove()
+        for ((marker, _) in this._markers) {
+            marker.remove()
         }
 
-        this._markers = ArrayList()
+        this._markers = HashMap()
         createStationsMarkers()
+    }
+}
+
+class StationInfoWindow(context: Context, m: MapReady) : GoogleMap.InfoWindowAdapter {
+    private val _window: View = LayoutInflater.from(context).inflate(R.layout.station_info_window, null)
+    private val _map = m
+
+    override fun getInfoWindow(p0: Marker?): View {
+        show(p0)
+        return this._window
+    }
+
+    override fun getInfoContents(p0: Marker?): View? {
+        return null
+    }
+
+    private fun show(marker: Marker?) {
+        if (marker == null) return
+
+        val station: Station? = this._map.getStationByMarker(marker)
+
+        if (station != null) {
+            this._window.findViewById<TextView>(R.id.marker_title).text = "Station n°" + station.id
+            this._window.findViewById<TextView>(R.id.marker_buses).text = "Buses: " + station.buses
+            this._window.findViewById<TextView>(R.id.marker_distance).text = "Distance: " + station.distance
+        }
     }
 }
