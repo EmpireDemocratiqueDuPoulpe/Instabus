@@ -1,5 +1,6 @@
 package com.eddp.busapp.views.recycler_view
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,7 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PostAdapter : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback()) {
+class PostAdapter(context: Context) : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback()) {
+    private val _context = context
+
     private val _adapterCoroutine = CoroutineScope(Dispatchers.Default)
 
     // Setters
@@ -24,7 +27,7 @@ class PostAdapter : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback(
 
     // Views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PostViewHolder.from(parent)
+        return PostViewHolder.from(this._context, parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

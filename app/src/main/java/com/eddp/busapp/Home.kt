@@ -9,10 +9,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.data.Post
 import com.eddp.busapp.views.recycler_view.PostAdapter
+import com.eddp.busapp.views.recycler_view.StationAdapter
 
 class Home : Fragment() {
     private var _postRecyclerView: RecyclerView? = null
-    private val _postAdapter = PostAdapter()
+    private lateinit var _postAdapter: PostAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        this._postAdapter = PostAdapter(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,6 +1,8 @@
 package com.eddp.busapp.views.recycler_view
 
+import android.content.Context
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class StationAdapter : ListAdapter<Station, RecyclerView.ViewHolder>(StationDiffCallback()) {
+class StationAdapter(sfM: FragmentManager) : ListAdapter<Station, RecyclerView.ViewHolder>(StationDiffCallback()) {
+    private val _sfM = sfM
+
     private val _adapterCoroutine = CoroutineScope(Dispatchers.Default)
 
     // Setters
@@ -23,7 +27,7 @@ class StationAdapter : ListAdapter<Station, RecyclerView.ViewHolder>(StationDiff
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return StationViewHolder.from(parent)
+        return StationViewHolder.from(this._sfM, parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
