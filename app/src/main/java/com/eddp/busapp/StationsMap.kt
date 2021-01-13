@@ -21,11 +21,11 @@ class StationsMap : Fragment(), NeedStations {
 
     private lateinit var _requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
-    private lateinit var _mapReady: MapReady
+    private var _mapReady: MapReady? = null
 
     // Setters
     override fun setStations(stations: List<Station>) {
-        this._mapReady.setStations(stations)
+        this._mapReady?.setStations(stations)
     }
 
     // Views
@@ -75,11 +75,10 @@ class StationsMap : Fragment(), NeedStations {
             )
         )
 
-        // Get data if it's already fetched
         val stations: List<Station>? = this._activity.getStations()
 
         if (stations != null) {
-            this._mapReady.setStations(stations)
+            this._mapReady?.setStations(stations)
         }
     }
 

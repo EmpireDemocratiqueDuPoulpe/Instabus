@@ -31,14 +31,6 @@ class StationsList : Fragment(), NeedStations {
 
         if (sFM != null) {
             this._stationsAdapter = StationAdapter(sFM)
-
-            // Get data if it's already fetched
-            this._activity = activity as MainActivity
-            val stations: List<Station>? = this._activity.getStations()
-
-            if (stations != null) {
-                this._stationsAdapter!!.setData(stations)
-            }
         }
     }
 
@@ -55,6 +47,14 @@ class StationsList : Fragment(), NeedStations {
         if(this._stationsRecyclerView != null){
             this._stationsRecyclerView!!.layoutManager = LinearLayoutManager(context)
             this._stationsRecyclerView!!.adapter = this._stationsAdapter
+
+            // Get data if it's already fetched
+            this._activity = activity as MainActivity
+            val stations: List<Station>? = this._activity.getStations()
+
+            if (stations != null) {
+                this._stationsAdapter!!.setData(stations)
+            }
         }
 
         return v
