@@ -3,6 +3,7 @@ package com.eddp.busapp
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.eddp.busapp.data.*
@@ -55,6 +57,8 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        res = resources
+
         // Init view
         this._bottomNavBar = BottomNavBar(this)
 
@@ -63,6 +67,8 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         this._viewPager.adapter = this._viewPagerAdapter
         this._viewPager.registerOnPageChangeCallback(MainViewPagerCallback(this._bottomNavBar))
         this._viewPager.setPageTransformer(ZoomOutPageTransformer())
+
+        setViewPager2Sensitivity(4)
 
         // Get data
         this._webServiceLink = WebServiceLink.getInstance(this)
@@ -89,6 +95,18 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         } else {
             this._viewPager.currentItem = this._viewPager.currentItem - 1
         }
+    }
+
+    private fun setViewPager2Sensitivity(multiplier: Int) {
+        val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+        recyclerViewField.isAccessible = true
+        val recyclerView = recyclerViewField.get(this._viewPager) as RecyclerView
+
+        val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+        touchSlopField.isAccessible = true
+
+        val touchSlop = touchSlopField.get(recyclerView) as Int
+        touchSlopField.set(recyclerView, touchSlop * multiplier)
     }
 
     // Async data
@@ -162,6 +180,11 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     }
 
     companion object {
+        // Resources
+        private var res: Resources? = null
+
+        fun getResources() : Resources? = res
+
         // Permissions
         fun allPermissionGranted(context: Context, requiredPermissions: List<String>) : Boolean {
             return requiredPermissions.all {
