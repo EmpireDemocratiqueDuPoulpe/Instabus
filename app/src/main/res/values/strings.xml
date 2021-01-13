@@ -22,6 +22,9 @@
     <string name="station_name_placeholder">Station name</string>
     <string name="station_street_name_placeholder">Address</string>
     <string name="station_city_placeholder">City</string>
+    <string name="station_concat_name">Station n°%1$d</string>
+    <string name="station_concat_buses">Buses: %1$s</string>
+    <string name="station_concat_distance">Distance: %1$s</string>
 
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_home">Home</string>

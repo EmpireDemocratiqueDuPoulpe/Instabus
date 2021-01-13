@@ -104,8 +104,6 @@ class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReady
             val marker = this._map?.addMarker(MarkerOptions()
                 .position(LatLng(station.latitude!!.toDouble(), station.longitude!!.toDouble()))
                 .icon(this._maker)
-                .title("Station n°" + station.id)
-                .snippet("Buses: " + station.buses + "\n" + "Distance: " + station.distance)
             )
 
             if (marker != null) {
@@ -143,9 +141,9 @@ class StationInfoWindow(context: Context, m: MapReady) : GoogleMap.InfoWindowAda
         val station: Station? = this._map.getStationByMarker(marker)
 
         if (station != null) {
-            this._window.findViewById<TextView>(R.id.marker_title).text = "Station n°" + station.id
-            this._window.findViewById<TextView>(R.id.marker_buses).text = "Buses: " + station.buses
-            this._window.findViewById<TextView>(R.id.marker_distance).text = "Distance: " + station.distance
+            this._window.findViewById<TextView>(R.id.marker_title).text = station.concatName
+            this._window.findViewById<TextView>(R.id.marker_buses).text = station.concatBuses
+            this._window.findViewById<TextView>(R.id.marker_distance).text = station.concatDistance
         }
     }
 }

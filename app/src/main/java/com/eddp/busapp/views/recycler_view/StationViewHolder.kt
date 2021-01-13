@@ -1,6 +1,5 @@
 package com.eddp.busapp.views.recycler_view
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,7 @@ class StationViewHolder(sfM: FragmentManager, view: View) : RecyclerView.ViewHol
     private val _viewStation: ImageButton = view.findViewById(R.id.view_station_btn)
 
     fun bind(station: Station) {
-        this._name.text = "Station n°${station.id}"
+        this._name.text = station.concatName
         this._streetName.text = station.streetName
         this._city.text = station.city
         this._viewStation.setOnClickListener(ViewStationClickListener(this._sfM, station.id))

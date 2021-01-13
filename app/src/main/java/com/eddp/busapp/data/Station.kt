@@ -1,4 +1,6 @@
 package com.eddp.busapp.data
+import com.eddp.busapp.MainActivity
+import com.eddp.busapp.R
 import com.squareup.moshi.Json
 import retrofit2.Call
 import retrofit2.http.GET
@@ -28,4 +30,8 @@ data class Station(
     @Json(name = "furniture") var furniture: String?,
     @Json(name = "buses") var buses: String?,
     @Json(name = "distance") var distance: Float,
-)
+) {
+    var concatName: String = String.format(MainActivity.getResources()?.getString(R.string.station_concat_name) ?: "", id)
+    var concatBuses: String = String.format(MainActivity.getResources()?.getString(R.string.station_concat_buses) ?: "", buses)
+    var concatDistance: String = String.format(MainActivity.getResources()?.getString(R.string.station_concat_distance) ?: "", distance)
+}
