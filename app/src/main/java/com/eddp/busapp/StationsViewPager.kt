@@ -21,6 +21,7 @@ class StationsViewPager : Fragment(), AsyncDataObserver {
     private lateinit var _viewPagerAdapter: StationsViewPagerAdapter
     private lateinit var _tabsLayout: TabLayout
 
+    // Views
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
