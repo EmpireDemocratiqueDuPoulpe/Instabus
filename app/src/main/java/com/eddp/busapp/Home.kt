@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.data.Post
-import com.eddp.busapp.data.Station
 import com.eddp.busapp.interfaces.AsyncDataObserver
 import com.eddp.busapp.views.recycler_view.PostAdapter
-import com.eddp.busapp.views.recycler_view.StationAdapter
 
 class Home : Fragment(), AsyncDataObserver {
     private lateinit var _activity: MainActivity
@@ -19,6 +17,7 @@ class Home : Fragment(), AsyncDataObserver {
     private var _postRecyclerView: RecyclerView? = null
     private lateinit var _postAdapter: PostAdapter
 
+    // Views
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,7 +26,7 @@ class Home : Fragment(), AsyncDataObserver {
         this._activity.registerReceiver(this)
 
         // Adapter
-        this._postAdapter = PostAdapter(this._activity)
+        this._postAdapter = PostAdapter()
     }
 
     override fun onCreateView(
@@ -35,16 +34,22 @@ class Home : Fragment(), AsyncDataObserver {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
 
-        this._postRecyclerView = v.findViewById(R.id.post_recycler_view)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fillPostRecyclerView(view)
+    }
+
+    private fun fillPostRecyclerView(view: View) {
+        this._postRecyclerView = view.findViewById(R.id.post_recycler_view)
 
         if (this._postRecyclerView != null) {
             this._postRecyclerView!!.layoutManager = LinearLayoutManager(context)
             this._postRecyclerView!!.adapter = this._postAdapter
         }
-
-        return v
     }
 
     // Observer

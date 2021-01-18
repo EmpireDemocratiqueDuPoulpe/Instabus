@@ -15,7 +15,6 @@ import com.eddp.busapp.views.MapReady
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 
-
 class StationsMap : Fragment(), NeedStations {
     private lateinit var _activity: MainActivity
 

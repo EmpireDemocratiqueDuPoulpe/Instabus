@@ -3,7 +3,7 @@
 
     <!-- Main activity -->
     <string name="get_stations_error">Could not get bus stations. Try again later.</string>
-    <string name="perms_refused_positive_btn">Ok</string>
+    <string name="perms_refused_positive_btn">OK</string>
 
     <!-- Post -->
     <string name="post_title_placeholder">Post title</string>
@@ -22,9 +22,12 @@
     <string name="station_name_placeholder">Station name</string>
     <string name="station_street_name_placeholder">Address</string>
     <string name="station_city_placeholder">City</string>
+    <string name="station_buses_placeholder">Buses: E12 - X89 - P69</string>
+    <string name="station_distance_placeholder">Distance: 0m</string>
     <string name="station_concat_name">Station n°%1$d</string>
     <string name="station_concat_buses">Buses: %1$s</string>
     <string name="station_concat_distance">Distance: %1$s</string>
+    <string name="map_info_window_arrow_alt">arrow img</string>
 
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_home">Home</string>

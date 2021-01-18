@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class StationsViewPager : Fragment(), AsyncDataObserver {
     private lateinit var _activity: MainActivity
 
-    private lateinit var _viewPager2: ViewPager2
+    private lateinit var _viewPager: ViewPager2
     private lateinit var _viewPagerAdapter: StationsViewPagerAdapter
     private lateinit var _tabsLayout: TabLayout
 
@@ -33,23 +33,30 @@ class StationsViewPager : Fragment(), AsyncDataObserver {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val v: View = inflater.inflate(R.layout.fragment_stations_view_pager, container, false)
+    ): View? {
+        return inflater.inflate(R.layout.fragment_stations_view_pager, container, false)
+    }
 
-        // View Pager
-        this._viewPager2 = v.findViewById(R.id.stations_view_pager)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initViewPager(view)
+        initTabs(view)
+    }
+
+    private fun initViewPager(view: View) {
+        this._viewPager = view.findViewById(R.id.stations_view_pager)
         this._viewPagerAdapter = StationsViewPagerAdapter(activity as AppCompatActivity)
-        this._viewPager2.adapter = this._viewPagerAdapter
-        this._viewPager2.isUserInputEnabled = false
+        this._viewPager.adapter = this._viewPagerAdapter
+        this._viewPager.isUserInputEnabled = false
+    }
 
-        // Tabs
-        this._tabsLayout = v.findViewById(R.id.stations_tabs)
+    private fun initTabs(view: View) {
+        this._tabsLayout = view.findViewById(R.id.stations_tabs)
 
-        TabLayoutMediator(this._tabsLayout, this._viewPager2) { tab, position ->
+        TabLayoutMediator(this._tabsLayout, this._viewPager) { tab, position ->
             tab.text = this._viewPagerAdapter.getNameAt(position)
         }.attach()
-
-        return v
     }
 
     // Observer

@@ -1,4 +1,5 @@
 package com.eddp.busapp.data
+
 import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
 import com.squareup.moshi.Json

@@ -1,11 +1,11 @@
 package com.eddp.busapp
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.data.Station
@@ -27,10 +27,10 @@ class StationsList : Fragment(), NeedStations {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sFM: FragmentManager? = activity?.supportFragmentManager
+        val activity: Activity? = activity
 
-        if (sFM != null) {
-            this._stationsAdapter = StationAdapter(sFM)
+        if (activity is MainActivity) {
+            this._stationsAdapter = StationAdapter(activity)
         }
     }
 
@@ -39,12 +39,19 @@ class StationsList : Fragment(), NeedStations {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_stations_list, container, false)
+        return inflater.inflate(R.layout.fragment_stations_list, container, false)
+    }
 
-        // Get and init the recycler view
-        this._stationsRecyclerView = v.findViewById(R.id.stations_recycler_view)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        if(this._stationsRecyclerView != null){
+        fillStationsRecyclerView(view)
+    }
+
+    private fun fillStationsRecyclerView(view: View) {
+        this._stationsRecyclerView = view.findViewById(R.id.stations_recycler_view)
+
+        if (this._stationsRecyclerView != null) {
             this._stationsRecyclerView!!.layoutManager = LinearLayoutManager(context)
             this._stationsRecyclerView!!.adapter = this._stationsAdapter
 
@@ -56,7 +63,5 @@ class StationsList : Fragment(), NeedStations {
                 this._stationsAdapter!!.setData(stations)
             }
         }
-
-        return v
     }
 }

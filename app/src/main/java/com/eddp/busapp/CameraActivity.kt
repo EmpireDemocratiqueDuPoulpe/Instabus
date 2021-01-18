@@ -1,19 +1,11 @@
 package com.eddp.busapp
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
-import com.eddp.busapp.camera.CameraHandler
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var _requestPermissionLauncher: ActivityResultLauncher<Array<String>>

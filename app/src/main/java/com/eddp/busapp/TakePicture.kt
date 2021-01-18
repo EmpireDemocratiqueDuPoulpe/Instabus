@@ -17,21 +17,28 @@ class TakePicture : Fragment() {
     private var _cameraPreviewAPI16: FrameLayout? = null
     private lateinit var _cameraButton: ImageButton
 
+    // Views
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_take_picture, container, false)
-
-        // Get camera component
-        _cameraPreviewAPI16 = if (!CameraHandler.canUseCameraX())
-            v.findViewById(R.id.cam_preview) else null
-
-        this._cameraButton = v.findViewById(R.id.cam_capture_button)
-
-        return v
+        return inflater.inflate(R.layout.fragment_take_picture, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initCamPreview(view)
+    }
+
+    private fun initCamPreview(view: View) {
+        this._cameraPreviewAPI16 = if (!CameraHandler.canUseCameraX())
+            view.findViewById(R.id.cam_preview) else null
+
+        this._cameraButton = view.findViewById(R.id.cam_capture_button)
+    }
+
+    // Resume / Pause
     override fun onResume() {
         super.onResume()
         this._context = activity as Context

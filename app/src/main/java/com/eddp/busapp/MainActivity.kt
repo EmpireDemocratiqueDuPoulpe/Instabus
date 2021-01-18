@@ -12,7 +12,10 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
@@ -23,6 +26,7 @@ import com.eddp.busapp.data.*
 import com.eddp.busapp.interfaces.AsyncDataObservable
 import com.eddp.busapp.interfaces.AsyncDataObserver
 import com.eddp.busapp.interfaces.WebServiceReceiver
+import com.eddp.busapp.views.StationNavDrawer
 import com.eddp.busapp.views.ZoomOutPageTransformer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.moshi.Moshi
@@ -36,6 +40,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceiver {
     private val _observers: MutableList<AsyncDataObserver?> = ArrayList()
 
+    private lateinit var _toolbar: Toolbar
+    private lateinit var _drawerLayout: DrawerLayout
+    private lateinit var _drawer: StationNavDrawer
     private lateinit var _viewPager: ViewPager2
     private lateinit var _viewPagerAdapter: MainViewPagerAdapter
     private lateinit var _bottomNavBar: BottomNavBar
@@ -60,15 +67,9 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         res = resources
 
         // Init view
-        this._bottomNavBar = BottomNavBar(this)
-
-        this._viewPager = findViewById(R.id.main_view_pager)
-        this._viewPagerAdapter = MainViewPagerAdapter(this)
-        this._viewPager.adapter = this._viewPagerAdapter
-        this._viewPager.registerOnPageChangeCallback(MainViewPagerCallback(this._bottomNavBar))
-        this._viewPager.setPageTransformer(ZoomOutPageTransformer())
-
-        setViewPager2Sensitivity(4)
+        initDrawer()
+        initBottomNavBar()
+        initViewPager()
 
         // Get data
         this._webServiceLink = WebServiceLink.getInstance(this)
@@ -88,7 +89,40 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         }
     }
 
+    private fun initDrawer() {
+        this._toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(this._toolbar)
+
+        this._drawerLayout = findViewById(R.id.drawer_layout)
+        this._drawer = findViewById(R.id.drawer)
+    }
+
+    private fun initBottomNavBar() {
+        this._bottomNavBar = BottomNavBar(this)
+    }
+
+    private fun initViewPager() {
+        this._viewPager = findViewById(R.id.main_view_pager)
+        this._viewPagerAdapter = MainViewPagerAdapter(this)
+        this._viewPager.adapter = this._viewPagerAdapter
+        this._viewPager.registerOnPageChangeCallback(MainViewPagerCallback(this._bottomNavBar))
+        this._viewPager.setPageTransformer(ZoomOutPageTransformer())
+
+        setViewPager2Sensitivity(4)
+    }
+
     // Navigation
+    fun openStationDrawer(station: Station) {
+        this._drawer.setStation(station)
+        this._drawerLayout.openDrawer(GravityCompat.END, true)
+    }
+
+    fun closeStationDrawer(item: UserPic) {
+        this._drawerLayout.closeDrawer(GravityCompat.END)
+
+        // Pressed user pic
+    }
+
     override fun onBackPressed() {
         if (this._viewPager.currentItem == 0) {
             super.onBackPressed()
@@ -97,7 +131,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         }
     }
 
-    private fun setViewPager2Sensitivity(multiplier: Int) {
+    fun setViewPager2Sensitivity(multiplier: Int) {
         val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
         recyclerViewField.isAccessible = true
         val recyclerView = recyclerViewField.get(this._viewPager) as RecyclerView

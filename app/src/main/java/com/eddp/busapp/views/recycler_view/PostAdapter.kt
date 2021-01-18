@@ -1,19 +1,20 @@
 package com.eddp.busapp.views.recycler_view
 
-import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.eddp.busapp.R
 import com.eddp.busapp.data.Post
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PostAdapter(context: Context) : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback()) {
-    private val _context = context
-
+class PostAdapter : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback()) {
     private val _adapterCoroutine = CoroutineScope(Dispatchers.Default)
 
     // Setters
@@ -27,7 +28,7 @@ class PostAdapter(context: Context) : ListAdapter<Post, RecyclerView.ViewHolder>
 
     // Views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PostViewHolder.from(this._context, parent)
+        return PostViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -48,5 +49,28 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
 
     override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem == newItem
+    }
+}
+
+class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private val _v = view
+
+    fun bind(post: Post) {
+        this._v.findViewById<TextView>(R.id.post_title).text = post.title
+        this._v.findViewById<TextView>(R.id.post_creation_date).text = post.creation_timestamp
+        // Todo: Set station img
+        this._v.findViewById<TextView>(R.id.post_author).text = post.username
+        this._v.findViewById<TextView>(R.id.post_likes_count).text = post.likes.toString()
+        // Todo: Set ViewStation event
+    }
+
+    companion object {
+        fun from(parent: ViewGroup) : PostViewHolder {
+            val v: View = LayoutInflater
+                    .from(parent.context)
+                    .inflate(R.layout.home_recycler_view_item, parent, false)
+
+            return PostViewHolder(v)
+        }
     }
 }
