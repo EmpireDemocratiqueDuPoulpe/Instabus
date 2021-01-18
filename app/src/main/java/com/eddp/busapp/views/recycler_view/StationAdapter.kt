@@ -3,6 +3,7 @@ package com.eddp.busapp.views.recycler_view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -62,7 +63,7 @@ class StationViewHolder(activity: MainActivity, view: View) : RecyclerView.ViewH
         this._v.findViewById<TextView>(R.id.station_street_name).text = station.streetName
         this._v.findViewById<TextView>(R.id.station_city).text = station.city
 
-        this._v.findViewById<TextView>(R.id.view_station_btn).setOnClickListener {
+        this._v.findViewById<ImageButton>(R.id.view_station_btn).setOnClickListener {
             this._activity.openStationDrawer(station)
         }
     }

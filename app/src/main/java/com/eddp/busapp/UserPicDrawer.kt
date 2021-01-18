@@ -35,7 +35,7 @@ class UserPicDrawer : Fragment() {
     }
 
     private fun fillUserPics(view: View) {
-        this._userPicRecyclerView = view.findViewById(R.id.user_pic_recycler_view)
+        this._userPicRecyclerView = view.findViewById(R.id.drawer_user_pic_recycler_view)
         this._userPicRecyclerView?.layoutManager = GridLayoutManager(context, 2)
         this._userPicRecyclerView?.addItemDecoration(
                 GridSpacingItemDecoration(2, 40, true)
