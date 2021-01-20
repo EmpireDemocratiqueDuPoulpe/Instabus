@@ -26,7 +26,7 @@ class Home : Fragment(), AsyncDataObserver {
         this._activity.registerReceiver(this)
 
         // Adapter
-        this._postAdapter = PostAdapter()
+        this._postAdapter = PostAdapter(this._activity)
     }
 
     override fun onCreateView(

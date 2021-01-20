@@ -30,6 +30,7 @@ class StationAdapter(activity: MainActivity) : ListAdapter<Station, RecyclerView
         }
     }
 
+    // Views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return StationViewHolder.from(this._activity, parent)
     }

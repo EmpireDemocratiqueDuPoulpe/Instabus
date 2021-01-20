@@ -3,10 +3,13 @@ package com.eddp.busapp.views.recycler_view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
 import com.eddp.busapp.data.Post
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +17,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PostAdapter : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback()) {
+class PostAdapter(activity: MainActivity) : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback()) {
+    private val _activity = activity
+
     private val _adapterCoroutine = CoroutineScope(Dispatchers.Default)
 
     // Setters
@@ -28,7 +33,7 @@ class PostAdapter : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback(
 
     // Views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PostViewHolder.from(parent)
+        return PostViewHolder.from(this._activity, parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -52,7 +57,8 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     }
 }
 
-class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class PostViewHolder(activity: MainActivity, view: View) : RecyclerView.ViewHolder(view) {
+    private val _activity = activity
     private val _v = view
 
     fun bind(post: Post) {
@@ -61,16 +67,19 @@ class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Todo: Set station img
         this._v.findViewById<TextView>(R.id.post_author).text = post.username
         this._v.findViewById<TextView>(R.id.post_likes_count).text = post.likes.toString()
-        // Todo: Set ViewStation event
+
+        this._v.findViewById<Button>(R.id.post_view_station_btn).setOnClickListener {
+            //this._activity.openStationDrawer(post.station_id)
+        }
     }
 
     companion object {
-        fun from(parent: ViewGroup) : PostViewHolder {
+        fun from(activity: MainActivity, parent: ViewGroup) : PostViewHolder {
             val v: View = LayoutInflater
                     .from(parent.context)
                     .inflate(R.layout.home_recycler_view_item, parent, false)
 
-            return PostViewHolder(v)
+            return PostViewHolder(activity, v)
         }
     }
 }
