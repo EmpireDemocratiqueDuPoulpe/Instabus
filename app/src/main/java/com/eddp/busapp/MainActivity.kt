@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         initViewPager()
 
         // Get data
-        this._webServiceLink = WebServiceLink.getInstance(this)
+        this._webServiceLink = WebServiceLink(this)
         this._webServiceLink?.getPosts()
 
         getStationsFromAPI()
@@ -208,9 +208,13 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     }
 
     // Web Service
-    override fun setPosts(posts: List<Post>?) {
-        this._posts = posts
-        notifyGet()
+    override fun setData(data: Any?) {
+        if (data is List<*>) {
+            if (data.any { it is Post }) {
+                this._posts = data as List<Post>?
+                notifyGet()
+            }
+        }
     }
 
     companion object {

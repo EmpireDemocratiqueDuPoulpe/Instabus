@@ -12,7 +12,9 @@ class StationNavDrawer : NavigationView {
     constructor(context: Context, attr: AttributeSet) : super(context, attr)
 
     fun setStation(station: Station) {
-        findViewById<TextView>(R.id.drawer_station_name).text = station.concatName
+        val title: TextView = findViewById(R.id.drawer_station_name)
+        title.text = station.concatName
+        title.tag = station.id
         findViewById<TextView>(R.id.drawer_station_address).text = station.streetName
         findViewById<TextView>(R.id.drawer_station_city).text = station.city
     }
