@@ -1,7 +1,9 @@
 package com.eddp.busapp
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +11,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import com.eddp.busapp.camera.CameraHandler
+import com.eddp.busapp.interfaces.PictureReceiver
 
-class TakePicture : Fragment() {
+class TakePicture : Fragment(), PictureReceiver {
     private var _context: Context? = null
 
     private var _camera: CameraHandler? = null
@@ -45,6 +48,7 @@ class TakePicture : Fragment() {
 
         if (this._context != null) {
             this._camera = CameraHandler.getInstance(this._context!!)
+            this._camera?.registerReceiver(this)
 
             if (MainActivity.allPermissionGranted(this._context!!, CameraActivity.REQUIRED_PERMISSIONS)) {
                 this._camera?.startCamera()
@@ -61,5 +65,20 @@ class TakePicture : Fragment() {
     override fun onPause() {
         super.onPause()
         this._camera?.destroy()
+    }
+
+    // Picture receiver
+    override fun onPictureSaved(path: Uri) {
+        val fragment = AddPicture()
+        val args = Bundle()
+
+        args.putString("img_path", path.toString())
+        fragment.arguments = args
+
+        activity?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.cam_nav_host_fragment, fragment)
+            ?.addToBackStack(null)
+            ?.commit()
     }
 }

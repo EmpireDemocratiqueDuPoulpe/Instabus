@@ -20,6 +20,9 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.eddp.busapp.CameraActivity
 import com.eddp.busapp.R
+import com.eddp.busapp.interfaces.AsyncDataObserver
+import com.eddp.busapp.interfaces.PictureReceiver
+import com.eddp.busapp.interfaces.PictureTaker
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -30,7 +33,8 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class CameraHandler private constructor(context: Context) {
+class CameraHandler private constructor(context: Context) : PictureTaker {
+    private val _observers: MutableList<PictureReceiver?> = ArrayList()
     private var _context = context
 
     private var _outputDir: File?
@@ -195,6 +199,9 @@ class CameraHandler private constructor(context: Context) {
                         errMsg,
                         Toast.LENGTH_SHORT
                     ).show()
+                } else {
+                    val savedUri = Uri.fromFile(photoFile)
+                    notifySave(savedUri)
                 }
             }
         })
@@ -216,6 +223,7 @@ class CameraHandler private constructor(context: Context) {
                 // TODO: Remove if the file isn't saved on the phone
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
+                    notifySave(savedUri)
                     Log.d("Camera", "Photo saved in: $savedUri")
                 }
 
@@ -231,6 +239,25 @@ class CameraHandler private constructor(context: Context) {
     fun destroy() {
         this._executor.shutdown()
         instance = null
+    }
+
+    // Picture taker
+    override fun registerReceiver(pictureReceiver: PictureReceiver) {
+        if (!this._observers.contains(pictureReceiver)) {
+            this._observers.add(pictureReceiver)
+        }
+    }
+
+    override fun unregisterReceiver(pictureReceiver: PictureReceiver) {
+        if (!this._observers.contains(pictureReceiver)) {
+            this._observers.remove(pictureReceiver)
+        }
+    }
+
+    override fun notifySave(path: Uri) {
+        for (observer in this._observers) {
+            observer?.onPictureSaved(path)
+        }
     }
 
     companion object {
