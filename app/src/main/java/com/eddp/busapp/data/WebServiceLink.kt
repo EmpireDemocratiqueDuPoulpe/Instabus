@@ -17,7 +17,7 @@ import java.io.File
 private const val WEBSERVICE_ADDRESS = "http://90.45.23.115:8080/"
 private const val WEBSERVICE_GET_POSTS = "getPost.php?"
 private const val WEBSERVICE_ADD_POSTS = "addPost.php"
-private const val WEBSERVICE_GET_USERPICS = "getUserPic.php?"
+private const val WEBSERVICE_GET_USERPICS = "getUserPics.php?"
 private const val WEBSERVICE_DEFAULT_USER = "BusFucker"
 
 class WebServiceLink constructor(receiver: WebServiceReceiver) {
@@ -37,7 +37,7 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
                 if (!response.isSuccessful) {
                     Log.e("WebService", "Error code $statusCode while fetching posts")
                 } else {
-                    _receiver.setData(posts)
+                    _receiver.setPosts(posts)
                 }
             }
 
@@ -82,6 +82,7 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
 
     // User pics
     fun getUserPics(user_id: Long, station_id: Long = Long.MIN_VALUE) {
+        Log.d("PROUT", "user_id: $user_id")
         val call = if (station_id != Long.MIN_VALUE)
             service.getUserPics(user_id, station_id) else
             service.getUserPics(user_id)
@@ -92,9 +93,9 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
                 val userPics: List<UserPic>? = response.body()
 
                 if (!response.isSuccessful) {
-                    Log.e("WebService", "Error code $statusCode while fetching posts")
+                    Log.e("WebService", "Error code $statusCode while fetching user pics")
                 } else {
-                    _receiver.setData(userPics)
+                    _receiver.setUserPics(userPics)
                 }
             }
 

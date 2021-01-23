@@ -117,10 +117,8 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         this._drawerLayout.openDrawer(GravityCompat.END, true)
     }
 
-    fun closeStationDrawer(item: UserPic) {
+    fun closeStationDrawer() {
         this._drawerLayout.closeDrawer(GravityCompat.END)
-
-        // Pressed user pic
     }
 
     override fun onBackPressed() {
@@ -208,13 +206,9 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     }
 
     // Web Service
-    override fun setData(data: Any?) {
-        if (data is List<*>) {
-            if (data.any { it is Post }) {
-                this._posts = data as List<Post>?
-                notifyGet()
-            }
-        }
+    override fun setPosts(posts: List<Post>?) {
+        this._posts = posts
+        notifyGet()
     }
 
     companion object {
