@@ -5,9 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +17,6 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.eddp.busapp.data.WebServiceLink
 import com.eddp.busapp.interfaces.WebServiceReceiver
-import net.gotev.uploadservice.MultipartUploadRequest
-import java.util.*
 
 class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
     private var _webServiceLink: WebServiceLink? = null
@@ -81,7 +77,12 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
         this._progressBar.visibility = View.VISIBLE
 
         // Upload
-        this._webServiceLink?.addPost(1, 1498, postTitle, this._imgPath)
+        this._webServiceLink?.addPost(
+                1,
+                (this._context as CameraActivity).getStationId(),
+                postTitle,
+                this._imgPath
+        )
     }
 
     override fun addSuccessful(success: Boolean) {
@@ -105,12 +106,4 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
     private fun returnToMainActivity() {
         startActivity(Intent(this._context, MainActivity::class.java))
     }
-
-    //private fun uploadPost(title: String, imgPath: Uri) {
-    //    try {
-    //        val uploadId: String = UUID.randomUUID().toString()
-//
-//
-    //    }
-    //}
 }
