@@ -19,14 +19,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class UserPicDrawer : Fragment(), WebServiceReceiver {
     private var _context: Context? = null
-    private var _webServiceLink: WebServiceLink? = null
+    //private var _webServiceLink: WebServiceLink? = null
 
     private var _stationId: Long = Long.MIN_VALUE
 
-    private var _userPicRecyclerView: RecyclerView? = null
-    private val _userPicAdapter = UserPicAdapter { position, item ->
-        onItemClick(position, item)
-    }
+    //private var _userPicRecyclerView: RecyclerView? = null
+    //private val _userPicAdapter = UserPicAdapter { position, item ->
+    //    //onItemClick(position, item)
+    //}
 
     // Views
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,23 +39,23 @@ class UserPicDrawer : Fragment(), WebServiceReceiver {
         this._context = activity
         this._stationId = view.findViewById<TextView>(R.id.drawer_station_name).tag.toString().toLong()
 
-        fillUserPics(view)
+        //fillUserPics(view)
         initAddPost(view)
     }
 
-    private fun fillUserPics(view: View) {
-        this._userPicRecyclerView = view.findViewById(R.id.drawer_user_pic_recycler_view)
-        this._userPicRecyclerView?.layoutManager = GridLayoutManager(context, 2)
-        this._userPicRecyclerView?.addItemDecoration(
-                GridSpacingItemDecoration(2, 40, true)
-        )
-
-        this._userPicRecyclerView?.adapter = this._userPicAdapter
-
-        // Get data
-        this._webServiceLink = WebServiceLink(this)
-        this._webServiceLink?.getUserPics(1, this._stationId)
-    }
+    //private fun fillUserPics(view: View) {
+    //    this._userPicRecyclerView = view.findViewById(R.id.drawer_user_pic_recycler_view)
+    //    this._userPicRecyclerView?.layoutManager = GridLayoutManager(context, 2)
+    //    this._userPicRecyclerView?.addItemDecoration(
+    //            GridSpacingItemDecoration(2, 40, true)
+    //    )
+//
+    //    this._userPicRecyclerView?.adapter = this._userPicAdapter
+//
+    //    // Get data
+    //    this._webServiceLink = WebServiceLink(this)
+    //    this._webServiceLink?.getUserPics(1, this._stationId)
+    //}
 
     private fun initAddPost(view: View) {
         view.findViewById<FloatingActionButton>(R.id.drawer_take_picture_btn).setOnClickListener {
@@ -67,15 +67,15 @@ class UserPicDrawer : Fragment(), WebServiceReceiver {
     }
 
     // Events
-    private fun onItemClick(position: Int, item: UserPic) {
-        (activity as MainActivity).closeStationDrawer(item)
-    }
+    //private fun onItemClick(position: Int, item: UserPic) {
+    //    (activity as MainActivity).closeStationDrawer(item)
+    //}
 
-    override fun setData(data: Any?) {
-        if (data is List<*>) {
-            if (data.any { it is UserPic }) {
-                this._userPicAdapter.setData(data as MutableList<UserPic>)
-            }
-        }
-    }
+    //override fun setData(data: Any?) {
+    //    if (data is List<*>) {
+    //        if (data.any { it is UserPic }) {
+    //            this._userPicAdapter.setData(data as MutableList<UserPic>)
+    //        }
+    //    }
+    //}
 }

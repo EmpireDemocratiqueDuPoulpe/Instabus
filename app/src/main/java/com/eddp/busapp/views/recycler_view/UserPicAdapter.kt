@@ -19,7 +19,7 @@ class UserPicAdapter(private val onItemClick: ((position: Int, item: UserPic) ->
     private val _adapterCoroutine = CoroutineScope(Dispatchers.Default)
 
     // Setters
-    fun setData(list: MutableList<UserPic>) {
+    fun setData(list: List<UserPic>) {
         this._adapterCoroutine.launch {
             withContext(Dispatchers.Main) {
                 submitList(list)
