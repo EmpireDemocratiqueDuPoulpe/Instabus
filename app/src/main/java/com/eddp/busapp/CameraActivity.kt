@@ -8,11 +8,24 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 
 class CameraActivity : AppCompatActivity() {
+    private var _stationId: Long = Long.MIN_VALUE
+
     private lateinit var _requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
+    // Getters
+    fun getStationId() : Long = this._stationId
+
+    // Views
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+
+        // Get station id
+        val id = intent.extras?.getLong("station_id")
+
+        if (id != null) {
+            this._stationId = id
+        }
 
         // Ask for permissions
         this._requestPermissionLauncher =

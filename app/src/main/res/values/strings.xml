@@ -28,6 +28,7 @@
     <string name="station_concat_buses">Buses: %1$s</string>
     <string name="station_concat_distance">Distance: %1$s</string>
     <string name="map_info_window_arrow_alt">arrow img</string>
+    <string name="station_add_post_alt">+</string>
 
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_home">Home</string>
