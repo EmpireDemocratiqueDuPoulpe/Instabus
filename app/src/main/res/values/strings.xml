@@ -13,6 +13,7 @@
     <string name="post_like_icon_alt">Like icon</string>
     <string name="post_likes_count_placeholder">0</string>
     <string name="post_view_station_btn">View station</string>
+    <string name="post_delete_btn_alt">Delete</string>
 
     <!-- Station -->
     <string name="tabs_stations_map">Map</string>

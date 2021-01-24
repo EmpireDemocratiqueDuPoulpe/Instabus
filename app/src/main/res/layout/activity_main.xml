@@ -47,12 +47,14 @@
         android:id="@+id/drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
         android:layout_gravity="end">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/side_nav_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="false"
             android:layout_gravity="start"
             android:name="com.eddp.busapp.UserPicDrawer"
             tools:layout="@layout/station_drawer"/>

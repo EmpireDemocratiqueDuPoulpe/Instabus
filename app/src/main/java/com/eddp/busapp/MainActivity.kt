@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -95,6 +96,17 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
 
         this._drawerLayout = findViewById(R.id.drawer_layout)
         this._drawer = findViewById(R.id.drawer)
+        this._drawerLayout.addDrawerListener (object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) { }
+
+            override fun onDrawerOpened(drawerView: View) { }
+
+            override fun onDrawerClosed(drawerView: View) {
+                closeStationDrawer()
+            }
+
+            override fun onDrawerStateChanged(newState: Int) { }
+        })
     }
 
     private fun initBottomNavBar() {
@@ -119,6 +131,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
 
     fun closeStationDrawer() {
         this._drawerLayout.closeDrawer(GravityCompat.END)
+        this._drawer.emptyUserPics()
     }
 
     override fun onBackPressed() {
