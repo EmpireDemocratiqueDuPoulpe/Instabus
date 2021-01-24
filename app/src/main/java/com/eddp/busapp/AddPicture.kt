@@ -1,12 +1,13 @@
 package com.eddp.busapp
 
+import android.R.string
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.eddp.busapp.data.WebServiceLink
 import com.eddp.busapp.interfaces.WebServiceReceiver
+import java.io.File
+import kotlin.math.log
+
 
 class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
     private var _webServiceLink: WebServiceLink? = null
@@ -28,8 +33,10 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
     private lateinit var _progressBar: ProgressBar
 
     // Views
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_add_picture, container, false)
     }
 
@@ -78,15 +85,21 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
 
         // Upload
         this._webServiceLink?.addPost(
-                1,
-                (this._context as CameraActivity).getStationId(),
-                postTitle,
-                this._imgPath
+            1,
+            (this._context as CameraActivity).getStationId(),
+            postTitle,
+            this._imgPath
         )
     }
 
     override fun addSuccessful(success: Boolean) {
         super.addSuccessful(success)
+
+        // Delete the saved picture
+        if(this._imgPath.path != null){
+            val picture = File(this._imgPath.path!!)
+            if (picture.exists()) picture.delete()
+        }
 
         if (success) {
             returnToMainActivity()
