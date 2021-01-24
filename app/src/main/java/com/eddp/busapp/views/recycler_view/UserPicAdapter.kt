@@ -58,7 +58,6 @@ class UserPicViewHolder(view: View, private val onItemClick: ((position: Int, it
 
     fun bind(userPic: UserPic) {
         this._v.findViewById<TextView>(R.id.user_pic_title).text = userPic.title
-        this._v.findViewById<TextView>(R.id.user_pic_creation_date).text = userPic.creation_timestamp
         // Todo: Set station img
         this._v.findViewById<TextView>(R.id.user_pic_likes_count).text = userPic.likes.toString()
 

@@ -82,7 +82,6 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
 
     // User pics
     fun getUserPics(user_id: Long, station_id: Long = Long.MIN_VALUE) {
-        Log.d("PROUT", "user_id: $user_id")
         val call = if (station_id != Long.MIN_VALUE)
             service.getUserPics(user_id, station_id) else
             service.getUserPics(user_id)
