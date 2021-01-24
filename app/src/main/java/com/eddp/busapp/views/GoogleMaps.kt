@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
 import com.eddp.busapp.data.Station
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -76,7 +77,9 @@ class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReady
         // Move the map onto Barcelona
         val barcelona = LatLng(41.404377, 2.175471)
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(barcelona, 16f))
-        map?.setInfoWindowAdapter(StationInfoWindow(this._context, this))
+        val infoWindow = StationInfoWindow(this._context, this)
+        map?.setInfoWindowAdapter(infoWindow)
+        map?.setOnInfoWindowClickListener(infoWindow)
 
         // Update map style
         if (this._style != null) {
@@ -122,7 +125,8 @@ class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReady
     }
 }
 
-class StationInfoWindow(context: Context, m: MapReady) : GoogleMap.InfoWindowAdapter {
+class StationInfoWindow(context: Context, m: MapReady) : GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
+    private val _context = context
     private val _window: View = LayoutInflater.from(context).inflate(R.layout.station_info_window, null)
     private val _map = m
 
@@ -144,6 +148,18 @@ class StationInfoWindow(context: Context, m: MapReady) : GoogleMap.InfoWindowAda
             this._window.findViewById<TextView>(R.id.marker_title).text = station.concatName
             this._window.findViewById<TextView>(R.id.marker_buses).text = station.concatBuses
             this._window.findViewById<TextView>(R.id.marker_distance).text = station.concatDistance
+        }
+    }
+
+    override fun onInfoWindowClick(marker: Marker?) {
+        if(marker == null) return
+
+        val station: Station? = this._map.getStationByMarker(marker)
+
+        if(station != null){
+            if(this._context is MainActivity){
+                this._context.openStationDrawer(station)
+            }
         }
     }
 }

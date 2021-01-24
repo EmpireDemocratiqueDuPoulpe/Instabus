@@ -24,10 +24,12 @@
     <string name="station_city_placeholder">City</string>
     <string name="station_buses_placeholder">Buses: E12 - X89 - P69</string>
     <string name="station_distance_placeholder">Distance: 0m</string>
+    <string name="station_info">Click for more info</string>
     <string name="station_concat_name">Station n°%1$d</string>
     <string name="station_concat_buses">Buses: %1$s</string>
     <string name="station_concat_distance">Distance: %1$s</string>
     <string name="map_info_window_arrow_alt">arrow img</string>
+    <string name="map_info_window_info_alt">info img</string>
     <string name="station_add_post_alt">+</string>
 
     <!-- Bottom nav bar -->
