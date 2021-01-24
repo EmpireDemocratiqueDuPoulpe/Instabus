@@ -38,6 +38,7 @@
     <!-- Camera -->
     <string name="cam_button_alt">Camera button</string>
 
+    <string name="cam_actionbar_title">Add post</string>
     <string name="cam_permission_refused_title">Camera permission refused</string>
     <string name="cam_permission_refused">The app cannot use the camera if you refuse the permission. You can change it in Settings > App > %1$s</string>
     <string name="cam_start_error">Could not start the camera</string>
