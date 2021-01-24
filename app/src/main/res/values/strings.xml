@@ -66,4 +66,7 @@
     <string name="theme_entries_light">Light</string>
     <string name="theme_entries_dark">Dark</string>
     <string name="theme_entries_system_default">System default</string>
+
+    <!-- Toolbar -->
+    <string name="share_button">Share</string>
 </resources>

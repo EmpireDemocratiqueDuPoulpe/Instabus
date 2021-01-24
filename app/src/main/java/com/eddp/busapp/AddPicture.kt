@@ -3,10 +3,13 @@ package com.eddp.busapp
 import android.R.string
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +19,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.eddp.busapp.data.WebServiceLink
 import com.eddp.busapp.interfaces.WebServiceReceiver
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import kotlin.math.log
 
 
@@ -50,6 +56,7 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
 
         fillNewPictureInfo(view)
         getAddBtn(view)
+        initShareBtn(view)
     }
 
     private fun fillNewPictureInfo(view: View) {
@@ -61,6 +68,29 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
         this._addBtn = view.findViewById(R.id.add_picture_btn)
         this._addBtn.setOnClickListener(this)
         this._progressBar = view.findViewById(R.id.add_picture_loading)
+    }
+
+    private fun initShareBtn(view: View) {
+        (activity as CameraActivity).showShareBtn(true)
+        (activity as CameraActivity).getShareBtn().setOnClickListener {
+            //share image
+            try {
+                val intent = Intent(Intent.ACTION_SEND).setType("image/*")
+
+                val bitmap = view.findViewById<ImageView>(R.id.new_img_container).drawable.toBitmap()
+                val bytes = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+                val path = MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmap, "busapp_shared_tmp", null)
+                val uri = Uri.parse(path)
+
+                intent.putExtra(Intent.EXTRA_STREAM, uri)
+
+                startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     // On add picture listener

@@ -31,6 +31,7 @@ class TakePicture : Fragment(), PictureReceiver {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as CameraActivity).showShareBtn(false)
         initCamPreview(view)
     }
 
