@@ -18,7 +18,9 @@
         android:text="@string/post_title_placeholder"
         android:textStyle="bold"
         android:textSize="17sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:maxLines="2"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/post_creation_date"
