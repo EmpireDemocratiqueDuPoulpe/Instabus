@@ -14,8 +14,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class UserPicDrawer : Fragment(), WebServiceReceiver {
     private var _context: Context? = null
 
-    private var _stationId: Long = Long.MIN_VALUE
-
     // Views
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.station_drawer, container, false)
@@ -25,7 +23,6 @@ class UserPicDrawer : Fragment(), WebServiceReceiver {
         super.onViewCreated(view, savedInstanceState)
 
         this._context = activity
-        this._stationId = view.findViewById<TextView>(R.id.drawer_station_name).tag.toString().toLong()
 
         initAddPost(view)
     }
@@ -33,7 +30,9 @@ class UserPicDrawer : Fragment(), WebServiceReceiver {
     private fun initAddPost(view: View) {
         view.findViewById<FloatingActionButton>(R.id.drawer_take_picture_btn).setOnClickListener {
             val camera = Intent(this._context, CameraActivity::class.java)
-            camera.putExtra("station_id", this._stationId)
+            val stationId = view.findViewById<TextView>(R.id.drawer_station_name).tag.toString().toLong()
+
+            camera.putExtra("station_id", stationId)
 
             startActivity(camera)
         }
