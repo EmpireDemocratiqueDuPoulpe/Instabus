@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.R
 import com.eddp.busapp.data.UserPic
+import com.eddp.busapp.views.PictureHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,10 +58,20 @@ class UserPicViewHolder(view: View, private val onItemClick: ((position: Int, it
     private val _v = view
 
     fun bind(userPic: UserPic) {
+        // Set text
         this._v.findViewById<TextView>(R.id.user_pic_title).text = userPic.title
-        // Todo: Set station img
         this._v.findViewById<TextView>(R.id.user_pic_likes_count).text = userPic.likes.toString()
 
+        // Set station image
+        val imageContainer: PictureHolder = this._v.findViewById(R.id.user_pic_img)
+
+        imageContainer
+            .setPath(userPic.img_path)
+            .retryOnError(false)
+            .addRawFallback(R.raw.missing_picture)
+            .load()
+
+        // Add button event listener
         this._v.setOnClickListener {
             userPic.let {
                 onItemClick.invoke(adapterPosition, userPic)

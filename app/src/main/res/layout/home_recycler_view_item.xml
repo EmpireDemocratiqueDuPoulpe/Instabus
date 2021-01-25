@@ -29,26 +29,14 @@
         android:textColor="@color/grey"/>
 
     <!-- Img -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.eddp.busapp.views.PictureHolder
+        android:id="@+id/post_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
-        android:background="@color/purple_900">
+        android:background="@color/somehow_white"/>
 
-        <ImageView
-            android:id="@+id/post_img"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            android:contentDescription="@string/post_image_alt"
-            android:scaleType="centerCrop"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <!-- Username (+ station) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,25 +48,13 @@
             android:layout_height="wrap_content"
             android:text="@string/post_username_placeholder"/>
 
-        <!--<TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=", "
-            tools:ignore="HardcodedText"/>
-
-        <TextView
-            android:id="@+id/post_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/station_street_name_placeholder"/>-->
-
     </LinearLayout>
 
+    <!-- Likes & View station -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Likes -->
         <TextView
             android:id="@+id/post_likes_count"
             android:layout_width="wrap_content"
@@ -90,7 +66,6 @@
             android:drawablePadding="5dp"
             android:text="@string/post_likes_count_placeholder"/>
 
-        <!-- View bus stop -->
         <Button
             android:id="@+id/post_view_station_btn"
             android:layout_width="wrap_content"

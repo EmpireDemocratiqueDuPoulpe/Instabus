@@ -9,6 +9,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_but_not_exactly">#EFEFEF</color>
+    <color name="somehow_white">#E3E3E3</color>
     <color name="grey">#757575</color>
     <color name="red_500">#CC0000</color>
     <color name="red_900">#670000</color>

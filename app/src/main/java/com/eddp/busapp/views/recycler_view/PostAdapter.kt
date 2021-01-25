@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
+import com.eddp.busapp.views.PictureHolder
 import com.eddp.busapp.data.Post
+//import com.squareup.picasso.Callback
+//import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,6 +66,7 @@ class PostViewHolder(activity: MainActivity, view: View) : RecyclerView.ViewHold
     fun bind(post: Post) {
         // Get station
         val station = this._activity.getStations()?.find { s -> s.id == post.station_id }
+        val isStationNull = station == null
 
         val postUsername = if (station != null) {
              "${post.username} - ${station.streetName}, ${station.city}"
@@ -73,9 +77,17 @@ class PostViewHolder(activity: MainActivity, view: View) : RecyclerView.ViewHold
         // Set text
         this._v.findViewById<TextView>(R.id.post_title).text = post.title
         this._v.findViewById<TextView>(R.id.post_creation_date).text = post.creation_timestamp
-        // Todo: Set station img
         this._v.findViewById<TextView>(R.id.post_author).text = postUsername
         this._v.findViewById<TextView>(R.id.post_likes_count).text = post.likes.toString()
+
+        // Set station image
+        val imageContainer: PictureHolder = this._v.findViewById(R.id.post_img)
+
+        imageContainer
+            .setPath(post.img_path)
+            .retryOnError(false)
+            .addRawFallback(R.raw.missing_picture)
+            .load()
 
         // Add button event listener
         val viewStationBtn: Button = this._v.findViewById(R.id.post_view_station_btn)

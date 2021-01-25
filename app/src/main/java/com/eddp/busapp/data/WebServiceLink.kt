@@ -1,7 +1,20 @@
 package com.eddp.busapp.data
 
+import android.app.Activity
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.eddp.busapp.R
 import com.eddp.busapp.interfaces.WebServiceReceiver
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -13,6 +26,7 @@ import retrofit2.*
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import java.io.File
+import java.io.InputStream
 
 private const val WEBSERVICE_ADDRESS = "http://90.45.23.115:8080/"
 private const val WEBSERVICE_GET_POSTS = "getPost.php?"
@@ -106,7 +120,8 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
 
     companion object {
         private var moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-        private var retrofit2 = Retrofit.Builder().baseUrl(WEBSERVICE_ADDRESS).addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+        private var retrofit2 = Retrofit.Builder().baseUrl(WEBSERVICE_ADDRESS)
+            .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
         private val service = retrofit2.create(WebServiceAPI::class.java)
     }
 }
@@ -125,7 +140,8 @@ interface WebServiceAPI {
         @Part("user_id") user_id: RequestBody,
         @Part("station_id") station_id: RequestBody,
         @Part("title") title: RequestBody,
-        @Part file: MultipartBody.Part) : Call<ResponseBody>
+        @Part file: MultipartBody.Part
+    ) : Call<ResponseBody>
 
     // User pics
     @GET(WEBSERVICE_GET_USERPICS)
