@@ -148,5 +148,6 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
 
     private fun returnToMainActivity() {
         startActivity(Intent(this._context, MainActivity::class.java))
+        activity?.finish()
     }
 }
