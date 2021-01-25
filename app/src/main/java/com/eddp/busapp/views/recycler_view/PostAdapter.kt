@@ -12,8 +12,6 @@ import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
 import com.eddp.busapp.views.PictureHolder
 import com.eddp.busapp.data.Post
-//import com.squareup.picasso.Callback
-//import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -66,7 +64,6 @@ class PostViewHolder(activity: MainActivity, view: View) : RecyclerView.ViewHold
     fun bind(post: Post) {
         // Get station
         val station = this._activity.getStations()?.find { s -> s.id == post.station_id }
-        val isStationNull = station == null
 
         val postUsername = if (station != null) {
              "${post.username} - ${station.streetName}, ${station.city}"
