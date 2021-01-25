@@ -12,6 +12,7 @@ import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
 import com.eddp.busapp.views.PictureHolder
 import com.eddp.busapp.data.Post
+import com.eddp.busapp.interfaces.AsyncDataObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,16 +58,32 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     }
 }
 
-class PostViewHolder(activity: MainActivity, view: View) : RecyclerView.ViewHolder(view) {
+class PostViewHolder(activity: MainActivity, view: View)
+    : RecyclerView.ViewHolder(view), AsyncDataObserver {
     private val _activity = activity
     private val _v = view
 
+    private var _post: Post? = null
+
+    init {
+        this._activity.registerReceiver(this)
+    }
+
+    // View
     fun bind(post: Post) {
+        this._post = post
+
+        if (this._post != null) {
+            fillView(this._post!!)
+        }
+    }
+
+    private fun fillView(post: Post) {
         // Get station
         val station = this._activity.getStations()?.find { s -> s.id == post.station_id }
 
         val postUsername = if (station != null) {
-             "${post.username} - ${station.streetName}, ${station.city}"
+            "${post.username} - ${station.streetName}, ${station.city}"
         } else {
             post.username
         }
@@ -90,13 +107,20 @@ class PostViewHolder(activity: MainActivity, view: View) : RecyclerView.ViewHold
         val viewStationBtn: Button = this._v.findViewById(R.id.post_view_station_btn)
 
         if (station != null) {
+            viewStationBtn.isEnabled = true
             viewStationBtn.setOnClickListener {
                 this._activity.openStationDrawer(station)
             }
         } else {
             viewStationBtn.isEnabled = false
         }
+    }
 
+    // When stations are fetched
+    override fun onDataGet() {
+        if (this._post != null) {
+            fillView(this._post!!)
+        }
     }
 
     companion object {
