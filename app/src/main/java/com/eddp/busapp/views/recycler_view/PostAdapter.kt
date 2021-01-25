@@ -10,15 +10,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
-import com.eddp.busapp.views.PictureHolder
 import com.eddp.busapp.data.Post
 import com.eddp.busapp.interfaces.AsyncDataObserver
+import com.eddp.busapp.views.PictureHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PostAdapter(activity: MainActivity) : ListAdapter<Post, RecyclerView.ViewHolder>(PostDiffCallback()) {
+class PostAdapter(activity: MainActivity) : ListAdapter<Post, RecyclerView.ViewHolder>(
+    PostDiffCallback()
+) {
     private val _activity = activity
 
     private val _adapterCoroutine = CoroutineScope(Dispatchers.Default)
