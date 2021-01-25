@@ -61,15 +61,33 @@ class PostViewHolder(activity: MainActivity, view: View) : RecyclerView.ViewHold
     private val _v = view
 
     fun bind(post: Post) {
+        // Get station
+        val station = this._activity.getStations()?.find { s -> s.id == post.station_id }
+
+        val postUsername = if (station != null) {
+             "${post.username} - ${station.streetName}, ${station.city}"
+        } else {
+            post.username
+        }
+
+        // Set text
         this._v.findViewById<TextView>(R.id.post_title).text = post.title
         this._v.findViewById<TextView>(R.id.post_creation_date).text = post.creation_timestamp
         // Todo: Set station img
-        this._v.findViewById<TextView>(R.id.post_author).text = post.username
+        this._v.findViewById<TextView>(R.id.post_author).text = postUsername
         this._v.findViewById<TextView>(R.id.post_likes_count).text = post.likes.toString()
 
-        this._v.findViewById<Button>(R.id.post_view_station_btn).setOnClickListener {
-            //this._activity.openStationDrawer(post.station_id)
+        // Add button event listener
+        val viewStationBtn: Button = this._v.findViewById(R.id.post_view_station_btn)
+
+        if (station != null) {
+            viewStationBtn.setOnClickListener {
+                this._activity.openStationDrawer(station)
+            }
+        } else {
+            viewStationBtn.isEnabled = false
         }
+
     }
 
     companion object {
