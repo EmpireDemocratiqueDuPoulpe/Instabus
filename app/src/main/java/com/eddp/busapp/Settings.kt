@@ -26,6 +26,13 @@ class Settings : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenc
             "theme" -> {
                 activity?.recreate()
             }
+            "better_ui" -> {
+                val betterUI = this._sharedPrefs.getBoolean("better_ui", true)
+
+                if (activity is MainActivity) {
+                    (activity as MainActivity).setUiMode(betterUI)
+                }
+            }
         }
     }
 }

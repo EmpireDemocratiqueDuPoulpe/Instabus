@@ -12,6 +12,13 @@
             app:entryValues="@array/theme_values"
             app:useSimpleSummaryProvider="true"/>
 
+        <SwitchPreference
+            app:key="better_ui"
+            android:title="@string/better_ui_title"
+            app:summaryOff="@string/better_ui_summary_off"
+            app:summaryOn="@string/better_ui_summary_on"
+            app:defaultValue="true"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

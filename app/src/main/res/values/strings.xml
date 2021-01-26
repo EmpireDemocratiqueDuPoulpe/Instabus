@@ -68,6 +68,10 @@
     <string name="theme_entries_dark">Dark</string>
     <string name="theme_entries_system_default">System default</string>
 
+    <string name="better_ui_title">Simplified interface</string>
+    <string name="better_ui_summary_off">Makes the interface easier to use but bigger on the screen.</string>
+    <string name="better_ui_summary_on">Makes the interface minimized and simplified (recommended).</string>
+
     <!-- Toolbar -->
     <string name="share_button">Share</string>
 </resources>

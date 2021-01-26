@@ -38,7 +38,8 @@
             android:background="@color/purple_500"
             app:itemIconTint="@drawable/bottom_nav_bar_colors"
             app:itemTextColor="@drawable/bottom_nav_bar_colors"
-            app:menu="@menu/bottom_nav_bar_menu"/>
+            app:menu="@menu/bottom_nav_bar_menu"
+            app:labelVisibilityMode="unlabeled"/>
 
     </RelativeLayout>
 

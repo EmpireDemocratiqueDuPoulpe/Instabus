@@ -2,6 +2,7 @@ package com.eddp.busapp
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,7 @@ import com.eddp.busapp.interfaces.WebServiceReceiver
 import com.eddp.busapp.views.StationNavDrawer
 import com.eddp.busapp.views.ZoomOutPageTransformer
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
@@ -39,6 +41,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceiver {
+    private lateinit var _sharedPrefs: SharedPreferences
+    private var _betterUI: Boolean = true
+
     private val _observers: MutableList<AsyncDataObserver?> = ArrayList()
 
     private lateinit var _toolbar: Toolbar
@@ -65,12 +70,16 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        this._sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+        this._betterUI = this._sharedPrefs.getBoolean("better_ui", true)
+
         res = resources
 
         // Init view
         initDrawer()
         initBottomNavBar()
         initViewPager()
+        setUiMode(this._betterUI)
 
         // Get data
         this._webServiceLink = WebServiceLink(this)
@@ -121,6 +130,14 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         this._viewPager.setPageTransformer(ZoomOutPageTransformer())
 
         setViewPager2Sensitivity(4)
+    }
+
+    fun setUiMode(betterUi: Boolean) {
+        if (betterUi) {
+            this._bottomNavBar.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_SELECTED)
+        } else {
+            this._bottomNavBar.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED)
+        }
     }
 
     // Navigation
@@ -318,6 +335,10 @@ class BottomNavBar(activity: MainActivity) : BottomNavigationView.OnNavigationIt
     fun setSelectedItem(position: Int) {
         updatePreviousSelectedItem()
         this._items[position].isChecked = true
+    }
+
+    fun setLabelVisibilityMode(labelVisibilityMode: Int) {
+        this._bottomNavBar.labelVisibilityMode = labelVisibilityMode
     }
 
     private fun updatePreviousSelectedItem() {
