@@ -13,6 +13,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.R
@@ -20,6 +21,7 @@ import com.eddp.busapp.data.Station
 import com.eddp.busapp.data.UserPic
 import com.eddp.busapp.data.WebServiceLink
 import com.eddp.busapp.interfaces.WebServiceReceiver
+import com.eddp.busapp.views.recycler_view.GridSpacingItemDecoration
 import com.eddp.busapp.views.recycler_view.UserPicAdapter
 import com.google.android.material.navigation.NavigationView
 import java.io.InputStream
@@ -100,11 +102,10 @@ class StationNavDrawer : NavigationView, WebServiceReceiver {
         this._userPicProgressBar = findViewById(R.id.drawer_user_pic_loading)
 
         this._userPicRecyclerView = findViewById(R.id.drawer_user_pic_recycler_view)
-        //this._userPicRecyclerView.layoutManager = GridLayoutManager(context, 1)
-        //this._userPicRecyclerView.addItemDecoration(
-        //        GridSpacingItemDecoration(1, 5, true)
-        //)
-        this._userPicRecyclerView.layoutManager = LinearLayoutManager(context)
+        this._userPicRecyclerView.layoutManager = GridLayoutManager(context, 1)
+        this._userPicRecyclerView.addItemDecoration(
+                GridSpacingItemDecoration(1, 20, true)
+        )
 
         this._userPicRecyclerView.adapter = this._userPicAdapter
 
