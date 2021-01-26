@@ -30,6 +30,7 @@ import com.eddp.busapp.interfaces.AsyncDataObservable
 import com.eddp.busapp.interfaces.AsyncDataObserver
 import com.eddp.busapp.interfaces.WebServiceReceiver
 import com.eddp.busapp.views.StationNavDrawer
+import com.eddp.busapp.views.StationNavDrawerLayout
 import com.eddp.busapp.views.ZoomOutPageTransformer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     private val _observers: MutableList<AsyncDataObserver?> = ArrayList()
 
     private lateinit var _toolbar: Toolbar
-    private lateinit var _drawerLayout: DrawerLayout
+    private lateinit var _drawerLayout: StationNavDrawerLayout
     private lateinit var _drawer: StationNavDrawer
     private lateinit var _viewPager: ViewPager2
     private lateinit var _viewPagerAdapter: MainViewPagerAdapter
@@ -109,6 +110,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
 
         this._drawerLayout = findViewById(R.id.drawer_layout)
         this._drawer = findViewById(R.id.drawer)
+
         this._drawerLayout.addDrawerListener (object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) { }
 
@@ -315,7 +317,7 @@ class MainViewPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(ac
     private val _fragments: List<Fragment> = listOf(
             Home(),
             StationsViewPager(),
-            //Settings()
+            UserPage()
     )
 
     fun getFragmentById(position: Int) : Fragment = this._fragments[position]

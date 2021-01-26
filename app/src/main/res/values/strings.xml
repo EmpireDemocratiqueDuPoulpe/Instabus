@@ -33,9 +33,18 @@
     <string name="map_info_window_info_alt">info img</string>
     <string name="station_add_post_alt">+</string>
 
+    <!-- User page -->
+    <string name="user_page_picture_alt">User picture</string>
+    <string name="user_page_username_placeholder">Username</string>
+    <string name="user_page_posts_count_title">Posts</string>
+    <string name="user_page_posts_count_number">0</string>
+    <string name="user_page_likes_count_title">Likes</string>
+    <string name="user_page_likes_count_number">0</string>
+
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_home">Home</string>
     <string name="bottom_nav_bar_stations">Stations</string>
+    <string name="bottom_nav_bar_user">Your page</string>
 
     <!-- Camera -->
     <string name="cam_button_alt">Camera button</string>
