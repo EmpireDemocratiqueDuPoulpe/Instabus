@@ -19,15 +19,24 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
 
-        <ImageView
-            android:id="@+id/user_page_picture"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/user_picture"
-            android:contentDescription="@string/user_page_picture_alt"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/user_page_picture_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="25dp"
+            app:cardPreventCornerOverlap="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/user_page_profile_header"
-            app:layout_constraintTop_toTopOf="@id/user_page_profile_header" />
+            app:layout_constraintTop_toTopOf="@id/user_page_profile_header">
+
+            <ImageView
+                android:id="@+id/user_page_picture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/user_page_picture_alt"
+                android:scaleType="centerCrop"/>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/user_page_username"
@@ -39,7 +48,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/user_page_picture"
+            app:layout_constraintLeft_toRightOf="@id/user_page_picture_container"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
