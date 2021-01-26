@@ -26,15 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BusApp"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
 
-        <activity android:name=".CameraActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -42,6 +38,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".CameraActivity"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/toolbar_settings"/>
     </application>
 
 </manifest>
