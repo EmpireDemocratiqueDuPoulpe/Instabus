@@ -1,23 +1,22 @@
-<PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/interface_header">
 
         <DropDownPreference
-            app:key="theme"
             android:title="@string/theme_title"
             app:defaultValue="light"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
+            app:key="theme"
             app:useSimpleSummaryProvider="true"/>
 
         <SwitchPreference
-            app:key="better_ui"
             android:title="@string/better_ui_title"
+            app:defaultValue="true"
+            app:key="better_ui"
             app:summaryOff="@string/better_ui_summary_off"
-            app:summaryOn="@string/better_ui_summary_on"
-            app:defaultValue="true"/>
+            app:summaryOn="@string/better_ui_summary_on"/>
 
     </PreferenceCategory>
 

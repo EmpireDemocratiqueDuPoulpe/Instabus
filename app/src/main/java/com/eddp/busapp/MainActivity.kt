@@ -2,6 +2,7 @@ package com.eddp.busapp
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -66,12 +67,11 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
 
     // Views
     override fun onCreate(savedInstanceState: Bundle?) {
+        this._sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+
         initTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        this._sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-        this._betterUI = this._sharedPrefs.getBoolean("better_ui", true)
 
         res = resources
 
@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         initDrawer()
         initBottomNavBar()
         initViewPager()
-        setUiMode(this._betterUI)
 
         // Get data
         this._webServiceLink = WebServiceLink(this)
@@ -88,11 +87,16 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         getStationsFromAPI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        this._betterUI = this._sharedPrefs.getBoolean("better_ui", true)
+
+        setUiMode(this._betterUI)
+    }
+
     // Todo: Update theme
     private fun initTheme() {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-
-        when (sharedPrefs.getString("theme", "light")) {
+        when (this._sharedPrefs.getString("theme", "light")) {
             "light" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
             "dark" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
             "else" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) }
@@ -169,6 +173,23 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
 
         val touchSlop = touchSlopField.get(recyclerView) as Int
         touchSlopField.set(recyclerView, touchSlop * multiplier)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.toolbar_menu_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     // Async data
@@ -294,7 +315,7 @@ class MainViewPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(ac
     private val _fragments: List<Fragment> = listOf(
             Home(),
             StationsViewPager(),
-            Settings()
+            //Settings()
     )
 
     fun getFragmentById(position: Int) : Fragment = this._fragments[position]

@@ -13,10 +13,10 @@
         android:icon="@drawable/ic_place_24px"
         android:title="@string/bottom_nav_bar_stations"/>
 
-    <item
+    <!--<item
         android:id="@+id/menu_page_settings"
         android:enabled="true"
         android:icon="@drawable/ic_settings_24px"
-        android:title="@string/bottom_nav_bar_settings"/>
+        android:title="@string/toolbar_settings"/>-->
 
 </menu>
