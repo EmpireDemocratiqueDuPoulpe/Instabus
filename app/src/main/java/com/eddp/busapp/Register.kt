@@ -1,6 +1,7 @@
 package com.eddp.busapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.eddp.busapp.data.WebServiceLink
 import com.eddp.busapp.interfaces.WebServiceReceiver
+import java.io.Console
 
 class Register : Fragment(), WebServiceReceiver {
     private lateinit var _username: EditText
@@ -78,7 +80,7 @@ class Register : Fragment(), WebServiceReceiver {
             _confirmPassword.error = "Confirm password is required."
             validatedCheck = false
         }
-        if(_password.text !== _confirmPassword.text) {
+        if(_password.text.toString() != _confirmPassword.text.toString()) {
             _confirmPassword.error = "Password and password confirmation doesn't match."
             validatedCheck = false
         }
