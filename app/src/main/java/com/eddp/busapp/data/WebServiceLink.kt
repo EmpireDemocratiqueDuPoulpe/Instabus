@@ -20,6 +20,7 @@ private const val WEBSERVICE_ADD_POSTS = "addPost.php"
 private const val WEBSERVICE_GET_USERPICS = "getUserPics.php?"
 private const val WEBSERVICE_ADD_USER = "addUser.php?"
 private const val WEBSERVICE_LOGIN_USER = "loginUser.php?"
+private const val WEBSERVICE_GET_PICS_OF = "getPicsOf.php?"
 private const val WEBSERVICE_DEFAULT_USER = "BusFucker"
 
 class WebServiceLink constructor(receiver: WebServiceReceiver) {
@@ -179,7 +180,7 @@ interface WebServiceAPI {
     ) : Call<ResponseBody>
 
     // User pics
-    @GET(WEBSERVICE_GET_USERPICS)
+    @GET(WEBSERVICE_GET_PICS_OF)
     fun getUserPics(@Query("user_id") uid: Long) : Call<List<UserPic>>
 
     @GET(WEBSERVICE_GET_USERPICS)

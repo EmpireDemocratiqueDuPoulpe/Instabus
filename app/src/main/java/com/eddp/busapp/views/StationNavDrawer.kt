@@ -1,12 +1,19 @@
 package com.eddp.busapp.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.AttributeSet
+import android.util.Log
+import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.R
@@ -14,9 +21,45 @@ import com.eddp.busapp.data.Station
 import com.eddp.busapp.data.UserPic
 import com.eddp.busapp.data.WebServiceLink
 import com.eddp.busapp.interfaces.WebServiceReceiver
+import com.eddp.busapp.views.recycler_view.GridSpacingItemDecoration
 import com.eddp.busapp.views.recycler_view.UserPicAdapter
 import com.google.android.material.navigation.NavigationView
 import java.io.InputStream
+
+class StationNavDrawerLayout : DrawerLayout {
+    private var _enableOpenOnSwipe: Boolean = false
+
+    // Getters
+    fun isOpenOnSwipeEnabled() = this._enableOpenOnSwipe
+
+    // Setters
+    fun setOpenOnSwipeEnabled(enable: Boolean) {
+        this._enableOpenOnSwipe = enable
+    }
+
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        // Prevent from opening the drawer with a swipe
+        if (!this._enableOpenOnSwipe && !isDrawerVisible(GravityCompat.END)) {
+            return false
+        }
+
+        return super.onInterceptTouchEvent(ev)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(ev: MotionEvent?): Boolean {
+        // Prevent from opening the drawer with a swipe
+        if (!this._enableOpenOnSwipe && !isDrawerVisible(GravityCompat.END)) {
+            return false
+        }
+
+        return super.onTouchEvent(ev)
+    }
+}
 
 class StationNavDrawer : NavigationView, WebServiceReceiver {
     private var _webServiceLink: WebServiceLink? = null
@@ -59,11 +102,10 @@ class StationNavDrawer : NavigationView, WebServiceReceiver {
         this._userPicProgressBar = findViewById(R.id.drawer_user_pic_loading)
 
         this._userPicRecyclerView = findViewById(R.id.drawer_user_pic_recycler_view)
-        //this._userPicRecyclerView.layoutManager = GridLayoutManager(context, 1)
-        //this._userPicRecyclerView.addItemDecoration(
-        //        GridSpacingItemDecoration(1, 5, true)
-        //)
-        this._userPicRecyclerView.layoutManager = LinearLayoutManager(context)
+        this._userPicRecyclerView.layoutManager = GridLayoutManager(context, 1)
+        this._userPicRecyclerView.addItemDecoration(
+                GridSpacingItemDecoration(1, 20, true)
+        )
 
         this._userPicRecyclerView.adapter = this._userPicAdapter
 
