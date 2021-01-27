@@ -90,6 +90,7 @@
 
     <!-- Toolbar -->
     <string name="toolbar_settings">Settings</string>
+    <string name="toolbar_refresh">Refresh</string>
     <string name="toolbar_share_button">Share</string>
 
     <!-- Preference Titles -->

@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.eddp.busapp.data.UserPic
 import com.eddp.busapp.data.WebServiceLink
@@ -27,6 +28,7 @@ class UserPage : Fragment(), WebServiceReceiver {
     private lateinit var _postsCount: TextView
     private lateinit var _likesCount: TextView
 
+    private lateinit var _swipeToRefresh: SwipeRefreshLayout
     private lateinit var _progressBar: ProgressBar
     private lateinit var _recyclerView: RecyclerView
     private lateinit var _adapter: UserPicAdapter
@@ -56,6 +58,7 @@ class UserPage : Fragment(), WebServiceReceiver {
     }
 
     private fun fillUserPics(view: View) {
+        // Recycler view
         this._progressBar = view.findViewById(R.id.user_page_pics_loading)
         this._recyclerView = view.findViewById(R.id.user_page_pics_recycler_view)
 
@@ -67,6 +70,12 @@ class UserPage : Fragment(), WebServiceReceiver {
         this._recyclerView.adapter = this._adapter
 
         this._webServiceLink.getUserPics(1)
+
+        // Swipe to refresh
+        this._swipeToRefresh = view.findViewById(R.id.user_page_pics_swipe_refresh)
+        this._swipeToRefresh.setOnRefreshListener {
+            this._webServiceLink.getUserPics(1)
+        }
     }
 
     override fun setUserPics(userPics: List<UserPic>?) {
@@ -82,5 +91,6 @@ class UserPage : Fragment(), WebServiceReceiver {
 
         this._progressBar.visibility = View.INVISIBLE
         this._recyclerView.visibility = View.VISIBLE
+        this._swipeToRefresh.isRefreshing = false
     }
 }
