@@ -117,8 +117,8 @@ class Login: Fragment(), WebServiceReceiver {
     private fun goToMainActivity() {}
 
     // Web service
-    override fun addSuccessful(success: Boolean) {
-        super.addSuccessful(success)
+    override fun addSuccessful(success: Boolean, message: String) {
+        super.addSuccessful(success, message)
 
         if(success) {
             goToMainActivity()

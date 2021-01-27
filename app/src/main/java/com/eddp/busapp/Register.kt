@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -24,10 +25,23 @@ class Register : Fragment(), WebServiceReceiver {
     private lateinit var _passwordField: EditText
     private lateinit var _confirmPasswordField: EditText
     private lateinit var _registerBtn: Button
+    private lateinit var _registerLoading: ProgressBar
     private lateinit var _loginLink: TextView
 
     private var _webServiceLink = WebServiceLink(this)
 
+    // Setters
+    private fun setLoading(loading: Boolean) {
+        if (loading) {
+            this._registerBtn.visibility = View.INVISIBLE
+            this._registerLoading.visibility = View.VISIBLE
+        } else {
+            this._registerBtn.visibility = View.VISIBLE
+            this._registerLoading.visibility = View.INVISIBLE
+        }
+    }
+
+    // Views
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +74,7 @@ class Register : Fragment(), WebServiceReceiver {
 
         this._registerBtn = view.findViewById(R.id.register_button)
         this._registerBtn.setOnClickListener { register() }
+        this._registerLoading = view.findViewById(R.id.register_loading)
 
         this._loginLink = view.findViewById(R.id.login_link)
         this._loginLink.setOnClickListener { goToLoginPage() }
@@ -67,6 +82,7 @@ class Register : Fragment(), WebServiceReceiver {
 
     // Register
     private fun register() {
+        setLoading(true)
         removeError()
 
         if (this._activity == null)
@@ -144,13 +160,18 @@ class Register : Fragment(), WebServiceReceiver {
     private fun goToMainActivity() {}
 
     // Web service
-    override fun addSuccessful(success: Boolean) {
-        super.addSuccessful(success)
+    override fun addSuccessful(success: Boolean, message: String) {
+        super.addSuccessful(success, message)
+        setLoading(false)
 
         if(success) {
             goToMainActivity()
         } else {
-            showError(this._activity!!.getString(R.string.auth_err_unknown_register))
+            if (message.isNotEmpty()) {
+                showError(message)
+            } else {
+                showError(this._activity!!.getString(R.string.auth_err_unknown_register))
+            }
         }
     }
 }

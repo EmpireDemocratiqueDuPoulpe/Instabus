@@ -103,7 +103,19 @@
         app:layout_constraintRight_toRightOf="parent"
         android:text="@string/auth_register_btn"
         android:textColor="@color/white"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:visibility="visible"/>
+
+    <ProgressBar
+        android:id="@+id/register_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/register_button"
+        app:layout_constraintRight_toRightOf="@id/register_button"
+        app:layout_constraintBottom_toBottomOf="@id/register_button"
+        app:layout_constraintLeft_toLeftOf="@id/register_button"
+        android:indeterminate="true"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/login_link"
