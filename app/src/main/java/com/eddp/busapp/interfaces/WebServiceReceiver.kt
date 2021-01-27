@@ -7,4 +7,5 @@ interface WebServiceReceiver {
     fun setPosts(posts: List<Post>?) {}
     fun setUserPics(userPics: List<UserPic>?) {}
     fun addSuccessful(success: Boolean) {}
+    fun deleteSuccessful(success: Boolean) {}
 }

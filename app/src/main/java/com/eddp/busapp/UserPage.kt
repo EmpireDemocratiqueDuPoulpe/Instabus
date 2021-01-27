@@ -29,7 +29,7 @@ class UserPage : Fragment(), WebServiceReceiver {
 
     private lateinit var _progressBar: ProgressBar
     private lateinit var _recyclerView: RecyclerView
-    private val _adapter = UserPicAdapter {_, _ ->}
+    private lateinit var _adapter: UserPicAdapter
 
     // Views
     override fun onCreateView(
@@ -63,6 +63,7 @@ class UserPage : Fragment(), WebServiceReceiver {
         this._recyclerView.addItemDecoration(
                 GridSpacingItemDecoration(2, 20, true)
         )
+        this._adapter = UserPicAdapter(requireContext(), false)
         this._recyclerView.adapter = this._adapter
 
         this._webServiceLink.getUserPics(1)

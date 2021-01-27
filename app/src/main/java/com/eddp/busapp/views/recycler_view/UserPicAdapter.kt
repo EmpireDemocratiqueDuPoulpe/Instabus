@@ -1,22 +1,33 @@
 package com.eddp.busapp.views.recycler_view
 
+import android.content.Context
+import android.opengl.Visibility
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
 import com.eddp.busapp.data.UserPic
+import com.eddp.busapp.data.WebServiceLink
+import com.eddp.busapp.interfaces.WebServiceReceiver
 import com.eddp.busapp.views.PictureHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserPicAdapter(private val onItemClick: ((position: Int, item: UserPic) -> Unit))
+class UserPicAdapter(context: Context, hideDelete: Boolean = true)
     : ListAdapter<UserPic, RecyclerView.ViewHolder>(UserPicDiffCallback()) {
+    private val _context = context
+    private val _hideDelete = hideDelete
     private val _adapterCoroutine = CoroutineScope(Dispatchers.Default)
 
     // Setters
@@ -30,7 +41,7 @@ class UserPicAdapter(private val onItemClick: ((position: Int, item: UserPic) ->
 
     // Views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return UserPicViewHolder.from(parent, onItemClick)
+        return UserPicViewHolder.from(parent, this._context, this._hideDelete)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -53,8 +64,10 @@ class UserPicDiffCallback : DiffUtil.ItemCallback<UserPic>() {
     }
 }
 
-class UserPicViewHolder(view: View, private val onItemClick: ((position: Int, item: UserPic) -> Unit))
-    : RecyclerView.ViewHolder(view) {
+class UserPicViewHolder(view: View, context: Context, hideDelete: Boolean) : RecyclerView.ViewHolder(view), WebServiceReceiver {
+    private var _webServiceLink = WebServiceLink(this)
+    private var _context = context
+    private val _hideDelete = hideDelete
     private val _v = view
 
     fun bind(userPic: UserPic) {
@@ -72,20 +85,49 @@ class UserPicViewHolder(view: View, private val onItemClick: ((position: Int, it
             .load()
 
         // Add button event listener
-        this._v.setOnClickListener {
-            userPic.let {
-                onItemClick.invoke(adapterPosition, userPic)
+        val delBtn : ImageButton = this._v.findViewById(R.id.user_pic_delete_btn)
+
+        if (this._hideDelete) {
+            delBtn.visibility = View.GONE
+        } else {
+            delBtn.visibility = View.VISIBLE
+            delBtn.setOnClickListener {
+                AlertDialog
+                    .Builder(this._context)
+                    .setTitle(this._context.getString(R.string.post_delete_confirm_title))
+                    .setMessage(this._context.getString(R.string.post_delete_confirm))
+                    .setNegativeButton(this._context.getString(R.string.post_delete_confirm__no_btn)) { _, _ -> }
+                    .setPositiveButton(this._context.getString(R.string.post_delete_confirm__yes_btn)) { _, _ ->
+                        this._webServiceLink.delPost(1, userPic.post_id.toLong())
+                    }
+                    .show()
             }
+        }
+
+    }
+
+    override fun deleteSuccessful(success: Boolean) {
+        super.deleteSuccessful(success)
+
+        if (success) {
+            //this._webServiceLink.getPosts()
+        } else {
+            AlertDialog
+                .Builder(this._context)
+                .setTitle(this._context.getString(R.string.post_delete_error_title))
+                .setMessage(this._context.getString(R.string.post_delete_error))
+                .setPositiveButton(this._context.getString(R.string.post_delete_error_btn)) { _, _ -> }
+                .show()
         }
     }
 
     companion object {
-        fun from(parent: ViewGroup, onItemClick: ((position: Int, item: UserPic) -> Unit)): UserPicViewHolder {
+        fun from(parent: ViewGroup, context: Context, hideDelete: Boolean): UserPicViewHolder {
             val v: View = LayoutInflater
                     .from(parent.context)
                     .inflate(R.layout.user_pic_recycler_view_item, parent, false)
 
-            return UserPicViewHolder(v, onItemClick)
+            return UserPicViewHolder(v, context, hideDelete)
         }
     }
 }
