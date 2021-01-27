@@ -113,10 +113,10 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
             service.getUserPics(userId, stationId) else
             service.getUserPics(userId)
 
-        call.enqueue(object : Callback<List<UserPic>> {
-            override fun onResponse(call: Call<List<UserPic>>, response: Response<List<UserPic>>) {
+        call.enqueue(object : Callback<MutableList<UserPic>> {
+            override fun onResponse(call: Call<MutableList<UserPic>>, response: Response<MutableList<UserPic>>) {
                 val statusCode: Int = response.code()
-                val userPics: List<UserPic>? = response.body()
+                val userPics: MutableList<UserPic>? = response.body()
 
                 if (!response.isSuccessful) {
                     Log.e("WebService", "Error code $statusCode while fetching user pics")
@@ -125,7 +125,7 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
                 }
             }
 
-            override fun onFailure(call: Call<List<UserPic>>, err: Throwable) {
+            override fun onFailure(call: Call<MutableList<UserPic>>, err: Throwable) {
                 Log.e("WebService", err.message, err)
             }
         })
@@ -213,10 +213,10 @@ interface WebServiceAPI {
 
     // User pics
     @GET(WEBSERVICE_GET_PICS_OF)
-    fun getUserPics(@Query("user_id") uid: Long) : Call<List<UserPic>>
+    fun getUserPics(@Query("user_id") uid: Long) : Call<MutableList<UserPic>>
 
     @GET(WEBSERVICE_GET_USERPICS)
-    fun getUserPics(@Query("user_id") uid: Long, @Query("station_id") id: Long) : Call<List<UserPic>>
+    fun getUserPics(@Query("user_id") uid: Long, @Query("station_id") id: Long) : Call<MutableList<UserPic>>
 
     // Register new user
     @Multipart

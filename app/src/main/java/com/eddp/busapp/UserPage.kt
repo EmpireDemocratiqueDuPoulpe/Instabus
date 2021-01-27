@@ -22,7 +22,7 @@ import com.eddp.busapp.views.recycler_view.UserPicAdapter
 
 class UserPage : Fragment(), WebServiceReceiver {
     private val _webServiceLink = WebServiceLink(this)
-    private var _userPics: List<UserPic> = ArrayList()
+    private var _userPics: MutableList<UserPic> = ArrayList()
 
     private lateinit var _userProfilePic: ImageView
     private lateinit var _postsCount: TextView
@@ -32,6 +32,18 @@ class UserPage : Fragment(), WebServiceReceiver {
     private lateinit var _progressBar: ProgressBar
     private lateinit var _recyclerView: RecyclerView
     private lateinit var _adapter: UserPicAdapter
+
+    // Setters
+    private fun setLoading(loading: Boolean) {
+        if (loading) {
+            this._recyclerView.visibility = View.INVISIBLE
+            this._progressBar.visibility = View.VISIBLE
+        } else {
+            this._recyclerView.visibility = View.VISIBLE
+            this._progressBar.visibility = View.INVISIBLE
+            this._swipeToRefresh.isRefreshing = false
+        }
+    }
 
     // Views
     override fun onCreateView(
@@ -66,9 +78,10 @@ class UserPage : Fragment(), WebServiceReceiver {
         this._recyclerView.addItemDecoration(
                 GridSpacingItemDecoration(2, 20, true)
         )
-        this._adapter = UserPicAdapter(requireContext(), false)
+        this._adapter = UserPicAdapter(requireContext(), false) { item -> onUserPicDeletion(item) }
         this._recyclerView.adapter = this._adapter
 
+        this.setLoading(true)
         this._webServiceLink.getUserPics(1)
 
         // Swipe to refresh
@@ -78,7 +91,12 @@ class UserPage : Fragment(), WebServiceReceiver {
         }
     }
 
-    override fun setUserPics(userPics: List<UserPic>?) {
+    private fun onUserPicDeletion(item: UserPic) {
+        this.setLoading(true)
+        this._webServiceLink.getUserPics(1)
+    }
+
+    override fun setUserPics(userPics: MutableList<UserPic>?) {
         super.setUserPics(userPics)
 
         if (userPics != null) {
@@ -89,8 +107,6 @@ class UserPage : Fragment(), WebServiceReceiver {
         this._postsCount.text = this._userPics.size.toString()
         this._likesCount.text = this._userPics.sumBy { it.likes }.toString()
 
-        this._progressBar.visibility = View.INVISIBLE
-        this._recyclerView.visibility = View.VISIBLE
-        this._swipeToRefresh.isRefreshing = false
+        setLoading(false)
     }
 }

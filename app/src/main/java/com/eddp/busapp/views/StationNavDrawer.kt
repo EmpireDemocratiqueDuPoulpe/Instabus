@@ -145,7 +145,7 @@ class StationNavDrawer : NavigationView, WebServiceReceiver {
     }
 
     // Web service
-    override fun setUserPics(userPics: List<UserPic>?) {
+    override fun setUserPics(userPics: MutableList<UserPic>?) {
         if (userPics != null) {
             this._userPicAdapter.setData(userPics)
             this._stationPicsCount.text = userPics.size.toString()

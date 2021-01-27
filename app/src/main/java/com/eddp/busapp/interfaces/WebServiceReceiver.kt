@@ -5,7 +5,7 @@ import com.eddp.busapp.data.UserPic
 
 interface WebServiceReceiver {
     fun setPosts(posts: List<Post>?) {}
-    fun setUserPics(userPics: List<UserPic>?) {}
+    fun setUserPics(userPics: MutableList<UserPic>?) {}
     fun addSuccessful(success: Boolean, message: String = "") {}
     fun deleteSuccessful(success: Boolean) {}
 }
