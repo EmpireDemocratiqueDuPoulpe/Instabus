@@ -18,6 +18,8 @@ private const val WEBSERVICE_ADDRESS = "http://90.45.23.115:8080/"
 private const val WEBSERVICE_GET_POSTS = "getPost.php?"
 private const val WEBSERVICE_ADD_POSTS = "addPost.php"
 private const val WEBSERVICE_GET_USERPICS = "getUserPics.php?"
+private const val WEBSERVICE_ADD_USER = "addUser.php?"
+private const val WEBSERVICE_LOGIN_USER = "loginUser.php?"
 private const val WEBSERVICE_DEFAULT_USER = "BusFucker"
 
 class WebServiceLink constructor(receiver: WebServiceReceiver) {
@@ -104,6 +106,53 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
         })
     }
 
+    // Users
+    fun addUser(username: String, email: String, password: String) {
+
+        // Execute
+        val call = service.addUser(username, email, password)
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                val statusCode: Int = response.code()
+
+                if (!response.isSuccessful) {
+                    Log.e("WebService", "Error code $statusCode while adding new user")
+                    _receiver.addSuccessful(false)
+                } else {
+                    _receiver.addSuccessful(true)
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, err: Throwable) {
+                Log.e("WebService", err.message, err)
+                _receiver.addSuccessful(false)
+            }
+        })
+    }
+
+    fun loginUser(username: String, password: String) {
+
+        // Execute
+        val call = service.loginUser(username, password)
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                val statusCode: Int = response.code()
+
+                if (!response.isSuccessful) {
+                    Log.e("WebService", "Error code $statusCode while adding new user")
+                    _receiver.addSuccessful(false)
+                } else {
+                    _receiver.addSuccessful(true)
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, err: Throwable) {
+                Log.e("WebService", err.message, err)
+                _receiver.addSuccessful(false)
+            }
+        })
+    }
+
     companion object {
         private var moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         private var retrofit2 = Retrofit.Builder().baseUrl(WEBSERVICE_ADDRESS)
@@ -135,4 +184,19 @@ interface WebServiceAPI {
 
     @GET(WEBSERVICE_GET_USERPICS)
     fun getUserPics(@Query("user_id") uid: Long, @Query("station_id") id: Long) : Call<List<UserPic>>
+
+    // Register new user
+    @POST(WEBSERVICE_ADD_USER)
+    fun addUser(
+        @Query("username") username: String,
+        @Query("mail") mail: String,
+        @Query("password") password: String
+    ) : Call<Boolean>
+
+    // Log in user
+    @POST(WEBSERVICE_LOGIN_USER)
+    fun loginUser(
+        @Query("username") username: String,
+        @Query("password") password: String
+    ) : Call<Boolean>
 }
