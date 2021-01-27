@@ -17,6 +17,7 @@ import java.io.File
 private const val WEBSERVICE_ADDRESS = "http://90.45.23.115:8080/"
 private const val WEBSERVICE_GET_POSTS = "getPost.php?"
 private const val WEBSERVICE_ADD_POSTS = "addPost.php"
+private const val WEBSERVICE_DEL_POSTS = "delPost.php?"
 private const val WEBSERVICE_GET_USERPICS = "getUserPics.php?"
 private const val WEBSERVICE_ADD_USER = "addUser.php?"
 private const val WEBSERVICE_LOGIN_USER = "loginUser.php?"
@@ -27,9 +28,9 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
     private val _receiver: WebServiceReceiver = receiver
 
     // Posts
-    fun getPosts(post_id: Long = Long.MIN_VALUE) {
-        val call = if (post_id != Long.MIN_VALUE)
-            service.getPosts(post_id) else
+    fun getPosts(postId: Long = Long.MIN_VALUE) {
+        val call = if (postId != Long.MIN_VALUE)
+            service.getPosts(postId) else
             service.getPosts()
 
         call.enqueue(object : Callback<List<Post>> {
@@ -50,12 +51,12 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
         })
     }
 
-    fun addPost(user_id: Int, station_id: Long, title: String, imgPath: Uri) {
+    fun addPost(userId: Int, stationId: Long, title: String, imgPath: Uri) {
         if (imgPath.path?.isEmpty() == true) return
 
         // Prepare the query
-        val requestUserId = RequestBody.create(MultipartBody.FORM, user_id.toString())
-        val requestStationId = RequestBody.create(MultipartBody.FORM, station_id.toString())
+        val requestUserId = RequestBody.create(MultipartBody.FORM, userId.toString())
+        val requestStationId = RequestBody.create(MultipartBody.FORM, stationId.toString())
         val requestTitle = RequestBody.create(MultipartBody.FORM, title)
 
         val file = File(imgPath.path!!)
@@ -83,11 +84,34 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
         })
     }
 
+    fun delPost(userId: Long, postId: Long) {
+        val call = service.delPost(userId, postId)
+
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                val statusCode: Int = response.code()
+                val done: Boolean? = response.body()
+
+                if (!response.isSuccessful) {
+                    Log.e("WebService", "Error code $statusCode while deleting post")
+                    _receiver.deleteSuccessful(false)
+                } else {
+                    _receiver.deleteSuccessful(done ?: false)
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, err: Throwable) {
+                Log.e("WebService", err.message, err)
+                _receiver.deleteSuccessful(false)
+            }
+        })
+    }
+
     // User pics
-    fun getUserPics(user_id: Long, station_id: Long = Long.MIN_VALUE) {
-        val call = if (station_id != Long.MIN_VALUE)
-            service.getUserPics(user_id, station_id) else
-            service.getUserPics(user_id)
+    fun getUserPics(userId: Long, stationId: Long = Long.MIN_VALUE) {
+        val call = if (stationId != Long.MIN_VALUE)
+            service.getUserPics(userId, stationId) else
+            service.getUserPics(userId)
 
         call.enqueue(object : Callback<List<UserPic>> {
             override fun onResponse(call: Call<List<UserPic>>, response: Response<List<UserPic>>) {
@@ -178,6 +202,9 @@ interface WebServiceAPI {
         @Part("title") title: RequestBody,
         @Part file: MultipartBody.Part
     ) : Call<ResponseBody>
+
+    @GET(WEBSERVICE_DEL_POSTS)
+    fun delPost(@Query("user_id") uid: Long, @Query("post_id") id: Long) : Call<Boolean>
 
     // User pics
     @GET(WEBSERVICE_GET_PICS_OF)

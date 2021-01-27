@@ -55,9 +55,12 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_delete_forever_24px"
             android:background="@drawable/border_only_button"
-            android:tint="@color/red_500"
+            android:tint="@drawable/border_only_button_tint"
             tools:ignore="RelativeOverlap"
-            android:contentDescription="@string/post_delete_btn_alt" />
+            android:contentDescription="@string/post_delete_btn_alt"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 </LinearLayout>

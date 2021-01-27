@@ -14,6 +14,13 @@
     <string name="post_likes_count_placeholder">0</string>
     <string name="post_view_station_btn">View station</string>
     <string name="post_delete_btn_alt">Delete</string>
+    <string name="post_delete_confirm_title">Confirmation</string>
+    <string name="post_delete_confirm">Are you sure to delete this post ?</string>
+    <string name="post_delete_confirm__yes_btn">Yes</string>
+    <string name="post_delete_confirm__no_btn">No</string>
+    <string name="post_delete_error_title">Error while deleting post</string>
+    <string name="post_delete_error">Unable to delete the selected post. Please retry later</string>
+    <string name="post_delete_error_btn">OK</string>
 
     <!-- Station -->
     <string name="tabs_stations_map">Map</string>

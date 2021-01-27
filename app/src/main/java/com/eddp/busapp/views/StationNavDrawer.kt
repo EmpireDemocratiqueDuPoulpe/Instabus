@@ -74,9 +74,7 @@ class StationNavDrawer : NavigationView, WebServiceReceiver {
     private lateinit var _userPicProgressBar: ProgressBar
 
     private lateinit var _userPicRecyclerView: RecyclerView
-    private val _userPicAdapter = UserPicAdapter { position, item ->
-        //onItemClick(position, item)
-    }
+    private lateinit var _userPicAdapter: UserPicAdapter
 
     init {
         this._webServiceLink = WebServiceLink(this)
@@ -107,6 +105,7 @@ class StationNavDrawer : NavigationView, WebServiceReceiver {
                 GridSpacingItemDecoration(1, 20, true)
         )
 
+        this._userPicAdapter = UserPicAdapter(context)
         this._userPicRecyclerView.adapter = this._userPicAdapter
 
         this._isInitialized = true
