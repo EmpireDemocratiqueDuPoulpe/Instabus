@@ -133,22 +133,27 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
 
     // Users
     fun addUser(username: String, email: String, password: String) {
+        // Prepare the query
+        val requestUsername = RequestBody.create(MultipartBody.FORM, username)
+        val requestEmail = RequestBody.create(MultipartBody.FORM, email)
+        val requestPassword = RequestBody.create(MultipartBody.FORM, password)
 
         // Execute
-        val call = service.addUser(username, email, password)
-        call.enqueue(object : Callback<Boolean> {
-            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+        val call = service.addUser(requestUsername, requestEmail, requestPassword)
+        call.enqueue(object : Callback<RegisterResponse> {
+            override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 val statusCode: Int = response.code()
+                val resp: RegisterResponse? = response.body()
 
-                if (!response.isSuccessful) {
+                if (resp != null) {
+                    _receiver.addSuccessful(resp.status, resp.err ?: "")
+                } else {
                     Log.e("WebService", "Error code $statusCode while adding new user")
                     _receiver.addSuccessful(false)
-                } else {
-                    _receiver.addSuccessful(true)
                 }
             }
 
-            override fun onFailure(call: Call<Boolean>, err: Throwable) {
+            override fun onFailure(call: Call<RegisterResponse>, err: Throwable) {
                 Log.e("WebService", err.message, err)
                 _receiver.addSuccessful(false)
             }
@@ -214,12 +219,13 @@ interface WebServiceAPI {
     fun getUserPics(@Query("user_id") uid: Long, @Query("station_id") id: Long) : Call<List<UserPic>>
 
     // Register new user
+    @Multipart
     @POST(WEBSERVICE_ADD_USER)
     fun addUser(
-        @Query("username") username: String,
-        @Query("mail") mail: String,
-        @Query("password") password: String
-    ) : Call<Boolean>
+        @Part("username") username: RequestBody,
+        @Part("mail") mail: RequestBody,
+        @Part("password") password: RequestBody
+    ) : Call<RegisterResponse>
 
     // Log in user
     @POST(WEBSERVICE_LOGIN_USER)
