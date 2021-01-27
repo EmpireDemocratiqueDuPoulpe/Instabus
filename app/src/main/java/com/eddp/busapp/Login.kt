@@ -43,6 +43,8 @@ class Login: Fragment(), WebServiceReceiver {
             this._activity = (activity as AuthActivity)
         }
 
+        this._activity?.setToolbarTitle(R.string.auth_login_title)
+
         // Views
         initFields(view)
 

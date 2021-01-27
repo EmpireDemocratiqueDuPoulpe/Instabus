@@ -58,6 +58,8 @@ class Register : Fragment(), WebServiceReceiver {
             this._activity = (activity as AuthActivity)
         }
 
+        this._activity?.setToolbarTitle(R.string.auth_register_title)
+
         // Views
         initFields(view)
 
