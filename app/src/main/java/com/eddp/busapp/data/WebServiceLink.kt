@@ -19,7 +19,8 @@ private const val WEBSERVICE_GET_POSTS = "getPost.php?"
 private const val WEBSERVICE_ADD_POSTS = "addPost.php"
 private const val WEBSERVICE_DEL_POSTS = "delPost.php?"
 private const val WEBSERVICE_GET_USERPICS = "getUserPics.php?"
-private const val WEBSERVICE_ADD_USER = "addUser.php?"
+private const val WEBSERVICE_ADD_LIKE = "addLike.php"
+private const val WEBSERVICE_ADD_USER = "addUser.php"
 private const val WEBSERVICE_LOGIN_USER = "loginUser.php?"
 private const val WEBSERVICE_GET_PICS_OF = "getPicsOf.php?"
 private const val WEBSERVICE_DEFAULT_USER = "BusFucker"
@@ -131,6 +132,34 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
         })
     }
 
+    // Likes
+    fun addLike(userId: Long, postId: Long) {
+        // Prepare the query
+        val requestUserId = RequestBody.create(MultipartBody.FORM, userId.toString())
+        val requestPostId = RequestBody.create(MultipartBody.FORM, postId.toString())
+
+        // Execute
+        val call = service.addLike(requestUserId, requestPostId)
+        call.enqueue(object : Callback<LikeResponse> {
+            override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
+                val statusCode: Int = response.code()
+                val resp: LikeResponse? = response.body()
+
+                if (resp != null) {
+                    _receiver.addSuccessful(resp.add, resp.count)
+                } else {
+                    Log.e("WebService", "Error code $statusCode while changing like")
+                    _receiver.addSuccessful(false)
+                }
+            }
+
+            override fun onFailure(call: Call<LikeResponse>, err: Throwable) {
+                Log.e("WebService", err.message, err)
+                _receiver.addSuccessful(false)
+            }
+        })
+    }
+
     // Users
     fun addUser(username: String, email: String, password: String) {
         // Prepare the query
@@ -218,7 +247,15 @@ interface WebServiceAPI {
     @GET(WEBSERVICE_GET_USERPICS)
     fun getUserPics(@Query("user_id") uid: Long, @Query("station_id") id: Long) : Call<MutableList<UserPic>>
 
-    // Register new user
+    // Likes
+    @Multipart
+    @POST(WEBSERVICE_ADD_LIKE)
+    fun addLike(
+        @Part("user_id") uid: RequestBody,
+        @Part("post_id") postId: RequestBody,
+    ) : Call<LikeResponse>
+
+    // User
     @Multipart
     @POST(WEBSERVICE_ADD_USER)
     fun addUser(
@@ -227,7 +264,6 @@ interface WebServiceAPI {
         @Part("password") password: RequestBody
     ) : Call<RegisterResponse>
 
-    // Log in user
     @POST(WEBSERVICE_LOGIN_USER)
     fun loginUser(
         @Query("username") username: String,
