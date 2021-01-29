@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintDimensionRatio="1:0.5"
-        android:background="@color/purple_500"
+        android:background="@color/somehow_white"
         android:contentDescription="@string/app_logo_alt" />
 
     <TextView
@@ -102,7 +102,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:text="@string/auth_register_btn"
-        android:textColor="@color/white"
+        android:textColor="@color/btn_text_color"
         android:textAllCaps="false"
         android:visibility="visible"/>
 
@@ -127,6 +127,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:text="@string/auth_login_link"
-        android:textColor="@color/teal_200"/>
+        android:textColor="@color/deep_orange_700"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
