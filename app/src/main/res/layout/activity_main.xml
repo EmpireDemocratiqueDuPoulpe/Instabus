@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/purple_500"
+            android:background="@color/green_500"
             app:itemIconTint="@drawable/bottom_nav_bar_colors"
             app:itemTextColor="@drawable/bottom_nav_bar_colors"
             app:menu="@menu/bottom_nav_bar_menu"

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:text="@string/add_pic_title"
-            android:textColor="@color/teal_200"
+            android:textColor="@color/deep_orange_700"
             android:textStyle="bold"/>
 
         <!-- Img -->
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
-            android:background="@color/purple_900">
+            android:background="@color/white_but_not_exactly">
 
             <ImageView
                 android:id="@+id/new_img_container"
@@ -51,7 +51,8 @@
             android:layout_marginTop="10dp"
             android:inputType="textMultiLine"
             android:hint="@string/add_pic_edit_text_placeholder"
-            android:maxLength="255"/>
+            android:maxLength="255"
+            app:backgroundTint="@color/icon_tint"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -64,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="@string/add_pic_btn"/>
+                android:text="@string/add_pic_btn"
+                android:textColor="@color/btn_text_color"/>
 
             <ProgressBar
                 android:id="@+id/add_picture_loading"
