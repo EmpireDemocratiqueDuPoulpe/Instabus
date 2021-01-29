@@ -188,6 +188,10 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
                 startActivity(Intent(this, SettingsActivity::class.java))
                 true
             }
+            R.id.toolbar_menu_refresh -> {
+                // Todo
+                false
+            }
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -237,6 +241,11 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
                 Log.e("ERROR", err.message, err)
             }
         })
+    }
+
+    fun reloadPosts() {
+        this._posts = ArrayList()
+        this._webServiceLink?.getPosts()
     }
 
     // Observable

@@ -24,10 +24,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserPicAdapter(context: Context, hideDelete: Boolean = true)
+class UserPicAdapter(context: Context, hideDelete: Boolean = true, deleteCallback : ((item: UserPic) -> Unit)? = null)
     : ListAdapter<UserPic, RecyclerView.ViewHolder>(UserPicDiffCallback()) {
     private val _context = context
     private val _hideDelete = hideDelete
+    private val _deleteCallback = deleteCallback
     private val _adapterCoroutine = CoroutineScope(Dispatchers.Default)
 
     // Setters
@@ -41,7 +42,7 @@ class UserPicAdapter(context: Context, hideDelete: Boolean = true)
 
     // Views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return UserPicViewHolder.from(parent, this._context, this._hideDelete)
+        return UserPicViewHolder.from(parent, this._context, this._hideDelete, this._deleteCallback)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -64,13 +65,24 @@ class UserPicDiffCallback : DiffUtil.ItemCallback<UserPic>() {
     }
 }
 
-class UserPicViewHolder(view: View, context: Context, hideDelete: Boolean) : RecyclerView.ViewHolder(view), WebServiceReceiver {
+class UserPicViewHolder(
+    view: View,
+    context: Context,
+    hideDelete: Boolean,
+    deleteCallback : ((item: UserPic) -> Unit)?
+) : RecyclerView.ViewHolder(view), WebServiceReceiver {
     private var _webServiceLink = WebServiceLink(this)
+
     private var _context = context
     private val _hideDelete = hideDelete
+    private val _deleteCallback = deleteCallback
     private val _v = view
 
+    private var _userPic: UserPic? = null
+
     fun bind(userPic: UserPic) {
+        this._userPic = userPic
+
         // Set text
         this._v.findViewById<TextView>(R.id.user_pic_title).text = userPic.title
         this._v.findViewById<TextView>(R.id.user_pic_likes_count).text = userPic.likes.toString()
@@ -110,7 +122,9 @@ class UserPicViewHolder(view: View, context: Context, hideDelete: Boolean) : Rec
         super.deleteSuccessful(success)
 
         if (success) {
-            //this._webServiceLink.getPosts()
+            if (this._deleteCallback != null && this._userPic != null) {
+                this._deleteCallback.invoke(this._userPic!!)
+            }
         } else {
             AlertDialog
                 .Builder(this._context)
@@ -122,12 +136,17 @@ class UserPicViewHolder(view: View, context: Context, hideDelete: Boolean) : Rec
     }
 
     companion object {
-        fun from(parent: ViewGroup, context: Context, hideDelete: Boolean): UserPicViewHolder {
+        fun from(
+            parent: ViewGroup,
+            context: Context,
+            hideDelete: Boolean,
+            deleteCallback : ((item: UserPic) -> Unit)?
+        ) : UserPicViewHolder {
             val v: View = LayoutInflater
                     .from(parent.context)
                     .inflate(R.layout.user_pic_recycler_view_item, parent, false)
 
-            return UserPicViewHolder(v, context, hideDelete)
+            return UserPicViewHolder(v, context, hideDelete, deleteCallback)
         }
     }
 }

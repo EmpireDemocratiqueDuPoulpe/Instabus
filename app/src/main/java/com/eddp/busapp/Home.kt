@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eddp.busapp.data.Post
 import com.eddp.busapp.interfaces.AsyncDataObserver
 import com.eddp.busapp.views.recycler_view.PostAdapter
@@ -14,7 +15,8 @@ import com.eddp.busapp.views.recycler_view.PostAdapter
 class Home : Fragment(), AsyncDataObserver {
     private lateinit var _activity: MainActivity
 
-    private var _postRecyclerView: RecyclerView? = null
+    private lateinit var _swipeToRefresh: SwipeRefreshLayout
+    private lateinit var _postRecyclerView: RecyclerView
     private lateinit var _postAdapter: PostAdapter
 
     // Views
@@ -44,11 +46,15 @@ class Home : Fragment(), AsyncDataObserver {
     }
 
     private fun fillPostRecyclerView(view: View) {
+        // Recycler view
         this._postRecyclerView = view.findViewById(R.id.post_recycler_view)
+        this._postRecyclerView.layoutManager = LinearLayoutManager(context)
+        this._postRecyclerView.adapter = this._postAdapter
 
-        if (this._postRecyclerView != null) {
-            this._postRecyclerView!!.layoutManager = LinearLayoutManager(context)
-            this._postRecyclerView!!.adapter = this._postAdapter
+        // Swipe to refresh
+        this._swipeToRefresh = view.findViewById(R.id.post_refresh_layout)
+        this._swipeToRefresh.setOnRefreshListener {
+            this._activity.reloadPosts()
         }
     }
 
@@ -58,6 +64,7 @@ class Home : Fragment(), AsyncDataObserver {
 
         if (posts != null) {
             this._postAdapter.setData(posts as MutableList<Post>)
+            this._swipeToRefresh.isRefreshing = false
         }
     }
 }

@@ -122,8 +122,8 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
         )
     }
 
-    override fun addSuccessful(success: Boolean) {
-        super.addSuccessful(success)
+    override fun addSuccessful(success: Boolean, message: String) {
+        super.addSuccessful(success, message)
 
         // Delete the saved picture
         if(this._imgPath.path != null){

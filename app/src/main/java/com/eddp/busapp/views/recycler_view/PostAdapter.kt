@@ -1,17 +1,24 @@
 package com.eddp.busapp.views.recycler_view
 
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.eddp.busapp.MainActivity
 import com.eddp.busapp.R
 import com.eddp.busapp.data.Post
+import com.eddp.busapp.data.WebServiceLink
 import com.eddp.busapp.interfaces.AsyncDataObserver
+import com.eddp.busapp.interfaces.WebServiceReceiver
 import com.eddp.busapp.views.PictureHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,9 +68,12 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
 }
 
 class PostViewHolder(activity: MainActivity, view: View)
-    : RecyclerView.ViewHolder(view), AsyncDataObserver {
+    : RecyclerView.ViewHolder(view), AsyncDataObserver, WebServiceReceiver {
+    private var _webServiceLink = WebServiceLink(this)
     private val _activity = activity
+
     private val _v = view
+    private lateinit var _likes: TextView
 
     private var _post: Post? = null
 
@@ -105,7 +115,13 @@ class PostViewHolder(activity: MainActivity, view: View)
             .addRawFallback(R.raw.missing_picture)
             .load()
 
-        // Add button event listener
+        // Add likes
+        this._likes = this._v.findViewById(R.id.post_likes_count)
+        this._likes.setOnClickListener {
+            this._webServiceLink.addLike(1, post.post_id.toLong())
+        }
+
+        // Add view station button event listener
         val viewStationBtn: Button = this._v.findViewById(R.id.post_view_station_btn)
 
         if (station != null) {
@@ -123,6 +139,33 @@ class PostViewHolder(activity: MainActivity, view: View)
         if (this._post != null) {
             fillView(this._post!!)
         }
+    }
+
+    override fun addSuccessful(success: Boolean, message: String) {
+        super.addSuccessful(success, message)
+
+        // Set drawable
+        val size: Rect = this._likes.compoundDrawables.first().bounds
+        val drawable: Drawable?
+
+        if (success) {
+            drawable = ContextCompat.getDrawable(this._activity, R.drawable.ic_favorite_24px)
+                    ?.let { DrawableCompat.wrap(it) }
+
+            if (drawable != null) {
+                DrawableCompat.setTint(drawable, ContextCompat.getColor(this._activity, R.color.red_500))
+            }
+        } else {
+            drawable = ContextCompat.getDrawable(this._activity, R.drawable.ic_favorite_border_24px)
+                    ?.let { DrawableCompat.wrap(it) }
+        }
+
+        drawable?.bounds = size
+
+        this._likes.setCompoundDrawables(drawable, null, null, null)
+
+        // Set count
+        if (message.isNotEmpty()) this._likes.text = message
     }
 
     companion object {
