@@ -1,11 +1,13 @@
 package com.eddp.busapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -22,9 +24,21 @@ class Login: Fragment(), WebServiceReceiver {
     private lateinit var _usernameField: EditText
     private lateinit var _passwordField: EditText
     private lateinit var _loginBtn: Button
+    private lateinit var _loginLoading: ProgressBar
     private lateinit var _registerLink: TextView
 
     private var _webServiceLink = WebServiceLink(this)
+
+    // Setters
+    private fun setLoading(loading: Boolean) {
+        if (loading) {
+            this._loginBtn.visibility = View.INVISIBLE
+            this._loginLoading.visibility = View.VISIBLE
+        } else {
+            this._loginBtn.visibility = View.VISIBLE
+            this._loginLoading.visibility = View.INVISIBLE
+        }
+    }
 
     // Views
     override fun onCreateView(
@@ -59,6 +73,7 @@ class Login: Fragment(), WebServiceReceiver {
 
         this._loginBtn = view.findViewById(R.id.login_button)
         this._loginBtn.setOnClickListener { logIn() }
+        this._loginLoading = view.findViewById(R.id.login_loading)
 
         this._registerLink = view.findViewById(R.id.register_link)
         this._registerLink.setOnClickListener { goToRegisterPage() }
@@ -66,6 +81,7 @@ class Login: Fragment(), WebServiceReceiver {
 
     // Log in
     private fun logIn() {
+        setLoading(true)
         removeError()
 
         if (this._activity == null)
@@ -116,16 +132,26 @@ class Login: Fragment(), WebServiceReceiver {
         this._navController.navigate(R.id.action_login_to_register)
     }
 
-    private fun goToMainActivity() {}
+    private fun goToMainActivity() {
+        this._activity?.isConnected(
+            this._usernameField.text.toString(),
+            this._passwordField.text.toString()
+        )
+    }
 
-    // Web service
-    override fun addSuccessful(success: Boolean, message: String) {
-        super.addSuccessful(success, message)
+    override fun onLogin(loggedIn: Boolean, err: String) {
+        super.onLogin(loggedIn, err)
 
-        if(success) {
+        if (loggedIn) {
             goToMainActivity()
         } else {
-            showError(this._activity!!.getString(R.string.auth_err_unknown_login))
+            if (err.isNotEmpty()) {
+                showError(err)
+            } else {
+                showError(this._activity!!.getString(R.string.auth_err_unknown_login))
+            }
+
+            setLoading(false)
         }
     }
 }

@@ -8,4 +8,5 @@ interface WebServiceReceiver {
     fun setUserPics(userPics: MutableList<UserPic>?) {}
     fun addSuccessful(success: Boolean, message: String = "") {}
     fun deleteSuccessful(success: Boolean) {}
+    fun onLogin(loggedIn: Boolean, err: String = "") {}
 }

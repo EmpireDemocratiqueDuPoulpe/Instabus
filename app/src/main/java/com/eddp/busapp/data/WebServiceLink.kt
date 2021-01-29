@@ -21,7 +21,7 @@ private const val WEBSERVICE_DEL_POSTS = "delPost.php?"
 private const val WEBSERVICE_GET_USERPICS = "getUserPics.php?"
 private const val WEBSERVICE_ADD_LIKE = "addLike.php"
 private const val WEBSERVICE_ADD_USER = "addUser.php"
-private const val WEBSERVICE_LOGIN_USER = "loginUser.php?"
+private const val WEBSERVICE_LOGIN_USER = "loginUser.php"
 private const val WEBSERVICE_GET_PICS_OF = "getPicsOf.php?"
 private const val WEBSERVICE_DEFAULT_USER = "BusFucker"
 
@@ -140,6 +140,7 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
 
         // Execute
         val call = service.addLike(requestUserId, requestPostId)
+
         call.enqueue(object : Callback<LikeResponse> {
             override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
                 val statusCode: Int = response.code()
@@ -169,6 +170,7 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
 
         // Execute
         val call = service.addUser(requestUsername, requestEmail, requestPassword)
+
         call.enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 val statusCode: Int = response.code()
@@ -190,24 +192,29 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
     }
 
     fun loginUser(username: String, password: String) {
+        // Prepare the query
+        val requestUsername = RequestBody.create(MultipartBody.FORM, username)
+        val requestPassword = RequestBody.create(MultipartBody.FORM, password)
 
         // Execute
-        val call = service.loginUser(username, password)
-        call.enqueue(object : Callback<Boolean> {
-            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                val statusCode: Int = response.code()
+        val call = service.loginUser(requestUsername, requestPassword)
 
-                if (!response.isSuccessful) {
-                    Log.e("WebService", "Error code $statusCode while adding new user")
-                    _receiver.addSuccessful(false)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                val statusCode: Int = response.code()
+                val resp: LoginResponse? = response.body()
+
+                if (resp != null) {
+                    _receiver.onLogin(resp.status, resp.err ?: "")
                 } else {
-                    _receiver.addSuccessful(true)
+                    Log.e("WebService", "Error code $statusCode while logging in user")
+                    _receiver.onLogin(false)
                 }
             }
 
-            override fun onFailure(call: Call<Boolean>, err: Throwable) {
+            override fun onFailure(call: Call<LoginResponse>, err: Throwable) {
                 Log.e("WebService", err.message, err)
-                _receiver.addSuccessful(false)
+                _receiver.onLogin(false, err.message ?: "")
             }
         })
     }
@@ -264,9 +271,10 @@ interface WebServiceAPI {
         @Part("password") password: RequestBody
     ) : Call<RegisterResponse>
 
+    @Multipart
     @POST(WEBSERVICE_LOGIN_USER)
     fun loginUser(
-        @Query("username") username: String,
-        @Query("password") password: String
-    ) : Call<Boolean>
+        @Part("username") username: RequestBody,
+        @Part("password") password: RequestBody
+    ) : Call<LoginResponse>
 }

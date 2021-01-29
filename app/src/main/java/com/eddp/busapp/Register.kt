@@ -159,14 +159,18 @@ class Register : Fragment(), WebServiceReceiver {
         this._navController.navigate(R.id.action_register_to_login)
     }
 
-    private fun goToMainActivity() {}
+    private fun goToMainActivity() {
+        this._activity?.isConnected(
+            this._usernameField.text.toString(),
+            this._passwordField.text.toString()
+        )
+    }
 
     // Web service
     override fun addSuccessful(success: Boolean, message: String) {
         super.addSuccessful(success, message)
-        setLoading(false)
 
-        if(success) {
+        if (success) {
             goToMainActivity()
         } else {
             if (message.isNotEmpty()) {
@@ -174,6 +178,8 @@ class Register : Fragment(), WebServiceReceiver {
             } else {
                 showError(this._activity!!.getString(R.string.auth_err_unknown_register))
             }
+
+            setLoading(false)
         }
     }
 }

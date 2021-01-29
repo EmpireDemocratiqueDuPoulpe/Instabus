@@ -1,5 +1,6 @@
 package com.eddp.busapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
@@ -33,5 +34,14 @@ class AuthActivity : AppCompatActivity() {
         this._toolbar = findViewById(R.id.toolbar)
         this._toolbar.title = getString(R.string.app_name)
         setSupportActionBar(this._toolbar)
+    }
+
+    // Auth
+    fun isConnected(username: String, password: String) {
+        val intent = Intent(this, MainActivity::class.java)
+        //intent.putExtra("username", username)
+
+        startActivity(intent)
+        finish()
     }
 }
