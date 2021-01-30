@@ -1,11 +1,40 @@
 <resources>
     <!-- App -->
-    <string name="app_name">Bus App</string>
+    <string name="app_name">InstaBus</string>
     <string name="app_logo_alt">App logo</string>
+
+    <!-- Toolbar -->
+    <string name="toolbar_settings">Settings</string>
+    <string name="toolbar_refresh">Refresh</string>
+    <string name="toolbar_share_button">Share</string>
+
+    <!-- Login / Register -->
+    <string name="auth_login_title">Log in</string>
+    <string name="auth_register_title">Register</string>
+    <string name="auth_username">Username</string>
+    <string name="auth_email">E-mail</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_confirm_password">Confirm password</string>
+    <string name="auth_login_btn">Log in</string>
+    <string name="auth_register_btn">Register</string>
+    <string name="auth_login_link"><u>Already signed in ?</u></string>
+    <string name="auth_register_link"><u>I do not have an account</u></string>
+    <string name="auth_err_empty_username">Please enter a valid username.</string>
+    <string name="auth_err_too_long_username">Username must not exceed 32 characters.</string>
+    <string name="auth_err_empty_email">Please enter a valid email.</string>
+    <string name="auth_err_empty_password">Please enter a valid password.</string>
+    <string name="auth_err_password_match">Passwords do not match.</string>
+    <string name="auth_err_unknown_login">Unknown error while logging in. Please try later.</string>
+    <string name="auth_err_unknown_register">Unknown error while registering your account. Please try later.</string>
 
     <!-- Main activity -->
     <string name="get_stations_error">Could not get bus stations. Try again later.</string>
     <string name="perms_refused_positive_btn">OK</string>
+
+    <!-- Bottom nav bar -->
+    <string name="bottom_nav_bar_home">Home</string>
+    <string name="bottom_nav_bar_stations">Stations</string>
+    <string name="bottom_nav_bar_user">Your page</string>
 
     <!-- Post -->
     <string name="post_title_placeholder">Post title</string>
@@ -50,11 +79,6 @@
     <string name="user_page_likes_count_title">Likes</string>
     <string name="user_page_likes_count_number">0</string>
 
-    <!-- Bottom nav bar -->
-    <string name="bottom_nav_bar_home">Home</string>
-    <string name="bottom_nav_bar_stations">Stations</string>
-    <string name="bottom_nav_bar_user">Your page</string>
-
     <!-- Camera -->
     <string name="cam_button_alt">Camera button</string>
 
@@ -90,41 +114,4 @@
     <string name="better_ui_summary_off">Makes the interface easier to use but bigger on the screen.</string>
     <string name="better_ui_summary_on">Makes the interface minimized and simplified (recommended).</string>
 
-    <!-- Toolbar -->
-    <string name="toolbar_settings">Settings</string>
-    <string name="toolbar_refresh">Refresh</string>
-    <string name="toolbar_share_button">Share</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-
-    <!-- Login / Register -->
-    <string name="auth_login_title">Log in</string>
-    <string name="auth_register_title">Register</string>
-    <string name="auth_username">Username</string>
-    <string name="auth_email">E-mail</string>
-    <string name="auth_password">Password</string>
-    <string name="auth_confirm_password">Confirm password</string>
-    <string name="auth_login_btn">Log in</string>
-    <string name="auth_register_btn">Register</string>
-    <string name="auth_login_link"><u>Already signed in ?</u></string>
-    <string name="auth_register_link"><u>I do not have an account</u></string>
-    <string name="auth_err_empty_username">Please enter a valid username.</string>
-    <string name="auth_err_too_long_username">Username must not exceed 32 characters.</string>
-    <string name="auth_err_empty_email">Please enter a valid email.</string>
-    <string name="auth_err_empty_password">Please enter a valid password.</string>
-    <string name="auth_err_password_match">Passwords do not matches.</string>
-    <string name="auth_err_unknown_login">Unknown error while logging in. Please try later.</string>
-    <string name="auth_err_unknown_register">Unknown error while registering your account. Please try later.</string>
 </resources>
