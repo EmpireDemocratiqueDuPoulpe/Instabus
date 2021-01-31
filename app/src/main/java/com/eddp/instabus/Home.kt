@@ -62,9 +62,8 @@ class Home : Fragment(), AsyncDataObserver {
     // Observer
     override fun onDataGet() {
         val posts: List<Post>? = this._activity.getPosts()
-        Log.d("PROUT", "New posts?")
+
         if (posts != null) {
-            Log.d("PROUT", "New posts")
             this._postAdapter.setData(posts as MutableList<Post>)
             this._swipeToRefresh.isRefreshing = false
         }

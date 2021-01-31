@@ -129,7 +129,7 @@ class StationNavDrawer : NavigationView, WebServiceReceiver {
     }
 
     private fun fillUserPics(stationId: Long) {
-        this._webServiceLink?.getUserPics(this._userId, stationId)
+        this._webServiceLink?.getUserPics(null, stationId)
     }
 
     fun emptyUserPics() {

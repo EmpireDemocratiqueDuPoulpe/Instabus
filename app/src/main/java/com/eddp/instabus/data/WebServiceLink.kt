@@ -24,7 +24,6 @@ private const val WEBSERVICE_HAS_USER_LIKED = "hasLikedPost.php?"
 private const val WEBSERVICE_ADD_USER = "addUser.php"
 private const val WEBSERVICE_LOGIN_USER = "loginUser.php"
 private const val WEBSERVICE_LOGIN_USER_TOKEN = "loginUserAuthToken.php"
-private const val WEBSERVICE_GET_PICS_OF = "getPicsOf.php?"
 
 class WebServiceLink constructor(receiver: WebServiceReceiver) {
     private val _receiver: WebServiceReceiver = receiver
@@ -110,12 +109,24 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
     }
 
     // User pics
-    fun getUserPics(userId: Long, stationId: Long = Long.MIN_VALUE) {
-        val call = if (stationId != Long.MIN_VALUE)
-            service.getUserPics(userId, stationId) else
-            service.getUserPics(userId)
+    fun getUserPics(userId: Long? = null, stationId: Long? = null) {
 
-        call.enqueue(object : Callback<MutableList<UserPic>> {
+        val call = when {
+            userId != null && stationId == null -> {
+                service.getUserPicsOfUser(userId)
+            }
+            userId == null && stationId != null -> {
+                service.getUserPicsOfStation(stationId)
+            }
+            userId != null && stationId != null -> {
+                service.getUserPics(userId, stationId)
+            }
+            else -> {
+                null
+            }
+        }
+
+        call?.enqueue(object : Callback<MutableList<UserPic>> {
             override fun onResponse(call: Call<MutableList<UserPic>>, response: Response<MutableList<UserPic>>) {
                 val statusCode: Int = response.code()
                 val userPics: MutableList<UserPic>? = response.body()
@@ -325,11 +336,14 @@ interface WebServiceAPI {
     fun delPost(@Query("user_id") uid: Long, @Query("post_id") id: Long) : Call<Boolean>
 
     // User pics
-    @GET(WEBSERVICE_GET_PICS_OF)
-    fun getUserPics(@Query("user_id") uid: Long) : Call<MutableList<UserPic>>
+    @GET(WEBSERVICE_GET_USERPICS)
+    fun getUserPicsOfUser(@Query("user_id") uid: Long) : Call<MutableList<UserPic>>
 
     @GET(WEBSERVICE_GET_USERPICS)
-    fun getUserPics(@Query("user_id") uid: Long, @Query("station_id") id: Long) : Call<MutableList<UserPic>>
+    fun getUserPicsOfStation(@Query("station_id") sid: Long) : Call<MutableList<UserPic>>
+
+    @GET(WEBSERVICE_GET_USERPICS)
+    fun getUserPics(@Query("user_id") uid: Long, @Query("station_id") sid: Long) : Call<MutableList<UserPic>>
 
     // Likes
     @Multipart
