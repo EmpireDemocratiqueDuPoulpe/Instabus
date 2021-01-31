@@ -44,6 +44,10 @@ class AuthActivity : AppCompatActivity() {
         setSupportActionBar(this._toolbar)
     }
 
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
+
     // Auth
     @SuppressLint("ApplySharedPref")
     fun isConnected(selector: String, authToken: String, userId: Int, username: String) {

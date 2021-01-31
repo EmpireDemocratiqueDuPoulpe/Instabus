@@ -1,11 +1,15 @@
 package com.eddp.busapp
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 
@@ -40,7 +44,10 @@ class SettingsActivity : AppCompatActivity() {
     }
 }
 
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment
+    : PreferenceFragmentCompat(),
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        Preference.OnPreferenceClickListener {
     private lateinit var _sharedPrefs: SharedPreferences
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -49,6 +56,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         // Listen for preferences change
         this._sharedPrefs = PreferenceManager.getDefaultSharedPreferences(activity)
         this._sharedPrefs.registerOnSharedPreferenceChangeListener(this)
+
+        // Log out
+        // Todo: Change to string values
+        val logOutBtn: Preference? = findPreference("log_out")
+
+        logOutBtn?.summary = "Connected as ${this._sharedPrefs.getString("username", "")}"
+        logOutBtn?.onPreferenceClickListener = this
     }
 
     override fun onDestroy() {
@@ -64,6 +78,18 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
+    override fun onPreferenceClick(preference: Preference?): Boolean {
+        return when (preference?.key) {
+            "log_out" -> {
+                logOut()
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    }
+
     private fun setTheme() {
         when (this._sharedPrefs.getString("theme", "light")) {
             "light" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
@@ -72,5 +98,18 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
 
         activity?.recreate()
+    }
+
+    @SuppressLint("ApplySharedPref")
+    private fun logOut() {
+        this._sharedPrefs.edit()
+            .putString("selector", "")
+            .putString("auth_token", "")
+            .putInt("user_id", Int.MIN_VALUE)
+            .putString("username", "")
+            .commit()
+
+        startActivity(Intent(activity, AuthActivity::class.java))
+        activity?.finish()
     }
 }
