@@ -25,11 +25,11 @@
     <string name="auth_err_empty_email">Veuillez renseigner un e-mail valide.</string>
     <string name="auth_err_empty_password">Veuillez renseigner un mot de passe valide.</string>
     <string name="auth_err_password_match">Les mots de passe ne correspondent pas.</string>
-    <string name="auth_err_unknown_login">Erreur de connexion inconnue. Merci de retenter plus tard.</string>
-    <string name="auth_err_unknown_register">Erreur d\'enregistrement inconnue. Merci de retenter plus tard.</string>
+    <string name="auth_err_unknown_login">Erreur de connexion inconnue. Veuillez retenter plus tard.</string>
+    <string name="auth_err_unknown_register">Erreur d\'enregistrement inconnue. Veuillez retenter plus tard.</string>
 
     <!-- Main activity -->
-    <string name="get_stations_error">Erreur dans la récupération des stations. Retentez plus tard.</string>
+    <string name="get_stations_error">Erreur dans la récupération des stations. Veuillez retenter plus tard.</string>
     <string name="perms_refused_positive_btn">OK</string>
 
     <!-- Bottom nav bar -->
@@ -51,7 +51,7 @@
     <string name="post_delete_confirm__yes_btn">Oui</string>
     <string name="post_delete_confirm__no_btn">Non</string>
     <string name="post_delete_error_title">Erreur de suppression du post</string>
-    <string name="post_delete_error">Impossible de supprimer ce post. Retentez plus tard.</string>
+    <string name="post_delete_error">Impossible de supprimer ce post. Veuillez retenter plus tard.</string>
     <string name="post_delete_error_btn">OK</string>
 
     <!-- Station -->
@@ -62,14 +62,14 @@
     <string name="station_name_placeholder">Nom de la station</string>
     <string name="station_street_name_placeholder">Adresse</string>
     <string name="station_city_placeholder">Ville</string>
-    <string name="station_buses_placeholder">Bus: E12 - X89 - P69</string>
+    <string name="station_buses_placeholder">Bus:</string>
     <string name="station_distance_placeholder">Distance: 0m</string>
     <string name="station_info">Appuyez pour plus d\'infos</string>
     <string name="station_concat_name">Station n°%1$d</string>
     <string name="station_concat_buses">Bus: %1$s</string>
     <string name="station_concat_distance">Distance: %1$s</string>
-    <string name="map_info_window_arrow_alt">flèche img</string>
-    <string name="map_info_window_info_alt">info img</string>
+    <string name="map_info_window_arrow_alt">ici</string>
+    <string name="map_info_window_info_alt">Info: </string>
     <string name="station_add_post_alt">+</string>
 
     <!-- User page -->
@@ -77,7 +77,7 @@
     <string name="user_page_username_placeholder">Nom d\'utilisateur</string>
     <string name="user_page_posts_count_title">Posts</string>
     <string name="user_page_posts_count_number">0</string>
-    <string name="user_page_likes_count_title">J\'aimes</string>
+    <string name="user_page_likes_count_title">J\'aime</string>
     <string name="user_page_likes_count_number">0</string>
 
     <!-- Camera -->
@@ -92,7 +92,7 @@
     <string name="cam_image_capture_error">Erreur de prise de photo</string>
     <string name="cam_unknown_error">Erreur inconnue. Échec de prise de la photo</string>
     <string name="cam_add_post_error_title">Erreur lors de l\'ajout du post</string>
-    <string name="cam_add_post_error">Nous ne pouvons pas ajouter votre post actuellement. Retentez plus tard ou contactez nous sur contact@busapp.com</string>
+    <string name="cam_add_post_error">Nous ne pouvons pas ajouter votre post actuellement. Veuillez retenter plus tard ou contactez nous sur contact@instabus.com</string>
     <string name="cam_add_post_error_positive_btn">OK</string>
 
     <!-- Camera add picture -->

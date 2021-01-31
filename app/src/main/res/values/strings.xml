@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App -->
     <string name="app_name">InstaBus</string>
@@ -61,14 +62,14 @@
     <string name="station_name_placeholder">Station name</string>
     <string name="station_street_name_placeholder">Address</string>
     <string name="station_city_placeholder">City</string>
-    <string name="station_buses_placeholder">Buses: E12 - X89 - P69</string>
+    <string name="station_buses_placeholder">Buses:</string>
     <string name="station_distance_placeholder">Distance: 0m</string>
     <string name="station_info">Click for more info</string>
     <string name="station_concat_name">Station n°%1$d</string>
     <string name="station_concat_buses">Buses: %1$s</string>
     <string name="station_concat_distance">Distance: %1$s</string>
-    <string name="map_info_window_arrow_alt">arrow img</string>
-    <string name="map_info_window_info_alt">info img</string>
+    <string name="map_info_window_arrow_alt">here</string>
+    <string name="map_info_window_info_alt">Info: </string>
     <string name="station_add_post_alt">+</string>
 
     <!-- User page -->
@@ -91,7 +92,7 @@
     <string name="cam_image_capture_error">Could not take photo</string>
     <string name="cam_unknown_error">Unknown error. Unable to take photo</string>
     <string name="cam_add_post_error_title">Error while adding post</string>
-    <string name="cam_add_post_error">Can\'t add your post right now. Try later or contact us at contact@busapp.com</string>
+    <string name="cam_add_post_error">Can\'t add your post right now. Try later or contact us at contact@instabus.com</string>
     <string name="cam_add_post_error_positive_btn">OK</string>
 
     <!-- Camera add picture -->
