@@ -2,7 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.eddp.busapp">
+    package="com.eddp.instabus">
 
     <uses-sdk tools:overrideLibrary="androidx.camera.view, androidx.camera.camera2, androidx.camera.lifecycle, androidx.camera.core"/>
 
@@ -23,22 +23,22 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BusApp"
+        android:theme="@style/Theme.Instabus"
         android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.eddp.instabus.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".AuthActivity"/>
-        <activity android:name=".CameraActivity"/>
-        <activity android:name=".SettingsActivity" android:label="@string/toolbar_settings"/>
+        <activity android:name="com.eddp.instabus.AuthActivity"/>
+        <activity android:name="com.eddp.instabus.CameraActivity"/>
+        <activity android:name="com.eddp.instabus.SettingsActivity" android:label="@string/toolbar_settings"/>
     </application>
 
 </manifest>

@@ -32,7 +32,7 @@
         android:textColor="@color/grey"/>
 
     <!-- Img -->
-    <com.eddp.busapp.views.PictureHolder
+    <com.eddp.instabus.views.PictureHolder
         android:id="@+id/post_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

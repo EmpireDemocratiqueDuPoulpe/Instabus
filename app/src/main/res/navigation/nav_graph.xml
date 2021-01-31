@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home2"
-        android:name="com.eddp.busapp.Home"
+        android:name="com.eddp.instabus.Home"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/stationsList"
-        android:name="com.eddp.busapp.StationsList"
+        android:name="com.eddp.instabus.StationsList"
         android:label="fragment_stations_list"
         tools:layout="@layout/fragment_stations_list" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/stationMap"
-        android:name="com.eddp.busapp.StationsMap"
+        android:name="com.eddp.instabus.StationsMap"
         android:label="fragment_station_map"
         tools:layout="@layout/fragment_stations_map" >
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/stationsViewPager"
-        android:name="com.eddp.busapp.StationsViewPager"
+        android:name="com.eddp.instabus.StationsViewPager"
         android:label="fragment_stations_view_pager"
         tools:layout="@layout/fragment_stations_view_pager" >
         <action
@@ -58,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.eddp.busapp.Settings"
+        android:name="com.eddp.instabus.Settings"
         android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settingsFragment_to_home2"
@@ -69,6 +69,6 @@
     </fragment>
     <fragment
         android:id="@+id/userPicDrawer"
-        android:name="com.eddp.busapp.UserPicDrawer"
+        android:name="com.eddp.instabus.UserPicDrawer"
         android:label="UserPicDrawer" />
 </navigation>

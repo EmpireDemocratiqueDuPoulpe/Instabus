@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.eddp.busapp.views.StationNavDrawerLayout
+<com.eddp.instabus.views.StationNavDrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -42,7 +42,7 @@
     </RelativeLayout>
 
     <!-- Station drawer -->
-    <com.eddp.busapp.views.StationNavDrawer
+    <com.eddp.instabus.views.StationNavDrawer
         android:id="@+id/drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -55,9 +55,9 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="false"
             android:layout_gravity="start"
-            android:name="com.eddp.busapp.UserPicDrawer"
+            android:name="com.eddp.instabus.UserPicDrawer"
             tools:layout="@layout/station_drawer"/>
 
-    </com.eddp.busapp.views.StationNavDrawer>
+    </com.eddp.instabus.views.StationNavDrawer>
 
-</com.eddp.busapp.views.StationNavDrawerLayout>
+</com.eddp.instabus.views.StationNavDrawerLayout>

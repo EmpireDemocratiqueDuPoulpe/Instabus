@@ -21,7 +21,7 @@
         android:ellipsize="end"/>
 
     <!-- Img -->
-    <com.eddp.busapp.views.PictureHolder
+    <com.eddp.instabus.views.PictureHolder
         android:id="@+id/user_pic_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

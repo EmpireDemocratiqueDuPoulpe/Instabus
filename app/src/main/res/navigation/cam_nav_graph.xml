@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/takePicture2"
-        android:name="com.eddp.busapp.TakePicture"
+        android:name="com.eddp.instabus.TakePicture"
         android:label="TakePicture" >
         <action
             android:id="@+id/action_takePicture2_to_addPicture2"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPicture2"
-        android:name="com.eddp.busapp.AddPicture"
+        android:name="com.eddp.instabus.AddPicture"
         android:label="fragment_add_picture"
         tools:layout="@layout/fragment_add_picture" />
 </navigation>

@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.eddp.busapp.Login"
+        android:name="com.eddp.instabus.Login"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/register"
-        android:name="com.eddp.busapp.Register"
+        android:name="com.eddp.instabus.Register"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
