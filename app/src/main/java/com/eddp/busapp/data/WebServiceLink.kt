@@ -177,16 +177,22 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
                 val resp: RegisterResponse? = response.body()
 
                 if (resp != null) {
-                    _receiver.addSuccessful(resp.status, resp.err ?: "")
+                    _receiver.onRegister(
+                            resp.status,
+                            resp.selector ?: "",
+                            resp.authToken ?: "",
+                            resp.userId ?: Int.MIN_VALUE,
+                            resp.username ?: "",
+                            resp.err ?: "")
                 } else {
                     Log.e("WebService", "Error code $statusCode while adding new user")
-                    _receiver.addSuccessful(false)
+                    _receiver.onRegister(false)
                 }
             }
 
             override fun onFailure(call: Call<RegisterResponse>, err: Throwable) {
                 Log.e("WebService", err.message, err)
-                _receiver.addSuccessful(false)
+                _receiver.onRegister(false, "", "", Int.MIN_VALUE, "", err.message.toString())
             }
         })
     }
