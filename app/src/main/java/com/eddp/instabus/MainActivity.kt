@@ -191,11 +191,12 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
                 true
             }
             R.id.toolbar_menu_refresh -> {
-                // Todo
-                false
+                reloadPosts()
+                true
             }
             else -> {
                 super.onOptionsItemSelected(item)
+                false
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.eddp.instabus
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,8 +62,9 @@ class Home : Fragment(), AsyncDataObserver {
     // Observer
     override fun onDataGet() {
         val posts: List<Post>? = this._activity.getPosts()
-
+        Log.d("PROUT", "New posts?")
         if (posts != null) {
+            Log.d("PROUT", "New posts")
             this._postAdapter.setData(posts as MutableList<Post>)
             this._swipeToRefresh.isRefreshing = false
         }
