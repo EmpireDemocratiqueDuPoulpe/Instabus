@@ -159,22 +159,18 @@ class Register : Fragment(), WebServiceReceiver {
         this._navController.navigate(R.id.action_register_to_login)
     }
 
-    private fun goToMainActivity() {
-        this._activity?.isConnected(
-            this._usernameField.text.toString(),
-            this._passwordField.text.toString()
-        )
+    private fun finishRegistering(selector: String, authToken: String, userId: Int, username: String) {
+        this._activity?.isConnected(selector, authToken, userId, username)
     }
 
-    // Web service
-    override fun addSuccessful(success: Boolean, message: String) {
-        super.addSuccessful(success, message)
+    override fun onRegister(registered: Boolean, selector: String, authToken: String, userId: Int, username: String, err: String) {
+        super.onRegister(registered, selector, authToken, userId, username, err)
 
-        if (success) {
-            goToMainActivity()
+        if (registered) {
+            finishRegistering(selector, authToken, userId, username)
         } else {
-            if (message.isNotEmpty()) {
-                showError(message)
+            if (err.isNotEmpty()) {
+                showError(err)
             } else {
                 showError(this._activity!!.getString(R.string.auth_err_unknown_register))
             }

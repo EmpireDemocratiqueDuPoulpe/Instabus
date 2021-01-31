@@ -20,4 +20,14 @@
 
     </PreferenceCategory>
 
+    <!-- Todo: Move text to strings.xml -->
+    <PreferenceCategory app:title="Account">
+
+        <Preference
+            android:title="Log out"
+            app:key="log_out"
+            app:summary="Connected as "/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

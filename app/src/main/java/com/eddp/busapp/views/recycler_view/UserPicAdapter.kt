@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -71,6 +72,7 @@ class UserPicViewHolder(
     hideDelete: Boolean,
     deleteCallback : ((item: UserPic) -> Unit)?
 ) : RecyclerView.ViewHolder(view), WebServiceReceiver {
+    private var _userId: Long = PreferenceManager.getDefaultSharedPreferences(context).getInt("user_id", Int.MIN_VALUE).toLong()
     private var _webServiceLink = WebServiceLink(this)
 
     private var _context = context
@@ -110,7 +112,7 @@ class UserPicViewHolder(
                     .setMessage(this._context.getString(R.string.post_delete_confirm))
                     .setNegativeButton(this._context.getString(R.string.post_delete_confirm__no_btn)) { _, _ -> }
                     .setPositiveButton(this._context.getString(R.string.post_delete_confirm__yes_btn)) { _, _ ->
-                        this._webServiceLink.delPost(1, userPic.post_id.toLong())
+                        this._webServiceLink.delPost(this._userId, userPic.post_id.toLong())
                     }
                     .show()
             }

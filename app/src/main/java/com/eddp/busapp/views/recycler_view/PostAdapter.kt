@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -69,6 +70,7 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
 
 class PostViewHolder(activity: MainActivity, view: View)
     : RecyclerView.ViewHolder(view), AsyncDataObserver, WebServiceReceiver {
+    private var _userId: Long = PreferenceManager.getDefaultSharedPreferences(activity).getInt("user_id", Int.MIN_VALUE).toLong()
     private var _webServiceLink = WebServiceLink(this)
     private val _activity = activity
 
@@ -104,7 +106,8 @@ class PostViewHolder(activity: MainActivity, view: View)
         this._v.findViewById<TextView>(R.id.post_title).text = post.title
         this._v.findViewById<TextView>(R.id.post_creation_date).text = post.creation_timestamp
         this._v.findViewById<TextView>(R.id.post_author).text = postUsername
-        this._v.findViewById<TextView>(R.id.post_likes_count).text = post.likes.toString()
+        this._likes = this._v.findViewById(R.id.post_likes_count)
+        this._likes.text = post.likes.toString()
 
         // Set station image
         val imageContainer: PictureHolder = this._v.findViewById(R.id.post_img)
@@ -116,9 +119,8 @@ class PostViewHolder(activity: MainActivity, view: View)
             .load()
 
         // Add likes
-        this._likes = this._v.findViewById(R.id.post_likes_count)
         this._likes.setOnClickListener {
-            this._webServiceLink.addLike(1, post.post_id.toLong())
+            this._webServiceLink.addLike(this._userId, post.post_id.toLong())
         }
 
         // Add view station button event listener

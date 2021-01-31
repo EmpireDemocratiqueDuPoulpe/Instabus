@@ -1,5 +1,6 @@
 package com.eddp.busapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -69,8 +70,10 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     // Views
     override fun onCreate(savedInstanceState: Bundle?) {
         this._sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+        this._webServiceLink = WebServiceLink(this)
 
         initTheme()
+        authenticateUser()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -82,7 +85,6 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         initViewPager()
 
         // Get data
-        this._webServiceLink = WebServiceLink(this)
         this._webServiceLink?.getPosts()
 
         getStationsFromAPI()
@@ -198,6 +200,11 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         }
     }
 
+    private fun goToAuthActivity() {
+        startActivity(Intent(this, AuthActivity::class.java))
+        finish()
+    }
+
     // Async data
     private fun getStationsFromAPI() {
         val moshi = Moshi.Builder()
@@ -268,9 +275,39 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     }
 
     // Web Service
+    private fun authenticateUser() {
+        if (intent.getBooleanExtra("loginFromCredentials", false)) return
+
+        val selector: String = this._sharedPrefs.getString("selector", "") ?: ""
+        val authToken: String = this._sharedPrefs.getString("auth_token", "") ?: ""
+
+        if (selector.isNotBlank()) {
+            this._webServiceLink?.loginUserWithAuthToken(selector, authToken)
+        } else {
+            goToAuthActivity()
+        }
+    }
+
     override fun setPosts(posts: List<Post>?) {
         this._posts = posts
         notifyGet()
+    }
+
+    @SuppressLint("ApplySharedPref")
+    override fun onLogin(loggedIn: Boolean, selector: String, authToken: String, userId: Int, username: String, err: String) {
+        super.onLogin(loggedIn, selector, authToken, userId, username, err)
+
+        if (!loggedIn) {
+            goToAuthActivity()
+        } else {
+            // Save auth token
+            this._sharedPrefs.edit()
+                .putString("selector", selector)
+                .putString("auth_token", authToken)
+                .putInt("user_id", userId)
+                .putString("username", username)
+                .commit()
+        }
     }
 
     companion object {

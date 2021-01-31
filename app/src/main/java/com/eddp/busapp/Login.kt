@@ -1,7 +1,7 @@
 package com.eddp.busapp
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -132,18 +132,15 @@ class Login: Fragment(), WebServiceReceiver {
         this._navController.navigate(R.id.action_login_to_register)
     }
 
-    private fun goToMainActivity() {
-        this._activity?.isConnected(
-            this._usernameField.text.toString(),
-            this._passwordField.text.toString()
-        )
+    private fun finishLogin(selector: String, authToken: String, userId: Int, username: String) {
+        this._activity?.isConnected(selector, authToken, userId, username)
     }
 
-    override fun onLogin(loggedIn: Boolean, err: String) {
-        super.onLogin(loggedIn, err)
+    override fun onLogin(loggedIn: Boolean, selector: String, authToken: String, userId: Int, username: String, err: String) {
+        super.onLogin(loggedIn, selector, authToken, userId, username, err)
 
         if (loggedIn) {
-            goToMainActivity()
+            finishLogin(selector, authToken, userId, username)
         } else {
             if (err.isNotEmpty()) {
                 showError(err)

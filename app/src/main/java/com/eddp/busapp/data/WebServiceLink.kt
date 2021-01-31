@@ -22,8 +22,8 @@ private const val WEBSERVICE_GET_USERPICS = "getUserPics.php?"
 private const val WEBSERVICE_ADD_LIKE = "addLike.php"
 private const val WEBSERVICE_ADD_USER = "addUser.php"
 private const val WEBSERVICE_LOGIN_USER = "loginUser.php"
+private const val WEBSERVICE_LOGIN_USER_TOKEN = "loginUserAuthToken.php"
 private const val WEBSERVICE_GET_PICS_OF = "getPicsOf.php?"
-private const val WEBSERVICE_DEFAULT_USER = "BusFucker"
 
 class WebServiceLink constructor(receiver: WebServiceReceiver) {
     private val _receiver: WebServiceReceiver = receiver
@@ -177,16 +177,22 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
                 val resp: RegisterResponse? = response.body()
 
                 if (resp != null) {
-                    _receiver.addSuccessful(resp.status, resp.err ?: "")
+                    _receiver.onRegister(
+                            resp.status,
+                            resp.selector ?: "",
+                            resp.authToken ?: "",
+                            resp.userId ?: Int.MIN_VALUE,
+                            resp.username ?: "",
+                            resp.err ?: "")
                 } else {
                     Log.e("WebService", "Error code $statusCode while adding new user")
-                    _receiver.addSuccessful(false)
+                    _receiver.onRegister(false)
                 }
             }
 
             override fun onFailure(call: Call<RegisterResponse>, err: Throwable) {
                 Log.e("WebService", err.message, err)
-                _receiver.addSuccessful(false)
+                _receiver.onRegister(false, "", "", Int.MIN_VALUE, "", err.message.toString())
             }
         })
     }
@@ -205,7 +211,14 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
                 val resp: LoginResponse? = response.body()
 
                 if (resp != null) {
-                    _receiver.onLogin(resp.status, resp.err ?: "")
+                    _receiver.onLogin(
+                        resp.status,
+                        resp.selector ?: "",
+                        resp.authToken ?: "",
+                        resp.userId ?: Int.MIN_VALUE,
+                        resp.username ?: "",
+                        resp.err ?: ""
+                    )
                 } else {
                     Log.e("WebService", "Error code $statusCode while logging in user")
                     _receiver.onLogin(false)
@@ -214,7 +227,42 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
 
             override fun onFailure(call: Call<LoginResponse>, err: Throwable) {
                 Log.e("WebService", err.message, err)
-                _receiver.onLogin(false, err.message ?: "")
+                _receiver.onLogin(false, "", "", Int.MIN_VALUE, "", err.message ?: "")
+            }
+        })
+    }
+
+    fun loginUserWithAuthToken(selector: String, authToken: String) {
+        // Prepare the query
+        val requestSelector = RequestBody.create(MultipartBody.FORM, selector)
+        val requestAuthToken = RequestBody.create(MultipartBody.FORM, authToken)
+
+        // Execute
+        val call = service.loginUserWithAuthToken(requestSelector, requestAuthToken)
+
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                val statusCode: Int = response.code()
+                val resp: LoginResponse? = response.body()
+
+                if (resp != null) {
+                    _receiver.onLogin(
+                        resp.status,
+                        resp.selector ?: "",
+                        resp.authToken ?: "",
+                        resp.userId ?: Int.MIN_VALUE,
+                        resp.username ?: "",
+                        resp.err ?: ""
+                    )
+                } else {
+                    Log.e("WebService", "Error code $statusCode while logging in user using his token")
+                    _receiver.onLogin(false)
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, err: Throwable) {
+                Log.e("WebService", err.message, err)
+                _receiver.onLogin(false, "", "", Int.MIN_VALUE, "", err.message ?: "")
             }
         })
     }
@@ -276,5 +324,12 @@ interface WebServiceAPI {
     fun loginUser(
         @Part("username") username: RequestBody,
         @Part("password") password: RequestBody
+    ) : Call<LoginResponse>
+
+    @Multipart
+    @POST(WEBSERVICE_LOGIN_USER_TOKEN)
+    fun loginUserWithAuthToken(
+        @Part("selector") selector: RequestBody,
+        @Part("auth_token") authToken: RequestBody
     ) : Call<LoginResponse>
 }

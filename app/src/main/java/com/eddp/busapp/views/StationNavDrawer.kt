@@ -13,6 +13,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -62,6 +63,7 @@ class StationNavDrawerLayout : DrawerLayout {
 }
 
 class StationNavDrawer : NavigationView, WebServiceReceiver {
+    private var _userId: Long = Long.MIN_VALUE
     private var _webServiceLink: WebServiceLink? = null
 
     private var _isInitialized = false
@@ -85,6 +87,9 @@ class StationNavDrawer : NavigationView, WebServiceReceiver {
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
     private fun initView() {
+        // User info
+        this._userId = PreferenceManager.getDefaultSharedPreferences(context).getInt("user_id", Int.MIN_VALUE).toLong()
+
         // Station info
         this._stationImg = findViewById(R.id.drawer_station_img)
         val inputStream: InputStream = resources.openRawResource(R.raw.bus_stop)
@@ -127,7 +132,7 @@ class StationNavDrawer : NavigationView, WebServiceReceiver {
     }
 
     private fun fillUserPics(stationId: Long) {
-        this._webServiceLink?.getUserPics(1, stationId)
+        this._webServiceLink?.getUserPics(this._userId, stationId)
     }
 
     fun emptyUserPics() {
