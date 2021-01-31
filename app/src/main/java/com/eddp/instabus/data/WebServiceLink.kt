@@ -14,7 +14,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import java.io.File
 
-private const val WEBSERVICE_ADDRESS = "http://90.45.23.115:8080/"
+private const val WEBSERVICE_ADDRESS = "http://lithium.v6.rocks:8080/"
 private const val WEBSERVICE_GET_POSTS = "getPost.php?"
 private const val WEBSERVICE_ADD_POSTS = "addPost.php"
 private const val WEBSERVICE_DEL_POSTS = "delPost.php?"
