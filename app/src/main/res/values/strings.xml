@@ -81,7 +81,6 @@
 
     <!-- Camera -->
     <string name="cam_button_alt">Camera button</string>
-
     <string name="cam_actionbar_title">Add post</string>
     <string name="cam_permission_refused_title">Camera permission refused</string>
     <string name="cam_permission_refused">The app cannot use the camera if you refuse the permission. You can change it in Settings > App > %1$s</string>
@@ -103,6 +102,7 @@
     <!-- Preference Titles -->
     <string name="settings_toolbar_title">Settings</string>
     <string name="interface_header">Interface</string>
+    <string name="account_header">Account</string>
 
     <!-- Interface Preferences -->
     <string name="theme_title">Theme</string>
@@ -114,4 +114,7 @@
     <string name="better_ui_summary_off">Makes the interface easier to use but bigger on the screen.</string>
     <string name="better_ui_summary_on">Makes the interface minimized and simplified (recommended).</string>
 
+    <!-- Account Preferences -->
+    <string name="log_out_title">Log out</string>
+    <string name="log_out_summary">Connected as %1$s</string>
 </resources>

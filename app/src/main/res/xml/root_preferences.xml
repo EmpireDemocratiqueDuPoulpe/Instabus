@@ -20,13 +20,12 @@
 
     </PreferenceCategory>
 
-    <!-- Todo: Move text to strings.xml -->
-    <PreferenceCategory app:title="Account">
+    <PreferenceCategory app:title="@string/account_header">
 
         <Preference
-            android:title="Log out"
+            android:title="@string/log_out_title"
             app:key="log_out"
-            app:summary="Connected as "/>
+            app:summary="@string/log_out_summary"/>
 
     </PreferenceCategory>
 

@@ -58,10 +58,12 @@ class SettingsFragment
         this._sharedPrefs.registerOnSharedPreferenceChangeListener(this)
 
         // Log out
-        // Todo: Change to string values
         val logOutBtn: Preference? = findPreference("log_out")
 
-        logOutBtn?.summary = "Connected as ${this._sharedPrefs.getString("username", "")}"
+        logOutBtn?.summary = String.format(
+            activity?.getString(R.string.log_out_summary) ?: "",
+            this._sharedPrefs.getString("username", "")
+        )
         logOutBtn?.onPreferenceClickListener = this
     }
 
