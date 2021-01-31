@@ -8,6 +8,7 @@ interface WebServiceReceiver {
     fun setUserPics(userPics: MutableList<UserPic>?) {}
     fun addSuccessful(success: Boolean, message: String = "") {}
     fun deleteSuccessful(success: Boolean) {}
+    fun hasLiked(liked: Boolean) {}
     fun onRegister(
             registered: Boolean,
             selector: String = "",

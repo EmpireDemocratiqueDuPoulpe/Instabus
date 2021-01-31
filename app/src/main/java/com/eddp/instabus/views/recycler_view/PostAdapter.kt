@@ -2,6 +2,7 @@ package com.eddp.instabus.views.recycler_view
 
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,6 +109,9 @@ class PostViewHolder(activity: MainActivity, view: View)
         this._likes = this._v.findViewById(R.id.post_likes_count)
         this._likes.text = post.likes.toString()
 
+        // Has liked?
+        this._webServiceLink.hasUserLiked(this._userId, post.post_id.toLong())
+
         // Set station image
         val imageContainer: PictureHolder = this._v.findViewById(R.id.post_img)
 
@@ -145,28 +149,36 @@ class PostViewHolder(activity: MainActivity, view: View)
     override fun addSuccessful(success: Boolean, message: String) {
         super.addSuccessful(success, message)
 
+        hasLiked(success)
+        if (message.isNotEmpty()) this._likes.text = message
+    }
+
+    override fun hasLiked(liked: Boolean) {
+        super.hasLiked(liked)
+
         // Set drawable
         val size: Rect = this._likes.compoundDrawables.first().bounds
         val drawable: Drawable?
 
-        if (success) {
+        if (liked) {
             drawable = ContextCompat.getDrawable(this._activity, R.drawable.ic_favorite_24px)
-                    ?.let { DrawableCompat.wrap(it) }
+                ?.let { DrawableCompat.wrap(it) }
 
             if (drawable != null) {
                 DrawableCompat.setTint(drawable, ContextCompat.getColor(this._activity, R.color.red_500))
             }
         } else {
             drawable = ContextCompat.getDrawable(this._activity, R.drawable.ic_favorite_border_24px)
-                    ?.let { DrawableCompat.wrap(it) }
+                ?.let { DrawableCompat.wrap(it) }
+
+            if (drawable != null) {
+                DrawableCompat.setTint(drawable, ContextCompat.getColor(this._activity, R.color.icon_tint))
+            }
         }
 
         drawable?.bounds = size
 
         this._likes.setCompoundDrawables(drawable, null, null, null)
-
-        // Set count
-        if (message.isNotEmpty()) this._likes.text = message
     }
 
     companion object {

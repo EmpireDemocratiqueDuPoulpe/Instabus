@@ -20,6 +20,7 @@ private const val WEBSERVICE_ADD_POSTS = "addPost.php"
 private const val WEBSERVICE_DEL_POSTS = "delPost.php?"
 private const val WEBSERVICE_GET_USERPICS = "getUserPics.php?"
 private const val WEBSERVICE_ADD_LIKE = "addLike.php"
+private const val WEBSERVICE_HAS_USER_LIKED = "hasLikedPost.php?"
 private const val WEBSERVICE_ADD_USER = "addUser.php"
 private const val WEBSERVICE_LOGIN_USER = "loginUser.php"
 private const val WEBSERVICE_LOGIN_USER_TOKEN = "loginUserAuthToken.php"
@@ -157,6 +158,34 @@ class WebServiceLink constructor(receiver: WebServiceReceiver) {
             override fun onFailure(call: Call<LikeResponse>, err: Throwable) {
                 Log.e("WebService", err.message, err)
                 _receiver.addSuccessful(false)
+            }
+        })
+    }
+
+    fun hasUserLiked(userId: Long, postId: Long) {
+        // Prepare the query
+        val requestUserId = RequestBody.create(MultipartBody.FORM, userId.toString())
+        val requestPostId = RequestBody.create(MultipartBody.FORM, postId.toString())
+
+        // Execute
+        val call = service.hasUserLiked(requestUserId, requestPostId)
+
+        call.enqueue(object : Callback<HasLikedResponse> {
+            override fun onResponse(call: Call<HasLikedResponse>, response: Response<HasLikedResponse>) {
+                val statusCode: Int = response.code()
+                val resp: HasLikedResponse? = response.body()
+
+                if (resp != null) {
+                    _receiver.hasLiked(resp.liked)
+                } else {
+                    Log.e("WebService", "Error code $statusCode while changing like")
+                    _receiver.hasLiked(false)
+                }
+            }
+
+            override fun onFailure(call: Call<HasLikedResponse>, err: Throwable) {
+                Log.e("WebService", err.message, err)
+                _receiver.hasLiked(false)
             }
         })
     }
@@ -309,6 +338,13 @@ interface WebServiceAPI {
         @Part("user_id") uid: RequestBody,
         @Part("post_id") postId: RequestBody,
     ) : Call<LikeResponse>
+
+    @Multipart
+    @POST(WEBSERVICE_HAS_USER_LIKED)
+    fun hasUserLiked(
+        @Part("user_id") uid: RequestBody,
+        @Part("post_id") postId: RequestBody,
+    ) : Call<HasLikedResponse>
 
     // User
     @Multipart

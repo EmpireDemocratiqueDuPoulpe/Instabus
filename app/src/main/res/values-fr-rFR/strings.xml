@@ -109,7 +109,7 @@
     <string name="theme_title">Thème</string>
     <string name="theme_entries_light">Clair</string>
     <string name="theme_entries_dark">Sombre</string>
-    <string name="theme_entries_system_default">Par défaut (système)</string>
+    <string name="theme_entries_system_default">Selon système</string>
     <string name="better_ui_title">Interface simplifiée</string>
     <string name="better_ui_summary_off">Interface plus facile à utiliser mais plus imposante sur l\'écran.</string>
     <string name="better_ui_summary_on">Interface minimisée et simplifiée. (recommandé)</string>
