@@ -25,6 +25,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PostAdapter(activity: MainActivity) : ListAdapter<Post, RecyclerView.ViewHolder>(
     PostDiffCallback()
@@ -104,7 +107,7 @@ class PostViewHolder(activity: MainActivity, view: View)
 
         // Set text
         this._v.findViewById<TextView>(R.id.post_title).text = post.title
-        this._v.findViewById<TextView>(R.id.post_creation_date).text = post.creation_timestamp
+        formatDate(post.creation_timestamp)
         this._v.findViewById<TextView>(R.id.post_author).text = postUsername
         this._likes = this._v.findViewById(R.id.post_likes_count)
         this._likes.text = post.likes.toString()
@@ -136,6 +139,65 @@ class PostViewHolder(activity: MainActivity, view: View)
             }
         } else {
             viewStationBtn.isEnabled = false
+        }
+    }
+
+    private fun formatDate(dateTime: String) {
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRENCH)
+        val dateView: TextView = this._v.findViewById(R.id.post_creation_date)
+
+        try {
+            // Parse the date and make the diff
+            val creationDate = format.parse(dateTime) ?: throw Exception()
+            val currentDate = Date()
+            val diff: Long = currentDate.time - creationDate.time
+
+            // Get the time
+            val seconds: Long = diff / 1000
+            val minutes: Long = seconds / 60
+            val hours: Long = minutes / 60
+            val days: Long = hours / 24
+            val weeks: Long = days / 7
+            val months: Long = weeks / 4
+            val years: Long = months / 12
+
+            // Build the string
+            val textFormat = this._activity.getString(R.string.date_format)
+            val durationText: String = when {
+                years >= 1 -> {
+                    val dur = if (years > 1) R.string.date_years; else R.string.date_year
+                    String.format(this._activity.getString(dur), years)
+                }
+                months >= 1 -> {
+                    val dur = if (months > 1) R.string.date_months; else R.string.date_month
+                    String.format(this._activity.getString(dur), months)
+                }
+                weeks >= 1 -> {
+                    val dur = if (weeks > 1) R.string.date_weeks; else R.string.date_week
+                    String.format(this._activity.getString(dur), weeks)
+                }
+                days >= 1 -> {
+                    val dur = if (days > 1) R.string.date_days; else R.string.date_day
+                    String.format(this._activity.getString(dur), days)
+                }
+                hours >= 1 -> {
+                    val dur = if (hours > 1) R.string.date_hours; else R.string.date_hour
+                    String.format(this._activity.getString(dur), hours)
+                }
+                minutes >= 1 -> {
+                    val dur = if (minutes > 1) R.string.date_minutes; else R.string.date_minute
+                    String.format(this._activity.getString(dur), minutes)
+                }
+                else -> {
+                    val dur = if (seconds > 1) R.string.date_seconds; else R.string.date_second
+                    String.format(this._activity.getString(dur), seconds)
+                }
+            }
+
+            // Set the text
+            dateView.text = String.format(textFormat, durationText)
+        } catch (err: Exception) {
+            dateView.text = dateTime
         }
     }
 

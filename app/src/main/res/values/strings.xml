@@ -54,6 +54,23 @@
     <string name="post_delete_error">Unable to delete the selected post. Please retry later</string>
     <string name="post_delete_error_btn">OK</string>
 
+    <!-- Date -->
+    <string name="date_format">%1$s ago</string>
+    <string name="date_year">%1$s year</string>
+    <string name="date_years">%1$s years</string>
+    <string name="date_month">%1$s month</string>
+    <string name="date_months">%1$s months</string>
+    <string name="date_week">%1$s week</string>
+    <string name="date_weeks">%1$s weeks</string>
+    <string name="date_day">%1$s day</string>
+    <string name="date_days">%1$s days</string>
+    <string name="date_hour">%1$s hour</string>
+    <string name="date_hours">%1$s hours</string>
+    <string name="date_minute">%1$s minute</string>
+    <string name="date_minutes">%1$s minutes</string>
+    <string name="date_second">%1$s second</string>
+    <string name="date_seconds">%1$s seconds</string>
+
     <!-- Station -->
     <string name="tabs_stations_map">Map</string>
     <string name="tabs_stations_list">List</string>

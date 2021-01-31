@@ -54,6 +54,23 @@
     <string name="post_delete_error">Impossible de supprimer ce post. Veuillez retenter plus tard.</string>
     <string name="post_delete_error_btn">OK</string>
 
+    <!-- Date -->
+    <string name="date_format">Il y a %1$s</string>
+    <string name="date_year">%1$s an</string>
+    <string name="date_years">%1$s ans</string>
+    <string name="date_month">%1$s mois</string>
+    <string name="date_months">%1$s mois</string>
+    <string name="date_week">%1$s semaine</string>
+    <string name="date_weeks">%1$s semaines</string>
+    <string name="date_day">%1$s jour</string>
+    <string name="date_days">%1$s jours</string>
+    <string name="date_hour">%1$s heure</string>
+    <string name="date_hours">%1$s heures</string>
+    <string name="date_minute">%1$s minute</string>
+    <string name="date_minutes">%1$s minutes</string>
+    <string name="date_second">%1$s seconde</string>
+    <string name="date_seconds">%1$s secondes</string>
+
     <!-- Station -->
     <string name="tabs_stations_map">Carte</string>
     <string name="tabs_stations_list">Liste</string>
