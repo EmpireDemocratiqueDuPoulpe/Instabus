@@ -8,6 +8,10 @@ data class RegisterResponse(
 )
 
 data class LoginResponse(
-        @Json(name = "status") var status: Boolean,
-        @Json(name = "err") var err: String?
+     @Json(name = "status") var status: Boolean,
+     @Json(name = "selector") var selector: String?,
+     @Json(name = "authenticator") var authToken: String?,
+     @Json(name = "user_id") var userId: Int?,
+     @Json(name = "username") var username: String?,
+     @Json(name = "err") var err: String?
 )

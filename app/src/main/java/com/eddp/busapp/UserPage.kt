@@ -1,6 +1,7 @@
 package com.eddp.busapp
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,6 +25,8 @@ import com.eddp.busapp.views.recycler_view.UserPicAdapter
 class UserPage : Fragment(), WebServiceReceiver {
     private val _webServiceLink = WebServiceLink(this)
     private var _userPics: MutableList<UserPic> = ArrayList()
+    private var _userId: Long = Long.MIN_VALUE
+    private var _username: String = "Username"
 
     private lateinit var _userProfilePic: ImageView
     private lateinit var _postsCount: TextView
@@ -57,6 +61,13 @@ class UserPage : Fragment(), WebServiceReceiver {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (context != null) {
+            val sharedPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+            this._userId = sharedPrefs.getInt("user_id", Int.MIN_VALUE).toLong()
+            this._username = sharedPrefs.getString("username", "Username") ?: ""
+        }
+
         fillUserInfo(view)
         fillUserPics(view)
     }
@@ -64,6 +75,7 @@ class UserPage : Fragment(), WebServiceReceiver {
     private fun fillUserInfo(view: View) {
         this._userProfilePic = view.findViewById(R.id.user_page_picture)
         Glide.with(this).load(R.raw.user_profile_pic).into(this._userProfilePic)
+        view.findViewById<TextView>(R.id.user_page_username).text = this._username
 
         this._postsCount = view.findViewById(R.id.user_page_posts_count_number)
         this._likesCount = view.findViewById(R.id.user_page_likes_count_number)
@@ -82,18 +94,18 @@ class UserPage : Fragment(), WebServiceReceiver {
         this._recyclerView.adapter = this._adapter
 
         this.setLoading(true)
-        this._webServiceLink.getUserPics(1)
+        this._webServiceLink.getUserPics(this._userId)
 
         // Swipe to refresh
         this._swipeToRefresh = view.findViewById(R.id.user_page_pics_swipe_refresh)
         this._swipeToRefresh.setOnRefreshListener {
-            this._webServiceLink.getUserPics(1)
+            this._webServiceLink.getUserPics(this._userId)
         }
     }
 
     private fun onUserPicDeletion(item: UserPic) {
         this.setLoading(true)
-        this._webServiceLink.getUserPics(1)
+        this._webServiceLink.getUserPics(this._userId)
     }
 
     override fun setUserPics(userPics: MutableList<UserPic>?) {

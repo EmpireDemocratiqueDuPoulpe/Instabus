@@ -160,10 +160,7 @@ class Register : Fragment(), WebServiceReceiver {
     }
 
     private fun goToMainActivity() {
-        this._activity?.isConnected(
-            this._usernameField.text.toString(),
-            this._passwordField.text.toString()
-        )
+        this._activity?.isConnected("", "", 0, "")
     }
 
     // Web service

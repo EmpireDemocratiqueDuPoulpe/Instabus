@@ -1,16 +1,13 @@
 package com.eddp.busapp
 
-import android.R.string
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,17 +18,16 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.eddp.busapp.data.WebServiceLink
 import com.eddp.busapp.interfaces.WebServiceReceiver
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
-import kotlin.math.log
-
 
 class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
     private var _webServiceLink: WebServiceLink? = null
     private var _context: Context? = null
+    private var _userId: Int = Int.MIN_VALUE
 
     private lateinit var _imgPath: Uri
     private lateinit var _title: EditText
@@ -51,6 +47,10 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
 
         this._webServiceLink = WebServiceLink(this)
         this._context = activity
+
+        if (context != null) {
+            this._userId = PreferenceManager.getDefaultSharedPreferences(context).getInt("user_id", Int.MIN_VALUE)
+        }
 
         this._imgPath = Uri.parse(arguments?.getString("img_path"))
 
@@ -115,7 +115,7 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
 
         // Upload
         this._webServiceLink?.addPost(
-            1,
+            this._userId,
             (this._context as CameraActivity).getStationId(),
             postTitle,
             this._imgPath
