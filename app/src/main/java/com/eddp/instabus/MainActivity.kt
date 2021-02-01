@@ -192,6 +192,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
             }
             R.id.toolbar_menu_refresh -> {
                 reloadPosts()
+                reloadStations()
                 true
             }
             else -> {
@@ -254,6 +255,11 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     fun reloadPosts() {
         this._posts = ArrayList()
         this._webServiceLink?.getPosts()
+    }
+
+    fun reloadStations() {
+        this._stations = ArrayList()
+        getStationsFromAPI()
     }
 
     // Observable

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eddp.instabus.data.Station
 import com.eddp.instabus.interfaces.NeedStations
 import com.eddp.instabus.views.recycler_view.StationAdapter
@@ -15,12 +16,14 @@ import com.eddp.instabus.views.recycler_view.StationAdapter
 class StationsList : Fragment(), NeedStations {
     private lateinit var _activity: MainActivity
 
-    private var _stationsRecyclerView: RecyclerView? = null
+    private lateinit var _swipeToRefresh: SwipeRefreshLayout
+    private lateinit var _stationsRecyclerView: RecyclerView
     private var _stationsAdapter: StationAdapter? = null
 
     // Setters
     override fun setStations(stations: List<Station>) {
         this._stationsAdapter?.setData(stations)
+        this._swipeToRefresh.isRefreshing = false
     }
 
     // Views
@@ -51,17 +54,21 @@ class StationsList : Fragment(), NeedStations {
     private fun fillStationsRecyclerView(view: View) {
         this._stationsRecyclerView = view.findViewById(R.id.stations_recycler_view)
 
-        if (this._stationsRecyclerView != null) {
-            this._stationsRecyclerView!!.layoutManager = LinearLayoutManager(context)
-            this._stationsRecyclerView!!.adapter = this._stationsAdapter
+        this._stationsRecyclerView.layoutManager = LinearLayoutManager(context)
+        this._stationsRecyclerView.adapter = this._stationsAdapter
 
-            // Get data if it's already fetched
-            this._activity = activity as MainActivity
-            val stations: List<Station>? = this._activity.getStations()
+        // Get data if it's already fetched
+        this._activity = activity as MainActivity
+        val stations: List<Station>? = this._activity.getStations()
 
-            if (stations != null) {
-                this._stationsAdapter!!.setData(stations)
-            }
+        if (stations != null) {
+            this._stationsAdapter!!.setData(stations)
+        }
+
+        // Swipe to refresh
+        this._swipeToRefresh = view.findViewById(R.id.station_refresh_layout)
+        this._swipeToRefresh.setOnRefreshListener {
+            this._activity.reloadStations()
         }
     }
 }
