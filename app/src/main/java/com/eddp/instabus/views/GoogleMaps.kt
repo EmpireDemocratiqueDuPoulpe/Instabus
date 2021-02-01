@@ -31,8 +31,6 @@ class MapReady(activity: Activity, style: String?, marker: Drawable?) : OnMapRea
     private var _makerDrawable: Drawable? = marker
     private lateinit var _maker: BitmapDescriptor
 
-    private var _locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
     private var _stations: List<Station> = listOf()
     private var _markers: HashMap<Marker, Station> = HashMap()
 
@@ -68,9 +66,12 @@ class MapReady(activity: Activity, style: String?, marker: Drawable?) : OnMapRea
     }
 
     // Setters
-    fun setStations(stations: List<Station>) {
-        this._stations = stations
+    fun setStations(stations: List<Station>?) {
+        // Get stations
+        if (stations != null) this._stations = stations
+        else this._stations = ArrayList()
 
+        // Update display
         if (this._isMapReady) {
             redrawStationMarkers()
         }
@@ -105,9 +106,6 @@ class MapReady(activity: Activity, style: String?, marker: Drawable?) : OnMapRea
 
         // Add markers
         createStationsMarkers()
-
-        this._locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 100f, StationLocationListener())
-        this._locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100f, StationLocationListener())
 
         this._isMapReady = true
     }
@@ -173,27 +171,5 @@ class StationInfoWindow(context: Context, m: MapReady) : GoogleMap.InfoWindowAda
                 this._context.openStationDrawer(station)
             }
         }
-    }
-}
-
-class StationLocationListener(activity: Activity) : LocationListener {
-    private var _providerEnabled = true
-    private lateinit var _lastLocation: Location
-    private var _activity = activity
-
-    override fun onLocationChanged(location: Location) {
-        if(this._activity is MainActivity){
-            (this._activity as MainActivity).reloadStations(location.latitude, location.longitude)
-        }
-    }
-
-    override fun onProviderDisabled(provider: String) {
-        super.onProviderDisabled(provider)
-        this._providerEnabled = false
-    }
-
-    override fun onProviderEnabled(provider: String) {
-        super.onProviderEnabled(provider)
-        this._providerEnabled = true
     }
 }

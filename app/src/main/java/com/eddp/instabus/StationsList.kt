@@ -2,6 +2,7 @@ package com.eddp.instabus
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +17,14 @@ import com.eddp.instabus.views.recycler_view.StationAdapter
 class StationsList : Fragment(), NeedStations {
     private lateinit var _activity: MainActivity
 
-    private lateinit var _swipeToRefresh: SwipeRefreshLayout
+    private var _swipeToRefresh: SwipeRefreshLayout? = null
     private lateinit var _stationsRecyclerView: RecyclerView
     private var _stationsAdapter: StationAdapter? = null
 
     // Setters
     override fun setStations(stations: List<Station>) {
         this._stationsAdapter?.setData(stations)
-        this._swipeToRefresh.isRefreshing = false
+        this._swipeToRefresh?.isRefreshing = false
     }
 
     // Views
@@ -67,7 +68,7 @@ class StationsList : Fragment(), NeedStations {
 
         // Swipe to refresh
         this._swipeToRefresh = view.findViewById(R.id.station_refresh_layout)
-        this._swipeToRefresh.setOnRefreshListener {
+        this._swipeToRefresh?.setOnRefreshListener {
             this._activity.reloadStations()
         }
     }

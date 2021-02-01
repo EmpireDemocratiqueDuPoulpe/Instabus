@@ -3,17 +3,20 @@ package com.eddp.instabus.data
 import com.eddp.instabus.MainActivity
 import com.eddp.instabus.R
 import com.squareup.moshi.Json
-import retrofit2.Call
-import retrofit2.http.GET
+import kotlin.math.round
 
-interface StationAPI {
-    @GET("/bus/nearstation/latlon/41.404377/2.175471/1.json")
-    fun stationsList(): Call<StationResponse>
-}
+data class AllStationResponse (
+        @Json(name = "code") var code: Int,
+        @Json(name = "data") var data: AllStation
+)
 
-data class StationResponse (
+data class NearStationResponse (
     @Json(name = "code") var code: Int,
     @Json(name = "data") var data: NearStation
+)
+
+data class AllStation(
+    @Json(name = "tmbs") var stations: List<Station>
 )
 
 data class NearStation(
@@ -30,9 +33,9 @@ data class Station(
     @Json(name = "lon") var longitude: String?,
     @Json(name = "furniture") var furniture: String?,
     @Json(name = "buses") var buses: String?,
-    @Json(name = "distance") var distance: Float,
+    @Json(name = "distance") var distance: Float?,
 ) {
     var concatName: String = String.format(MainActivity.getResources()?.getString(R.string.station_concat_name) ?: "", id)
     var concatBuses: String = String.format(MainActivity.getResources()?.getString(R.string.station_concat_buses) ?: "", buses)
-    var concatDistance: String = String.format(MainActivity.getResources()?.getString(R.string.station_concat_distance) ?: "", distance)
+    var concatDistance: String = String.format(MainActivity.getResources()?.getString(R.string.station_concat_distance) ?: "", round(distance?.times(1000) ?: 0f))
 }

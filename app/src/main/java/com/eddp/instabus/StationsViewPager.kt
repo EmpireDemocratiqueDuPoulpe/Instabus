@@ -1,6 +1,7 @@
 package com.eddp.instabus
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +66,9 @@ class StationsViewPager : Fragment(), AsyncDataObserver {
 
         if (stations != null) {
             for (frag in this._viewPagerAdapter.getAll()) {
-                (frag as NeedStations).setStations(stations)
+                if (frag is NeedStations) {
+                    (frag as NeedStations).setStations(stations)
+                }
             }
         }
     }

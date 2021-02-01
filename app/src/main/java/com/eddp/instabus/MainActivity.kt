@@ -29,6 +29,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.eddp.instabus.data.*
 import com.eddp.instabus.interfaces.AsyncDataObservable
 import com.eddp.instabus.interfaces.AsyncDataObserver
+import com.eddp.instabus.interfaces.StationAPIReceiver
 import com.eddp.instabus.interfaces.WebServiceReceiver
 import com.eddp.instabus.views.StationNavDrawer
 import com.eddp.instabus.views.StationNavDrawerLayout
@@ -43,7 +44,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceiver {
+class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceiver, StationAPIReceiver {
     private lateinit var _sharedPrefs: SharedPreferences
     private var _betterUI: Boolean = true
 
@@ -56,7 +57,8 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     private lateinit var _viewPagerAdapter: MainViewPagerAdapter
     private lateinit var _bottomNavBar: BottomNavBar
 
-    private var _webServiceLink: WebServiceLink? = null
+    private lateinit var _webServiceLink: WebServiceLink
+    private lateinit var _stationAPILink: StationAPILink
 
     private var _posts: List<Post>? = null
     private var _stations: List<Station>? = null
@@ -71,6 +73,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
     override fun onCreate(savedInstanceState: Bundle?) {
         this._sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         this._webServiceLink = WebServiceLink(this)
+        this._stationAPILink = StationAPILink(this)
 
         initTheme()
         authenticateUser()
@@ -85,9 +88,8 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         initViewPager()
 
         // Get data
-        this._webServiceLink?.getPosts()
-
-        getStationsFromAPI()
+        this._webServiceLink.getPosts()
+        this._stationAPILink.getAllStations()
     }
 
     override fun onResume() {
@@ -207,59 +209,49 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         finish()
     }
 
-    // Async data
-    private fun getStationsFromAPI() {
-        val moshi = Moshi.Builder()
-                .add(KotlinJsonAdapterFactory())
-                .build()
+    // API and services
+    private fun authenticateUser() {
+        if (intent.getBooleanExtra("loginFromCredentials", false)) return
 
-        val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl("http://barcelonaapi.marcpous.com")
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .build()
+        val selector: String = this._sharedPrefs.getString("selector", "") ?: ""
+        val authToken: String = this._sharedPrefs.getString("auth_token", "") ?: ""
 
-        val service = retrofit.create(StationAPI::class.java)
-        val call = service.stationsList()
+        if (selector.isNotBlank()) {
+            this._webServiceLink?.loginUserWithAuthToken(selector, authToken)
+        } else {
+            goToAuthActivity()
+        }
+    }
 
-        call.enqueue(object : Callback<StationResponse> {
-            override fun onResponse(
-                    call: Call<StationResponse>,
-                    response: Response<StationResponse>
-            ) {
-                val statusCode: Int = response.code()
-                val resp: StationResponse? = response.body()
+    override fun setPosts(posts: List<Post>?) {
+        this._posts = posts
+        notifyGet()
+    }
 
-                if (!response.isSuccessful) {
-                    Toast.makeText(
-                            this@MainActivity,
-                            "Error ${statusCode}: " + this@MainActivity.getString(R.string.get_stations_error),
-                            Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    this@MainActivity._stations = resp?.data?.stations
-                    notifyGet()
-                }
+    override fun setAllStations(stations: List<Station>?, err: String?) {
+        super.setAllStations(stations, err)
+
+        if (stations != null) {
+            this._stations = stations
+        } else {
+            if (err != null) {
+                Toast.makeText(this, err, Toast.LENGTH_SHORT).show()
             }
+        }
 
-            override fun onFailure(call: Call<StationResponse>?, err: Throwable) {
-                Toast.makeText(
-                        this@MainActivity,
-                        this@MainActivity.getString(R.string.get_stations_error),
-                        Toast.LENGTH_SHORT
-                ).show()
-                Log.e("ERROR", err.message, err)
-            }
-        })
+        notifyGet()
     }
 
     fun reloadPosts() {
         this._posts = ArrayList()
-        this._webServiceLink?.getPosts()
+        this._webServiceLink.getPosts()
     }
 
-    fun reloadStations() {
+    fun reloadStations(lat: String? = null, lon: String? = null) {
         this._stations = ArrayList()
-        getStationsFromAPI()
+
+        if (lat != null || lon != null) this._stationAPILink.getStationsNear(lat, lon)
+        else this._stationAPILink.getAllStations()
     }
 
     // Observable
@@ -279,25 +271,6 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         for (observer in this._observers) {
             observer?.onDataGet()
         }
-    }
-
-    // Web Service
-    private fun authenticateUser() {
-        if (intent.getBooleanExtra("loginFromCredentials", false)) return
-
-        val selector: String = this._sharedPrefs.getString("selector", "") ?: ""
-        val authToken: String = this._sharedPrefs.getString("auth_token", "") ?: ""
-
-        if (selector.isNotBlank()) {
-            this._webServiceLink?.loginUserWithAuthToken(selector, authToken)
-        } else {
-            goToAuthActivity()
-        }
-    }
-
-    override fun setPosts(posts: List<Post>?) {
-        this._posts = posts
-        notifyGet()
     }
 
     @SuppressLint("ApplySharedPref")

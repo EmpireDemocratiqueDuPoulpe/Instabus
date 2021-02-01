@@ -29,7 +29,7 @@
     <string name="auth_err_unknown_register">Erreur d\'enregistrement inconnue. Veuillez retenter plus tard.</string>
 
     <!-- Main activity -->
-    <string name="get_stations_error">Erreur dans la récupération des stations. Veuillez retenter plus tard.</string>
+    <string name="get_stations_error">Erreur pendant la récupération des stations. Veuillez retenter plus tard.</string>
     <string name="perms_refused_positive_btn">OK</string>
 
     <!-- Bottom nav bar -->
@@ -84,7 +84,7 @@
     <string name="station_info">Appuyez pour plus d\'infos</string>
     <string name="station_concat_name">Station n°%1$d</string>
     <string name="station_concat_buses">Bus: %1$s</string>
-    <string name="station_concat_distance">Distance: %1$s</string>
+    <string name="station_concat_distance">Distance: %1$sm</string>
     <string name="map_info_window_arrow_alt">ici</string>
     <string name="map_info_window_info_alt">Info: </string>
     <string name="station_add_post_alt">+</string>
