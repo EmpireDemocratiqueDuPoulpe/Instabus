@@ -8,3 +8,5 @@
 [Maps] - The map is acting weird when clicking stations.
 
 [Maps / Emulator Only] - Sometime the emulator sends wrong coordinates
+
+[Fields] - Using emoji in a field can make the webservice script crash
