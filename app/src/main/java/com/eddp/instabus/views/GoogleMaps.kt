@@ -1,10 +1,14 @@
 package com.eddp.instabus.views
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +22,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import java.lang.Exception
 
-class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReadyCallback {
-    private val _context = context
+class MapReady(activity: Activity, style: String?, marker: Drawable?) : OnMapReadyCallback {
+    private val _activity = activity
 
     private var _map: GoogleMap? = null
     private var _isMapReady: Boolean = false
@@ -27,11 +31,13 @@ class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReady
     private var _makerDrawable: Drawable? = marker
     private lateinit var _maker: BitmapDescriptor
 
+    private var _locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
     private var _stations: List<Station> = listOf()
     private var _markers: HashMap<Marker, Station> = HashMap()
 
-    constructor(context: Context, style: String) : this(context, style, null)
-    constructor(context: Context, marker: Drawable?) : this(context, null, marker)
+    constructor(activity: Activity, style: String) : this(activity, style, null)
+    constructor(activity: Activity, marker: Drawable?) : this(activity, null, marker)
 
     // Getters
     private fun getMarkerIconFromDrawable(drawable: Drawable?) : BitmapDescriptor {
@@ -77,7 +83,7 @@ class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReady
         // Move the map onto Barcelona
         val barcelona = LatLng(41.404377, 2.175471)
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(barcelona, 16f))
-        val infoWindow = StationInfoWindow(this._context, this)
+        val infoWindow = StationInfoWindow(this._activity, this)
         map?.setInfoWindowAdapter(infoWindow)
         map?.setOnInfoWindowClickListener(infoWindow)
 
@@ -99,6 +105,9 @@ class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReady
 
         // Add markers
         createStationsMarkers()
+
+        this._locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 100f, StationLocationListener())
+        this._locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 100f, StationLocationListener())
 
         this._isMapReady = true
     }
@@ -164,5 +173,27 @@ class StationInfoWindow(context: Context, m: MapReady) : GoogleMap.InfoWindowAda
                 this._context.openStationDrawer(station)
             }
         }
+    }
+}
+
+class StationLocationListener(activity: Activity) : LocationListener {
+    private var _providerEnabled = true
+    private lateinit var _lastLocation: Location
+    private var _activity = activity
+
+    override fun onLocationChanged(location: Location) {
+        if(this._activity is MainActivity){
+            (this._activity as MainActivity).reloadStations(location.latitude, location.longitude)
+        }
+    }
+
+    override fun onProviderDisabled(provider: String) {
+        super.onProviderDisabled(provider)
+        this._providerEnabled = false
+    }
+
+    override fun onProviderEnabled(provider: String) {
+        super.onProviderEnabled(provider)
+        this._providerEnabled = true
     }
 }
