@@ -31,6 +31,7 @@
     <!-- Main activity -->
     <string name="get_stations_error">Erreur pendant la récupération des stations. Veuillez retenter plus tard.</string>
     <string name="perms_refused_positive_btn">OK</string>
+    <string name="back_to_top_btn">Vers le haut</string>
 
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_home">Accueil</string>

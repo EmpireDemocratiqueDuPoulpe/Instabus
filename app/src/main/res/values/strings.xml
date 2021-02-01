@@ -31,6 +31,7 @@
     <!-- Main activity -->
     <string name="get_stations_error">Could not get bus stations. Try again later.</string>
     <string name="perms_refused_positive_btn">OK</string>
+    <string name="back_to_top_btn">Back to top</string>
 
     <!-- Bottom nav bar -->
     <string name="bottom_nav_bar_home">Home</string>
