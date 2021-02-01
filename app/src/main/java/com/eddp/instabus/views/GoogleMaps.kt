@@ -81,6 +81,9 @@ class MapReady(context: Context, style: String?, marker: Drawable?) : OnMapReady
         map?.setInfoWindowAdapter(infoWindow)
         map?.setOnInfoWindowClickListener(infoWindow)
 
+        // Enable the phone position marker
+        map?.isMyLocationEnabled = true
+
         // Update map style
         if (this._style != null) {
             try {
