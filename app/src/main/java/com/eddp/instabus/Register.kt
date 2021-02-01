@@ -96,6 +96,8 @@ class Register : Fragment(), WebServiceReceiver {
                 this._emailField.text.toString(),
                 this._passwordField.text.toString()
             )
+        } else {
+            setLoading(false)
         }
     }
 

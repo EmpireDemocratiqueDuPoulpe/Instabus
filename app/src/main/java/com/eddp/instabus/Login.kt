@@ -91,6 +91,8 @@ class Login: Fragment(), WebServiceReceiver {
                 this._usernameField.text.toString(),
                 this._passwordField.text.toString()
             )
+        } else {
+            setLoading(false)
         }
     }
 
