@@ -152,4 +152,16 @@ class StationLocationListener(onMovement: (lat: String, lon: String) -> Unit) : 
         // Update
         this._onMovementCallback.invoke(lat, lon)
     }
+
+    override fun onProviderEnabled(provider: String) {
+
+    }
+
+    override fun onProviderDisabled(provider: String) {
+
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+
+    }
 }
