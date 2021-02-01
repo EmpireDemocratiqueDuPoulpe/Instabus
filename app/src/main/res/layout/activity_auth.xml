@@ -10,8 +10,10 @@
         android:id="@+id/toolbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/toolbar_layout"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        layout="@layout/toolbar_layout"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/auth_fragment_container"

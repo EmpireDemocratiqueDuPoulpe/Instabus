@@ -15,7 +15,6 @@ import com.eddp.instabus.data.Station
 import com.eddp.instabus.interfaces.NeedStations
 import com.eddp.instabus.views.recycler_view.StationAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.time.Duration
 
 class StationsList : Fragment(), NeedStations {
     private lateinit var _activity: MainActivity

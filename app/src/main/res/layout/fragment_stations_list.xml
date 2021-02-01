@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".StationsList">
 
+    <!-- Stations list -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/station_refresh_layout"
         android:layout_width="match_parent"
@@ -25,6 +26,7 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <!-- Back to top button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/station_back_to_top_btn"
         android:layout_width="36dp"

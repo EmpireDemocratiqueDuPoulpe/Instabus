@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -36,13 +35,6 @@ import com.eddp.instabus.views.StationNavDrawerLayout
 import com.eddp.instabus.views.ZoomOutPageTransformer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceiver, StationAPIReceiver {
     private lateinit var _sharedPrefs: SharedPreferences
@@ -99,7 +91,6 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         setUiMode(this._betterUI)
     }
 
-    // Todo: Update theme
     private fun initTheme() {
         when (this._sharedPrefs.getString("theme", "light")) {
             "light" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
@@ -217,7 +208,7 @@ class MainActivity : AppCompatActivity(), AsyncDataObservable, WebServiceReceive
         val authToken: String = this._sharedPrefs.getString("auth_token", "") ?: ""
 
         if (selector.isNotBlank()) {
-            this._webServiceLink?.loginUserWithAuthToken(selector, authToken)
+            this._webServiceLink.loginUserWithAuthToken(selector, authToken)
         } else {
             goToAuthActivity()
         }

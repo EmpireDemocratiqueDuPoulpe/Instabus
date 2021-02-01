@@ -6,9 +6,6 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View

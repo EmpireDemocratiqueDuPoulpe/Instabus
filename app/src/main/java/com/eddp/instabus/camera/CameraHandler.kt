@@ -219,7 +219,6 @@ class CameraHandler private constructor(context: Context) : PictureTaker {
             outputOptions,
             ContextCompat.getMainExecutor(this._context),
             object : ImageCapture.OnImageSavedCallback {
-                // TODO: Remove if the file isn't saved on the phone
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     notifySave(savedUri)

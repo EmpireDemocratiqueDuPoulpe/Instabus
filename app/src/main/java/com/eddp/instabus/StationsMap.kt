@@ -1,13 +1,11 @@
 package com.eddp.instabus
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.eddp.instabus.data.Station
 import com.eddp.instabus.data.StationAPILink
-import com.eddp.instabus.interfaces.NeedStations
 import com.eddp.instabus.interfaces.StationAPIReceiver
 import com.eddp.instabus.views.MapReady
 import com.google.android.gms.maps.SupportMapFragment

@@ -73,7 +73,6 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
     private fun initShareBtn(view: View) {
         (activity as CameraActivity).showShareBtn(true)
         (activity as CameraActivity).getShareBtn().setOnClickListener {
-            //share image
             try {
                 val intent = Intent(Intent.ACTION_SEND).setType("image/*")
 
@@ -95,7 +94,7 @@ class AddPicture : Fragment(), View.OnClickListener, WebServiceReceiver {
 
     // On add picture listener
     override fun onClick(v: View?) {
-        if (v?.id != R.id.add_picture_btn) return;
+        if (v?.id != R.id.add_picture_btn) return
 
         // Prevent empty post title
         val postTitle: String = this._title.text.toString()
