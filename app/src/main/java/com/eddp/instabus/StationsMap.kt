@@ -111,7 +111,7 @@ class StationsMap : Fragment(), StationAPIReceiver {
             this._stations = stations
         } else {
             if (err != null) {
-                Toast.makeText(this.activity, err, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this.activity, err, Toast.LENGTH_SHORT).show()
             }
         }
 
