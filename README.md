@@ -8,9 +8,9 @@ Le projet fonctionne actuellement en collaboration avec un service web hébergé
 
 [Le service web est disponible ici.](https://github.com/EmpireDemocratiqueDuPoulpe/instabus_webservice)
 
-***[ENG]** This project uses an external web service hosted on a private network. The web service is actually off to save RAM. You will need to host it locally (using WAMP or others) and edit the **WEBSERVICE_ADDRESS** constant [in the WebServiceLink.kt file](https://github.com/EmpireDemocratiqueDuPoulpe/Instabus/blob/master/app/src/main/java/com/eddp/instabus/data/WebServiceLink.kt).
+***[ENG]** This project uses an external web service hosted on a private network. The web service is actually off to save RAM. You will need to host it locally (using WAMP or others) and edit the **WEBSERVICE_ADDRESS** constant [in the WebServiceLink.kt file](https://github.com/EmpireDemocratiqueDuPoulpe/Instabus/blob/master/app/src/main/java/com/eddp/instabus/data/WebServiceLink.kt).*
 
-[The web service is available here.](https://github.com/EmpireDemocratiqueDuPoulpe/instabus_webservice)*
+*[The web service is available here.](https://github.com/EmpireDemocratiqueDuPoulpe/instabus_webservice)*
 
 ## Bugs connus / Known bugs
 - **[Caméra - API 16 -> API 20] -** Parfois le service de caméra ne démarre pas et l'application plante.
