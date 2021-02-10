@@ -16,8 +16,7 @@ Le projet fonctionne actuellement en collaboration avec un service web hébergé
 - **[Localisation / Émulateur] -** L'émulateur Android envoie parfois des coordonées éronnées située à San Francisco. La carte n'affiche que les stations à un kilomètre à la ronde donc les stations disparaissent.
 - **[Champs de texte] -** Utiliser un émoji dans un champ de texte fait planter le script côté serveur.
 
----
-
+***[ENG]***
 - ***[Camera - API 16 -> API 20] -** Sometimes, the camera service doesn't work and the app crash. Only happened a few times in dev*
 - ***[Interface / Data] -** The app loses every post and station sometimes.*
 - ***[Maps / Emulator Only] -** Sometime the emulator sends wrong coordinates*
