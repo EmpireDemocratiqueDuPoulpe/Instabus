@@ -12,6 +12,11 @@ Le projet fonctionne actuellement en collaboration avec un service web hébergé
 
 *[The web service is available here.](https://github.com/EmpireDemocratiqueDuPoulpe/Instabus-Web-Service)*
 
+## Installation
+Si vous avez confiance et si votre service web est accessible par internet, vous pouvez utiliser l'APK fourni dans le répertoire directement sur votre téléphone. Dans le cas contraire, vous pouvez toujours ouvrir le projet dans Android Studio.
+
+***[Eng]** If you trust me enough and if your web service is accessible by internet, you can use the provided APK in the repository. Otherwise, you can open the project with Android Studio.*
+
 ## Bugs connus / Known bugs
 - **[Caméra - API 16 -> API 20] -** Parfois le service de caméra ne démarre pas et l'application plante.
 - **[Interface / Données] -** L'application peut perdre la liste des stations et des posts au changement de thème (il est possible de rafraîchir)
