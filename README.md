@@ -1,7 +1,7 @@
 # Instabus
 Instabus est une application Android réalisée en Kotlin pour un projet de cours. C'est un réseau social, clone d'Instagram, où les utilisateurs peuvent voir les stations de bus (uniquement Barcelone) et y prendre des photographies. Elles sont ensuite visionnables par tous les utilisateurs.
 
-***[ENG]** Instabus is an Android application created using Kotlin for a school project. It’s a social network like Instagram where users can search for bus stations is Barcelona and take pictures of them. Taken pictures can be seen by all users.*
+***[ENG]** Instabus is an Android application created using Kotlin for a school project. It’s a social network like Instagram where users can search for bus stations in Barcelona and take pictures of them. Taken pictures can be seen by all users.*
 
 ## Exigence / Requirement
 Le projet fonctionne actuellement en collaboration avec un service web hébergé sur un réseau privé. Le service web étant éteint, il faut l'héberger soi-même en local (WAMP par exemple) et modifier la constante **WEBSERVICE_ADDRESS** [dans le fichier WebServiceLink.kt](https://github.com/EmpireDemocratiqueDuPoulpe/Instabus/blob/master/app/src/main/java/com/eddp/instabus/data/WebServiceLink.kt).
